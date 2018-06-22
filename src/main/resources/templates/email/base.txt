@@ -1,0 +1,21 @@
+{% if header is not empty %}
+{{ header.title }}
+
+{% endif %}
+{% for line in lines %}
+{% if line.type == 'TEXT' %}
+{{ line.escapedText }}
+{% elseif line.type == 'BUTTON' %}
+{{ action.text }} -> {{ action.url | raw }}
+{% endif %}
+
+{% endfor %}
+
+{% for line in footers %}
+{{ line.escapedText }}
+{% endfor %}
+
+{% if copyright != null%}
+{{ copyright.year | date("yyyy") }} {{ copyright.name }}
+{% if copyright.url is not empty %}-> {{ copyright.url }}{% endif %}
+{% endif %}
