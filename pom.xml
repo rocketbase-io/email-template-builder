@@ -84,6 +84,7 @@ SOFTWARE.
         <lombok.version>1.18.0</lombok.version>
         <junit.version>4.12</junit.version>
         <hamcrest.version>1.3</hamcrest.version>
+        <jsoup.version>1.11.3</jsoup.version>
     </properties>
 
     <dependencies>
@@ -115,6 +116,12 @@ SOFTWARE.
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest-library</artifactId>
             <version>${hamcrest.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>${jsoup.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

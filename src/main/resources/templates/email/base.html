@@ -134,8 +134,7 @@
                                         style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;"
                                         valign="top">
                                         <a href="{{ line.url | raw }}" class="btn-primary"
-                                           style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; color: #{{- line.color.text | default('ffffff') -}}; text-decoration: none; line-height: 2em; font-weight: bold; text-align: center; cursor: pointer; display: inline-block; border-radius: 5px; text-transform: capitalize; background-color: #{{- line.color.bg | default('457B9D') -}}; margin: 0; border-color: #{{- line.color.bg | default('457B9D') -}}; border-style: solid; border-width: 10px 20px;">{{
-                                            line.text }}</a>
+                                           style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; color: #{{- line.color.text | default('ffffff') -}}; text-decoration: none; line-height: 2em; font-weight: bold; text-align: center; cursor: pointer; display: inline-block; border-radius: 5px; text-transform: capitalize; background-color: #{{- line.color.bg | default('457B9D') -}}; margin: 0; border-color: #{{- line.color.bg | default('457B9D') -}}; border-style: solid; border-width: 10px 20px;">{{ line.text }}</a>
                                     </td>
                                 </tr>
                                 {% endif %}
@@ -168,7 +167,7 @@
                                 style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 12px; vertical-align: top; color: #999; text-align: center; margin: 0; padding: 0 0 20px;"
                                 align="center" valign="top">
 
-                                &copy; {{ copyright.year | date("yyyy") }} {% if copyright.url is not empty %}<a href="{{ copyright.url }}"
+                                &copy; {{ copyright.year }} {% if copyright.url is not empty %}<a href="{{ copyright.url | raw }}"
                                                                              style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 12px; color: #999; text-decoration: underline; margin: 0;">{% endif %}{{
                                 copyright.name }}{% if copyright.url is not empty %}</a>{% endif %}
                             </td>

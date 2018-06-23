@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.StringWriter;
 import java.io.Writer;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -68,7 +69,7 @@ public final class EmailTemplateBuilder {
     }
 
     public EmailTemplateBuilder copyright(String name, String url) {
-        return copyright(name, url, null);
+        return copyright(name, url, LocalDate.now().getYear());
     }
 
     public EmailTemplateBuilder copyright(String name, String url, Integer year) {
