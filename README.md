@@ -11,7 +11,20 @@ Let this service build your html/text emails in a fluient manner. It doesn't try
 
 You can write your email content fluently and the template builder cares for the correct instyling, conversation to txt version etc...
 
-For sending the email I can recommend the spring-boot-starter-mail...
+For sending the email I can recommend the spring-boot-starter-mail or simplejavamail...
+
+## features
+
+- generate html and text mail via one fluent build
+- just a few dependencies: jsoup + pebble-template engine
+- support for the following content-types
+  - Logo in the header
+  - Header with custom Styling
+  - Text also with HTML support and Alignment configuration
+  - Image with Alignment configuration and Link options
+  - Button with custom Styling
+  - Footer with HTML support and Alignment configuration
+  - Copyright with dynamic Year and Link options
 
 ## usage
 
