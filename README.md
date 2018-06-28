@@ -18,14 +18,18 @@ For sending the email I can recommend the spring-boot-starter-mail...
 ```java
 // generate html/text content
 HtmlTextEmail htmlTextEmail = EmailTemplateBuilder.builder()
-        .header("Warning: You're approaching your limit. Please upgrade.", new ColorStyle("ffffff", "ff9f00"))
-        .addHtml("You have 1 <b>free report</b> remaining.")
-        .addText("Add your credit card now to upgrade your account to a premium plan to ensure you don't miss out on any reports.")
-        .addButton("Upgrade My Account", "http//upgrade", new ColorStyle("ffffff", "348eda"))
-        .addText("Thanks for choosing Acme Inc.")
-        .addFooter("<a href=\"http://unsubscribe\">Unsubscribe</a> from these alerts.", false)
-        .copyright("rocketbase.io", "https://www.rocketbase.io")
-        .build();
+      .logo("https://cdn.rocketbase.io/assets/signature/rocketbase-signature-20179.png", "rocketbase-logo", 250, 50).title("visit rocketbase.io").linkUrl("https://www.rocketbase.io").and()
+      .header("Warning: You're approaching your limit").color(new ColorStyle("ffffff", "ff9f00")).and()
+      .addText("You have 1 <b>free report</b> remaining.").and()
+      .addText("Add your credit card now to upgrade your account to a premium plan to ensure you don't miss out on any reports.").and()
+      .addButton("Upgrade My Account", "http//upgrade").color(new ColorStyle("ffffff", "348eda")).center().and()
+      .addText("Thanks for choosing Acme Inc.").and()
+      .addText("<i>Ps. This email has been build with template-builder</i>").center().and()
+      .addImage("https://assets-cdn.github.com/images/modules/logos_page/GitHub-Logo.png", "rocketbase-io/email-template-builder", 250, 65).center().title("link to github project").linkUrl("https://github.com/rocketbase-io/email-template-builder").and()
+      .addText("<strong><i>Cheers your rocketbase-team</i></strong>").center().and()
+      .addFooter("<a href=\"http://unsubscribe\">Unsubscribe</a> from these alerts.").and()
+      .copyright("rocketbase.io").url("https://www.rocketbase.io")
+      .build();
 
 // sent email
 MimeMessage message = emailSender.createMimeMessage();
@@ -40,19 +44,24 @@ emailSender.send(message);
 
 ```
 
-**html:**
+### preview HTML-Version
 
 ![sample](assets/mail-sample.png)
 
-**text:**
+### preview Text-Version
 
 ```
-Warning: You're approaching your limit. Please upgrade.
+Warning: You're approaching your limit
 You have 1 free report remaining.
 Add your credit card now to upgrade your account to a premium plan to ensure you don't miss out on any reports.
 Upgrade My Account -> http//upgrade
 Thanks for choosing Acme Inc.
-You got this email because of...
+Ps. This email has been build with template-builder
+
+Cheers your rocketbase-team
+Unsubscribe -> http://unsubscribe from these alerts.
 2018 rocketbase.io -> https://www.rocketbase.io
 ```
 
+
+[Email-on-acid-report](https://app.emailonacid.com/app/acidtest/ObQRaQOYKG17yavB6MUHxXXfujAASn6v9iK3JSwFpSteP/list)

@@ -4,85 +4,33 @@ import com.mitchellbosecke.pebble.PebbleEngine;
 import com.mitchellbosecke.pebble.error.PebbleException;
 import com.mitchellbosecke.pebble.template.PebbleTemplate;
 import io.rocketbase.commons.email.model.HtmlTextEmail;
-import io.rocketbase.commons.email.template.*;
+import io.rocketbase.commons.email.template.TemplateLine;
 import io.rocketbase.commons.email.template.TemplateLine.TemplateLineType;
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 
 import java.io.StringWriter;
 import java.io.Writer;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@Slf4j
 public final class EmailTemplateBuilder {
 
     private static final PebbleEngine ENGINE = new PebbleEngine.Builder().build();
 
-    private List<TemplateLine> templateLines;
-    private HeaderConfig headerConfig;
-    private CopyrightConfig copyrightConfig;
-
-    private EmailTemplateBuilder() {
-        templateLines = new ArrayList<>();
-    }
-
-    public static EmailTemplateBuilder builder() {
-        return new EmailTemplateBuilder();
-    }
-
-    public EmailTemplateBuilder header(String title) {
-        return header(title, null);
-    }
-
-    public EmailTemplateBuilder header(String title, ColorStyle style) {
-        headerConfig = new HeaderConfig(title, style != null ? style : ColorStyle.BASE_STYLE);
-        return this;
-    }
-
-    public EmailTemplateBuilder addText(String text) {
-        templateLines.add(new TextLine(text, false));
-        return this;
-    }
-
-    public EmailTemplateBuilder addHtml(String html) {
-        templateLines.add(new TextLine(html, true));
-        return this;
-    }
-
-    public EmailTemplateBuilder addButton(String text, String url) {
-        return addButton(text, url, null);
-    }
-
-    public EmailTemplateBuilder addButton(String text, String url, ColorStyle style) {
-        templateLines.add(new ButtonLine(text, url, style != null ? style : ColorStyle.BASE_STYLE));
-        return this;
-    }
-
-    public EmailTemplateBuilder addFooter(String text, boolean asHtml) {
-        templateLines.add(new FooterLine(text, asHtml));
-        return this;
-    }
-
-    public EmailTemplateBuilder copyright(String name, String url) {
-        return copyright(name, url, LocalDate.now().getYear());
-    }
-
-    public EmailTemplateBuilder copyright(String name, String url, Integer year) {
-        copyrightConfig = new CopyrightConfig(name, url, year);
-        return this;
+    public static EmailTemplateConfigBuilder builder() {
+        return new EmailTemplateConfigBuilder();
     }
 
     @SneakyThrows
-    public HtmlTextEmail build() throws PebbleException {
+    static HtmlTextEmail build(List<TemplateLine> templateLines, ImageLine logo, HeaderConfig headerConfig, CopyrightConfig copyrightConfig) throws PebbleException {
         PebbleTemplate htmlTemplate = ENGINE.getTemplate("templates/email/base.html");
         PebbleTemplate textTemplate = ENGINE.getTemplate("templates/email/base.txt");
 
         Map<String, Object> template = new HashMap<>();
+        template.put("logo", logo);
         template.put("header", headerConfig);
         template.put("lines", templateLines.stream()
                 .filter(l -> !l.getType().equals(TemplateLineType.FOOTER))
@@ -100,5 +48,57 @@ public final class EmailTemplateBuilder {
         textTemplate.evaluate(textWrite, template);
 
         return new HtmlTextEmail(htmlWriter.toString(), textWrite.toString());
+    }
+
+    public static class EmailTemplateConfigBuilder {
+
+        private List<TemplateLine> templateLines = new ArrayList<>();
+        private ImageLine logo;
+        private HeaderConfig headerConfig;
+        private CopyrightConfig copyrightConfig;
+
+        public ImageLine logo(String src, String alt, int width, int height) {
+            logo = new ImageLine(this, src, alt, width, height);
+            return logo;
+        }
+
+        public HeaderConfig header(String title) {
+            headerConfig = new HeaderConfig(this, title);
+            return headerConfig;
+        }
+
+        public TextLine addText(String textOrHtml) {
+            TextLine line = new TextLine(this, textOrHtml);
+            templateLines.add(line);
+            return line;
+        }
+
+        public ButtonLine addButton(String text, String url) {
+            ButtonLine line = new ButtonLine(this, text, url);
+            templateLines.add(line);
+            return line;
+        }
+
+        public ImageLine addImage(String src, String alt, int width, int height) {
+            ImageLine line = new ImageLine(this, src, alt, width, height);
+            templateLines.add(line);
+            return line;
+        }
+
+        public FooterLine addFooter(String textOrHtml) {
+            FooterLine line = new FooterLine(this, textOrHtml);
+            templateLines.add(line);
+            return line;
+        }
+
+        public CopyrightConfig copyright(String name) {
+            copyrightConfig = new CopyrightConfig(this, name);
+            return copyrightConfig;
+        }
+
+        public HtmlTextEmail build() {
+            return EmailTemplateBuilder.build(templateLines, logo, headerConfig, copyrightConfig);
+        }
+
     }
 }

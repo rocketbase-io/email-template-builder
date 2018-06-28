@@ -1,5 +1,6 @@
 package io.rocketbase.commons.email;
 
+import io.rocketbase.commons.email.EmailTemplateBuilder.EmailTemplateConfigBuilder;
 import io.rocketbase.commons.email.model.HtmlTextEmail;
 import io.rocketbase.commons.email.template.ColorStyle;
 import org.jsoup.Jsoup;
@@ -18,14 +19,14 @@ public class EmailTemplateBuilderTest {
     @Test
     public void standardTestHtml() {
         // given
-        EmailTemplateBuilder builder = EmailTemplateBuilder.builder();
+        EmailTemplateConfigBuilder builder = EmailTemplateBuilder.builder();
         String header = "test";
         ColorStyle headerStyle = new ColorStyle("000000", "ff0000");
         // when
-        HtmlTextEmail htmlTextEmail = builder.header(header, headerStyle)
-                .addText("sample-text")
-                .addButton("button 1", "http://adasd")
-                .copyright("rocketbase", "https://www.rocketbase.io")
+        HtmlTextEmail htmlTextEmail = builder.header(header).color(headerStyle).and()
+                .addText("sample-text").and()
+                .addButton("button 1", "http://adasd").and()
+                .copyright("rocketbase").url("https://www.rocketbase.io")
                 .build();
         // then
         assertThat(htmlTextEmail, notNullValue());
@@ -42,7 +43,7 @@ public class EmailTemplateBuilderTest {
     @Test
     public void withoutHeaderAndFooterHtml() {
         // given
-        EmailTemplateBuilder builder = EmailTemplateBuilder.builder();
+        EmailTemplateConfigBuilder builder = EmailTemplateBuilder.builder();
 
         String firstText = "sample-text 1";
         String secondText = "sample-text 2";
@@ -55,10 +56,10 @@ public class EmailTemplateBuilderTest {
 
         // when
         HtmlTextEmail htmlTextEmail = builder
-                .addText(firstText)
-                .addButton(button1Text, button1Url)
-                .addText(secondText)
-                .addButton(button2Text, "http://url2", secondButtonStyle)
+                .addText(firstText).and()
+                .addButton(button1Text, button1Url).and()
+                .addText(secondText).and()
+                .addButton(button2Text, "http://url2").color(secondButtonStyle)
                 .build();
         // then
         assertThat(htmlTextEmail, notNullValue());
@@ -90,7 +91,7 @@ public class EmailTemplateBuilderTest {
     @Test
     public void standardTestText() {
         // given
-        EmailTemplateBuilder builder = EmailTemplateBuilder.builder();
+        EmailTemplateConfigBuilder builder = EmailTemplateBuilder.builder();
         String header = "test";
         String text = "sample-text";
         String buttonText = "button 1";
@@ -98,10 +99,10 @@ public class EmailTemplateBuilderTest {
         String copyrightName = "rocketbase";
         String copyrightUrl = "https://www.rocketbase.io";
         // when
-        HtmlTextEmail htmlTextEmail = builder.header(header)
-                .addText(text)
-                .addButton(buttonText, buttonUrl)
-                .copyright(copyrightName, copyrightUrl)
+        HtmlTextEmail htmlTextEmail = builder.header(header).and()
+                .addText(text).and()
+                .addButton(buttonText, buttonUrl).and()
+                .copyright(copyrightName).url(copyrightUrl)
                 .build();
         // then
         assertThat(htmlTextEmail, notNullValue());
