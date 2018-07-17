@@ -1,5 +1,3 @@
-
-
 # email-template-builder
 
 ![logo](assets/logo.svg)
@@ -7,7 +5,7 @@
 [![Build Status](https://travis-ci.org/rocketbase-io/email-template-builder.svg?branch=master)](https://travis-ci.org/rocketbase-io/email-template-builder)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.rocketbase.commons/email-template-builder/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.rocketbase.commons/email-template-builder)
 
-Let this service build your html/text emails in a fluient manner. It doesn't try to reinvent the wheel - it simply extends the given [email-tempalte](https://github.com/mailgun/transactional-email-templates) of mailgun and backed it for java to use it for many purposes.
+Let this service build your html/text emails in a fluient manner. It doesn't try to reinvent the wheel - it simply extends the given [email-template](https://github.com/mailgun/transactional-email-templates) of mailgun and backed it for java to use it for many purposes.
 
 You can write your email content fluently and the template builder cares for the correct instyling, conversation to txt version etc...
 
