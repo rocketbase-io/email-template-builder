@@ -8,7 +8,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
 
 @Getter
@@ -36,12 +35,7 @@ public class FooterLine implements TemplateLine {
         });
         this.text = doc.body().html();
 
-        links.forEach(e -> {
-            if (!e.attr("href").equals("")) {
-                e.appendChild(new TextNode(" -> " + e.attr("href")));
-            }
-        });
-        this.escapedText = doc.wholeText();
+        this.escapedText = extractHtml(doc);
     }
 
     public FooterLine alignment(Alignment alignment) {
