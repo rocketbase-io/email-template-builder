@@ -73,6 +73,26 @@ public final class EmailTemplateBuilder {
             return line;
         }
 
+        private TextLine addText(String textOrHtml, boolean asHtml) {
+            TextLine line = new TextLine(this, textOrHtml, asHtml);
+            templateLines.add(line);
+            return line;
+        }
+
+        /**
+         * @param html HTML formatted text
+         */
+        public TextLine addHtml(String html) {
+            return addText(html, true);
+        }
+
+        /**
+         * @param text text that shall be shown exactly as given - e.g. it will be encoded when it shall be shown as HTML
+         */
+        public TextLine addPlainText(String text) {
+            return addText(text, false);
+        }
+
         public ButtonLine addButton(String text, String url) {
             ButtonLine line = new ButtonLine(this, text, url);
             templateLines.add(line);
@@ -89,6 +109,20 @@ public final class EmailTemplateBuilder {
             FooterLine line = new FooterLine(this, textOrHtml);
             templateLines.add(line);
             return line;
+        }
+
+        private FooterLine addFooter(String textOrHtml, boolean asHtml) {
+            FooterLine line = new FooterLine(this, textOrHtml, asHtml);
+            templateLines.add(line);
+            return line;
+        }
+
+        public FooterLine addHtmlFooter(String html) {
+        	return addFooter(html, true);
+        }
+
+        public FooterLine addPlainTextFooter(String text) {
+        	return addFooter(text, true);
         }
 
         public CopyrightConfig copyright(String name) {

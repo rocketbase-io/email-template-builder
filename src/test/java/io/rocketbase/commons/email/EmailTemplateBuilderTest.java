@@ -115,4 +115,52 @@ public class EmailTemplateBuilderTest {
                 .toString()
         ));
     }
+
+    @Test
+    public void forcedText() {
+        // given
+        EmailTemplateConfigBuilder builder = EmailTemplateBuilder.builder();
+        String header = "test";
+        ColorStyle headerStyle = new ColorStyle("000000", "ff0000");
+        // when
+        HtmlTextEmail htmlTextEmail = builder.header(header).color(headerStyle).and()
+                .addPlainText("sample <b>bold</b> text &Uuml;mlaut").and()
+                .build();
+        // then
+        assertThat(htmlTextEmail, notNullValue());
+        Document document = Jsoup.parse(htmlTextEmail.getHtml());
+        Element headerElement = document.getElementsByClass("alert-warning").get(0);
+        String style = headerElement.attr("style");
+        String text = headerElement.childNode(0).outerHtml();
+        assertThat(headerElement, notNullValue());
+        assertThat(style, containsString("background-color: #" + headerStyle.getBg()));
+        assertThat(style, containsString("color: #" + headerStyle.getText()));
+        assertThat(text, containsString(header));
+        assertThat(htmlTextEmail.getHtml(), containsString("sample &amp;lt;b&amp;gt;bold&amp;lt;/b&amp;gt; text &amp;amp;Uuml;mlaut"));
+        assertThat(htmlTextEmail.getText(), containsString("sample <b>bold</b> text &Uuml;mlaut"));
+    }
+
+    @Test
+    public void forcedHtml() {
+        // given
+        EmailTemplateConfigBuilder builder = EmailTemplateBuilder.builder();
+        String header = "test";
+        ColorStyle headerStyle = new ColorStyle("000000", "ff0000");
+        // when
+        HtmlTextEmail htmlTextEmail = builder.header(header).color(headerStyle).and()
+                .addHtml("sample <b>bold</b> text &Uuml;mlaut &lt; 17").and()
+                .build();
+        // then
+        assertThat(htmlTextEmail, notNullValue());
+        Document document = Jsoup.parse(htmlTextEmail.getHtml());
+        Element headerElement = document.getElementsByClass("alert-warning").get(0);
+        String style = headerElement.attr("style");
+        String text = headerElement.childNode(0).outerHtml();
+        assertThat(headerElement, notNullValue());
+        assertThat(style, containsString("background-color: #" + headerStyle.getBg()));
+        assertThat(style, containsString("color: #" + headerStyle.getText()));
+        assertThat(text, containsString(header));
+        assertThat(htmlTextEmail.getHtml(), containsString("sample \n<b>bold</b> text Ümlaut &lt; 17"));
+        assertThat(htmlTextEmail.getText(), containsString("sample bold text Ümlaut < 17"));
+    }
 }

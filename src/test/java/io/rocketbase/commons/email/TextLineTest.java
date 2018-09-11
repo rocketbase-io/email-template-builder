@@ -42,4 +42,52 @@ public class TextLineTest {
         assertThat(textLine.text, equalTo(input));
         assertThat(textLine.escapedText, equalTo(input));
     }
+
+    @Test
+    public void forceAsText() {
+        // given
+        String input = "sample <b>bold</b> text";
+        // when
+        TextLine textLine = new TextLine(null, input,false);
+        // then
+        assertThat(textLine.asHtml, equalTo(false));
+        assertThat(textLine.text, equalTo("sample &lt;b&gt;bold&lt;/b&gt; text"));
+        assertThat(textLine.escapedText, equalTo(input));
+    }
+
+    @Test
+    public void forceAsHtmlLineBreak() {
+        // given
+        String input = "sample text<br>with line break";
+        // when
+        TextLine textLine = new TextLine(null, input,true);
+        // then
+        assertThat(textLine.asHtml, equalTo(true));
+        assertThat(textLine.text, equalTo("sample text\n<br>with line break"));
+        assertThat(textLine.escapedText, equalTo("sample text\nwith line break"));
+    }
+
+    @Test
+    public void forceAsHtmlTags() {
+        // given
+        String input = "sample <b>bold</b> text";
+        // when
+        TextLine textLine = new TextLine(null, input,true);
+        // then
+        assertThat(textLine.asHtml, equalTo(true));
+        assertThat(textLine.text, equalTo("sample \n<b>bold</b> text"));
+        assertThat(textLine.escapedText, equalTo("sample bold text"));
+    }
+
+    @Test
+    public void forceAsHtmlQuoting() {
+        // given
+        String input = "sample &Uuml;mlaut text";
+        // when
+        TextLine textLine = new TextLine(null, input,true);
+        // then
+        assertThat(textLine.asHtml, equalTo(true));
+        assertThat(textLine.text, equalTo("sample Ümlaut text"));
+        assertThat(textLine.escapedText, equalTo("sample Ümlaut text"));
+    }
 }
