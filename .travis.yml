@@ -3,8 +3,8 @@ jdk:
 - oraclejdk8
 ## gpg stuff
 before_install:
-    - echo $GPG_SECRET_KEYS | base64 --decode | $GPG_EXECUTABLE --import
-    - echo $GPG_OWNERTRUST | base64 --decode | $GPG_EXECUTABLE --import-ownertrust
+    - if [ ! -z "$GPG_EXECUTABLE" ]; then echo $GPG_SECRET_KEYS | base64 --decode | $GPG_EXECUTABLE --import; fi
+    - if [ ! -z "$GPG_EXECUTABLE" ]; then echo $GPG_OWNERTRUST | base64 --decode | $GPG_EXECUTABLE --import-ownertrust; fi
 ## default build
 script: mvn --settings .travis/settings.xml -U clean verify
 ## release on tag
