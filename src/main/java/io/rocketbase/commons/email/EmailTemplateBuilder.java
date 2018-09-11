@@ -67,6 +67,10 @@ public final class EmailTemplateBuilder {
             return headerConfig;
         }
 
+        /**
+         * @param textOrHtml detects whether text or html <br>
+         *                   sometime the detection is not working as expected. then you can use addPlainText or addHtml to overrule the detection
+         */
         public TextLine addText(String textOrHtml) {
             TextLine line = new TextLine(this, textOrHtml);
             templateLines.add(line);
@@ -105,6 +109,10 @@ public final class EmailTemplateBuilder {
             return line;
         }
 
+        /**
+         * @param textOrHtml detects whether text or html <br>
+         *                   sometime the detection is not working as expected. then you can use addPlainText or addHtml to overrule the detection
+         */
         public FooterLine addFooter(String textOrHtml) {
             FooterLine line = new FooterLine(this, textOrHtml);
             templateLines.add(line);
@@ -117,12 +125,18 @@ public final class EmailTemplateBuilder {
             return line;
         }
 
+        /**
+         * @param html HTML formatted text
+         */
         public FooterLine addHtmlFooter(String html) {
-        	return addFooter(html, true);
+            return addFooter(html, true);
         }
 
+        /**
+         * @param text text that shall be shown exactly as given - e.g. it will be encoded when it shall be shown as HTML
+         */
         public FooterLine addPlainTextFooter(String text) {
-        	return addFooter(text, true);
+            return addFooter(text, true);
         }
 
         public CopyrightConfig copyright(String name) {
