@@ -1,21 +1,21 @@
 language: java
 jdk:
-- oraclejdk8
+  - openjdk8
 ## gpg stuff
 before_install:
-    - if [ ! -z "$GPG_EXECUTABLE" ]; then echo $GPG_SECRET_KEYS | base64 --decode | $GPG_EXECUTABLE --import; fi
-    - if [ ! -z "$GPG_EXECUTABLE" ]; then echo $GPG_OWNERTRUST | base64 --decode | $GPG_EXECUTABLE --import-ownertrust; fi
+  - if [ ! -z "$GPG_EXECUTABLE" ]; then echo $GPG_SECRET_KEYS | base64 --decode | $GPG_EXECUTABLE --import; fi
+  - if [ ! -z "$GPG_EXECUTABLE" ]; then echo $GPG_OWNERTRUST | base64 --decode | $GPG_EXECUTABLE --import-ownertrust; fi
 ## default build
 script: mvn --settings .travis/settings.xml -U clean verify
 ## release on tag
 deploy:
-- provider: script
-  script: ".travis/deploy.sh"
-  skip_cleanup: true
-  on:
-    repo: rocketbase-io/email-template-builder
-    tags: true
-    jdk: oraclejdk8
+  - provider: script
+    script: ".travis/deploy.sh"
+    skip_cleanup: true
+    on:
+      repo: rocketbase-io/email-template-builder
+      tags: true
+      jdk: oraclejdk8
 ## disable emailing
-notifications:
-    email: false
+#notifications:
+#    email: false
