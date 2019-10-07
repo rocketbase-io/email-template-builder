@@ -4,13 +4,12 @@ import io.rocketbase.commons.email.EmailTemplateBuilder.EmailTemplateConfigBuild
 import io.rocketbase.commons.email.model.HtmlTextEmail;
 import io.rocketbase.commons.email.template.Alignment;
 import io.rocketbase.commons.email.template.TemplateLine;
+import io.rocketbase.commons.email.util.HtmlEscaper;
 import lombok.AccessLevel;
 import lombok.Getter;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
-
-import com.google.common.html.HtmlEscapers;
 
 @Getter
 public class TextLine implements TemplateLine {
@@ -39,8 +38,8 @@ public class TextLine implements TemplateLine {
             Document doc = Jsoup.parse(text);
             handleTextAsHtml(doc);
         } else {
-            this.text = HtmlEscapers.htmlEscaper().escape(text);
-            
+            this.text = HtmlEscaper.escapeHtml(text);
+
             this.escapedText = text;
         }
     }

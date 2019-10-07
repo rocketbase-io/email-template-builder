@@ -80,11 +80,11 @@ SOFTWARE.
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
-        <pebble.version>2.6.1</pebble.version>
-        <lombok.version>1.18.0</lombok.version>
+        <pebble.version>3.1.0</pebble.version>
+        <lombok.version>1.18.10</lombok.version>
         <junit.version>4.12</junit.version>
         <hamcrest.version>1.3</hamcrest.version>
-        <jsoup.version>1.11.3</jsoup.version>
+        <jsoup.version>1.12.1</jsoup.version>
     </properties>
 
     <dependencies>
