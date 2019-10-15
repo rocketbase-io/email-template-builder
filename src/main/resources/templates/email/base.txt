@@ -7,6 +7,9 @@
 {{ line.escapedText | raw }}
 {% elseif line.type == 'BUTTON' %}
 {{ line.text | raw }} -> {{ line.url | raw }}
+{% elseif line.type == 'TABLE' %}
+    {% if  %}
+{{ line.rows.product | raw }} -> {{ line.price | raw }}
 {% endif %}
 
 {% endfor %}

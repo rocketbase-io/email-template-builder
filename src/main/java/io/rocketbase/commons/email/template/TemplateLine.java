@@ -14,11 +14,6 @@ public interface TemplateLine {
 
     HtmlTextEmail build();
 
-    enum TemplateLineType {
-
-        TEXT, BUTTON, IMAGE, FOOTER;
-    }
-
     /**
      * will replace <br>
      * links to => text -> url<br>
@@ -44,6 +39,11 @@ public interface TemplateLine {
             e.replaceWith(new TextNode(String.format("%s\n", e.wholeText())));
         });
         return doc.wholeText().replaceAll("\n$", "");
+    }
+
+    enum TemplateLineType {
+
+        TEXT, BUTTON, IMAGE, FOOTER, TABLE;
     }
 
 }

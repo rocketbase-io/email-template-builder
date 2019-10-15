@@ -24,10 +24,12 @@ public final class EmailTemplateBuilder {
         return new EmailTemplateConfigBuilder();
     }
 
+
     @SneakyThrows
-    static HtmlTextEmail build(List<TemplateLine> templateLines, ImageLine logo, HeaderConfig headerConfig, CopyrightConfig copyrightConfig) throws PebbleException {
+    static HtmlTextEmail build(List<TemplateLine> templateLines, ImageLine logo, HeaderConfig headerConfig, CopyrightConfig copyrightConfig, TableConfig tableConfig) throws PebbleException {
         PebbleTemplate htmlTemplate = ENGINE.getTemplate("templates/email/base.html");
         PebbleTemplate textTemplate = ENGINE.getTemplate("templates/email/base.txt");
+
 
         Map<String, Object> template = new HashMap<>();
         template.put("logo", logo);
@@ -56,6 +58,7 @@ public final class EmailTemplateBuilder {
         private ImageLine logo;
         private HeaderConfig headerConfig;
         private CopyrightConfig copyrightConfig;
+        private TableConfig tableConfig;
 
         public ImageLine logo(String src, String alt, int width, int height) {
             logo = new ImageLine(this, src, alt, width, height);
@@ -66,6 +69,15 @@ public final class EmailTemplateBuilder {
             headerConfig = new HeaderConfig(this, title);
             return headerConfig;
         }
+
+        /**
+         * @param
+         */
+        public TableConfig addTable() {
+            tableConfig = new TableConfig(this);
+            return tableConfig;
+        }
+
 
         /**
          * @param textOrHtml detects whether text or html <br>
@@ -109,6 +121,7 @@ public final class EmailTemplateBuilder {
             return line;
         }
 
+
         /**
          * @param textOrHtml detects whether text or html <br>
          *                   sometime the detection is not working as expected. then you can use addPlainText or addHtml to overrule the detection
@@ -145,7 +158,7 @@ public final class EmailTemplateBuilder {
         }
 
         public HtmlTextEmail build() {
-            return EmailTemplateBuilder.build(templateLines, logo, headerConfig, copyrightConfig);
+            return EmailTemplateBuilder.build(templateLines, logo, headerConfig, copyrightConfig, tableConfig);
         }
 
     }

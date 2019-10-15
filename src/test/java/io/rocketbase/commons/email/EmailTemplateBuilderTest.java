@@ -2,6 +2,7 @@ package io.rocketbase.commons.email;
 
 import io.rocketbase.commons.email.EmailTemplateBuilder.EmailTemplateConfigBuilder;
 import io.rocketbase.commons.email.model.HtmlTextEmail;
+import io.rocketbase.commons.email.template.Alignment;
 import io.rocketbase.commons.email.template.ColorStyle;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -25,6 +26,38 @@ public class EmailTemplateBuilderTest {
         // when
         HtmlTextEmail htmlTextEmail = builder.header(header).color(headerStyle).and()
                 .addText("sample-text").and()
+                .addButton("button 1", "http://adasd").and()
+                .copyright("rocketbase").url("https://www.rocketbase.io")
+                .build();
+        // then
+        assertThat(htmlTextEmail, notNullValue());
+        Document document = Jsoup.parse(htmlTextEmail.getHtml());
+        Element headerElement = document.getElementsByClass("alert-warning").get(0);
+        String style = headerElement.attr("style");
+        String text = headerElement.childNode(0).outerHtml();
+        assertThat(headerElement, notNullValue());
+        assertThat(style, containsString("background-color: #" + headerStyle.getBg()));
+        assertThat(style, containsString("color: #" + headerStyle.getText()));
+        assertThat(text, containsString(header));
+    }
+
+    @Test
+    public void standartTableTestHtml() {
+        // given
+        EmailTemplateConfigBuilder builder = EmailTemplateBuilder.builder();
+
+        String header = "test";
+        ColorStyle headerStyle = new ColorStyle("000000", "ff0000");
+        // when
+        HtmlTextEmail htmlTextEmail = builder
+                .header(header).color(headerStyle).and()
+                .addText("sample-text").and()
+
+                .addTable()
+                .addItemRow("123", "123").nextRow()
+                .addToalRow("123").alignment(Alignment.LEFT)
+
+                .and()
                 .addButton("button 1", "http://adasd").and()
                 .copyright("rocketbase").url("https://www.rocketbase.io")
                 .build();
