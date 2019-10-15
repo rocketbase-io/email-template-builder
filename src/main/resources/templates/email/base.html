@@ -93,20 +93,20 @@ margin: 0 0 {{bottom}} auto
 
 
 <body itemscope itemtype="http://schema.org/EmailMessage"
-      style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: none; width: 100% !important; height: 100%; line-height: 1.6em; background-color: #f6f6f6; margin: 0;"
+      style="font-family: {{- fontFamily | raw -}}; box-sizing: border-box; font-size: 14px; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: none; width: 100% !important; height: 100%; line-height: 1.6em; background-color: #f6f6f6; margin: 0;"
       bgcolor="#f6f6f6">
 
 <table class="body-wrap"
-       style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; background-color: #f6f6f6; margin: 0;"
+       style="font-family: {{- fontFamily | raw -}}; box-sizing: border-box; font-size: 14px; width: 100%; background-color: #f6f6f6; margin: 0;"
        bgcolor="#f6f6f6">
-    <tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
-        <td style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0;"
+    <tr style="font-family: {{- fontFamily | raw -}}; box-sizing: border-box; font-size: 14px; margin: 0;">
+        <td style="font-family: {{- fontFamily | raw -}}; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0;"
             valign="top"></td>
         <td class="container" width="600"
-            style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; display: block !important; max-width: 600px !important; clear: both !important; margin: 0 auto;"
+            style="font-family: {{- fontFamily | raw -}}; box-sizing: border-box; font-size: 14px; vertical-align: top; display: block !important; max-width: 600px !important; clear: both !important; margin: 0 auto;"
             valign="top">
             <div class="content"
-                 style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; max-width: 600px; display: block; margin: 0 auto; padding: 20px;">
+                 style="font-family: {{- fontFamily | raw -}}; box-sizing: border-box; font-size: 14px; max-width: 600px; display: block; margin: 0 auto; padding: 20px;">
 
                 {% if logo is not empty %}
                 {% if logo.linkUrl is not empty %}<a target="_blank" style="text-decoration: none; border: 0;" href="{{logo.linkUrl | raw}}" title="{{- logo.title -}}">{% endif %}
@@ -117,29 +117,29 @@ margin: 0 0 {{bottom}} auto
                 {% if logo.linkUrl is not empty %}</a>{% endif %}
                 {% endif %}
                 <table class="main" width="100%" cellpadding="0" cellspacing="0"
-                       style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; border-radius: 3px; background-color: #fff; margin: 0; border: 1px solid #e9e9e9;"
+                       style="font-family: {{- fontFamily | raw -}}; box-sizing: border-box; font-size: 14px; border-radius: 3px; background-color: #fff; margin: 0; border: 1px solid #e9e9e9;"
                        bgcolor="#fff">
                     {% if header is not empty %}
-                    <tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                    <tr style="font-family: {{- fontFamily | raw -}}; box-sizing: border-box; font-size: 14px; margin: 0;">
                         <td class="alert alert-warning"
-                            style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 16px; vertical-align: top; color: #{{- header.color.text | default('ffffff') -}}; font-weight: 500; text-align: {{- header.alignment.name | lower -}}; border-radius: 3px 3px 0 0; background-color: #{{- header.color.bg | default('457B9D') -}}; margin: 0; padding: 20px;"
+                            style="font-family: {{- fontFamily | raw -}}; box-sizing: border-box; font-size: 16px; vertical-align: top; color: #{{- header.color.text | default('ffffff') -}}; font-weight: 500; text-align: {{- header.alignment.name | lower -}}; border-radius: 3px 3px 0 0; background-color: #{{- header.color.bg | default('457B9D') -}}; margin: 0; padding: 20px;"
                             align="{{- header.alignment.name | lower -}}" bgcolor="#{{- header.color.bg | default('457B9D') -}}" valign="top">
                             {{ header.title }}
                         </td>
                     </tr>
                     {% endif %}
-                    <tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                    <tr style="font-family: {{- fontFamily | raw -}}; box-sizing: border-box; font-size: 14px; margin: 0;">
                         <td class="content-wrap"
-                            style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 20px;"
+                            style="font-family: {{- fontFamily | raw -}}; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 20px;"
                             valign="top">
                             <table width="100%" cellpadding="0" cellspacing="0"
-                                   style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                                   style="font-family: {{- fontFamily | raw -}}; box-sizing: border-box; font-size: 14px; margin: 0;">
 
                             {% for line in lines %}
                                 {% if line.type == 'TEXT' %}
-                                <tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                                <tr style="font-family: {{- fontFamily | raw -}}; box-sizing: border-box; font-size: 14px; margin: 0;">
                                     <td class="content-block"
-                                        style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px; text-align: {{- line.alignment.name | lower -}};"
+                                        style="font-family: {{- fontFamily | raw -}}; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px; text-align: {{- line.alignment.name | lower -}};"
                                         align="{{- line.alignment.name | lower -}}" valign="top">
                                         {% if line.asHtml %}
                                         {{ line.text | raw}}
@@ -149,9 +149,9 @@ margin: 0 0 {{bottom}} auto
                                     </td>
                                 </tr>
                                 {% elseif line.type == 'IMAGE' %}
-                                <tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                                <tr style="font-family: {{- fontFamily | raw -}}; box-sizing: border-box; font-size: 14px; margin: 0;">
                                     <td class="content-block"
-                                        style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px; text-align: {{- line.alignment.name | lower -}};"
+                                        style="font-family: {{- fontFamily | raw -}}; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px; text-align: {{- line.alignment.name | lower -}};"
                                         align="{{- line.alignment.name | lower -}}" valign="top">
                                         {% if line.linkUrl is not empty %}<a target="_blank" style="text-decoration: none; border: 0;" href="{{line.linkUrl | raw}}" {{- line.title -}}>{% endif %}
                                             <img border="0" vspace="0" hspace="0"
@@ -161,27 +161,59 @@ margin: 0 0 {{bottom}} auto
                                     </td>
                                 </tr>
                                 {% elseif line.type == 'BUTTON' %}
-                                <tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                                <tr style="font-family: {{- fontFamily | raw -}}; box-sizing: border-box; font-size: 14px; margin: 0;">
                                     <td class="content-block"
-                                        style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px; text-align: {{- line.alignment.name | lower -}};"
+                                        style="font-family: {{- fontFamily | raw -}}; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px; text-align: {{- line.alignment.name | lower -}};"
                                         align="{{- line.alignment.name | lower -}}" valign="top">
-                                        <a href="{{ line.url | raw }}" class="btn-primary"
-                                           style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; color: #{{- line.color.text | default('ffffff') -}}; text-decoration: none; line-height: 2em; font-weight: bold; text-align: center; cursor: pointer; display: inline-block; border-radius: 5px; background-color: #{{- line.color.bg | default('457B9D') -}}; {{- styleMargin(alignment=line.alignment,bottom="0") -}};; border-color: #{{- line.color.bg | default('457B9D') -}}; border-style: solid; border-width: 10px 20px;">{{ line.text }}</a>
+                                        <a href="{{- line.url | raw -}}" class="btn-primary"
+                                           style="font-family: {{- fontFamily | raw -}}; box-sizing: border-box; font-size: 14px; color: #{{- line.color.text | default('ffffff') -}}; text-decoration: none; line-height: 2em; font-weight: bold; text-align: center; cursor: pointer; display: inline-block; border-radius: 5px; background-color: #{{- line.color.bg | default('457B9D') -}}; {{- styleMargin(alignment=line.alignment,bottom="0") -}};; border-color: #{{- line.color.bg | default('457B9D') -}}; border-style: solid; border-width: 10px 20px;">{{ line.text }}</a>
                                     </td>
                                 </tr>
                                 {% elseif line.type == 'TABLE' %}
-                                <table width="100%" cellpadding="0" cellspacing="0">
-                                    {% for line in tabels.lines %}
-                                    <tr>
-                                        {% for col in tabels.lines.cols %}
-                                        <td class="content-block">
-                                            {{col.text | raw}}
-                                        </td>
-                                        {% endfor %}
-                                    </tr>
-                                    {% endfor %}
-                                </table>
-
+                                <tr style="font-family: {{- fontFamily | raw -}}; box-sizing: border-box; font-size: 14px; margin: 0;">
+                                    <td class="content-block aligncenter" style="font-family: {{- fontFamily | raw -}}; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: center; margin: 0; padding: 0 0 20px;" align="center" valign="top">
+                                    <table class="invoice"
+                                           style="font-family: {{- fontFamily | raw -}}; box-sizing: border-box; font-size: 14px; text-align: left; width: {{- line.tableWidth -}}; margin: 40px auto;">
+                                        <tr style="font-family: {{- fontFamily | raw -}}; box-sizing: border-box; font-size: 14px; margin: 0;">
+                                            <td style="font-family: {{- fontFamily | raw -}}; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 5px 0;"
+                                                valign="top">
+                                                <table class="invoice-items" cellpadding="0" cellspacing="0"
+                                                       style="font-family: {{- fontFamily | raw -}}; box-sizing: border-box; font-size: 14px; width: 100%; margin: 0;">
+                                                    {% if line.headerLine is not empty %}
+                                                    <tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                                                        <td style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 5px 0;" align="{{- line.headerLine.alignment.name | lower -}}" valign="top">
+                                                            {% if line.headerLine.asHtml %}
+                                                            {{ line.headerLine.text | raw}}
+                                                            {% else %}
+                                                            {{ line.headerLine.text }}
+                                                            {% endif %}</td>
+                                                    </tr>
+                                                    {% endif %}
+                                                    {% for row in line.rows %}
+                                                    {% if row.type == 'ITEM' %}
+                                                    <tr style="font-family: {{- fontFamily | raw -}}; box-sizing: border-box; font-size: 14px; margin: 0;">
+                                                        <td style="font-family: {{- fontFamily | raw -}}; box-sizing: border-box; font-size: 14px; vertical-align: top; border-top-width: 1px; border-top-color: #eee; border-top-style: solid; margin: 0; padding: 5px 0;"
+                                                            align="{{- row.alignmentFirstColumn.name | lower -}}" valign="top"{% if line.firstColumnWidth is not empty %} width="{{- line.firstColumnWidth -}}"{% endif %}>{{- row.product | default('-') -}}</td>
+                                                        <td style="font-family: {{- fontFamily | raw -}}; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: right; border-top-width: 1px; border-top-color: #eee; border-top-style: solid; margin: 0; padding: 5px 0;"
+                                                            align="{{- row.alignmentPrice.name | lower -}}" valign="top"{% if line.priceWidth is not empty %} width="{{- line.priceWidth -}}"{% endif %}>{{- row.price | default('-') -}}</td>
+                                                    </tr>
+                                                    {% elseif row.type == 'TOTAL' %}
+                                                    <tr class="total"
+                                                        style="font-family: {{- fontFamily | raw -}}; box-sizing: border-box; font-size: 14px; margin: 0;">
+                                                        <td {% if line.firstColumnWidth is not empty %} width="{{- line.firstColumnWidth -}}"{% endif %}
+                                                            style="font-family: {{- fontFamily | raw -}}; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: right; border-top-width: 2px; border-top-color: #333; border-top-style: solid; border-bottom-color: #333; border-bottom-width: 2px; border-bottom-style: solid; font-weight: 700; margin: 0; padding: 5px 0;"
+                                                            align="{{- row.alignmentFirstColumn.name | lower -}}" valign="top">{{- row.total | default('Total') -}}</td>
+                                                        <td style="font-family: {{- fontFamily | raw -}}; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: right; border-top-width: 2px; border-top-color: #333; border-top-style: solid; border-bottom-color: #333; border-bottom-width: 2px; border-bottom-style: solid; font-weight: 700; margin: 0; padding: 5px 0;"
+                                                            align="{{- row.alignmentPrice.name | lower -}}" valign="top"{% if line.priceWidth is not empty %} width="{{- line.priceWidth -}}"{% endif %}>{{- row.price | default('-') -}}</td>
+                                                    </tr>
+                                                    {% endif %}
+                                                {% endfor %}
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    </td>
+                                </tr>
                                 {% endif %}
                             {% endfor %}
                             </table>
@@ -190,13 +222,13 @@ margin: 0 0 {{bottom}} auto
                 </table>
                 {% if footers is not empty or copyright is not null %}
                 <div class="footer"
-                     style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; clear: both; color: #999; margin: 0; padding: 20px;">
+                     style="font-family: {{- fontFamily | raw -}}; box-sizing: border-box; font-size: 14px; width: 100%; clear: both; color: #999; margin: 0; padding: 20px;">
                     <table width="100%"
-                           style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                           style="font-family: {{- fontFamily | raw -}}; box-sizing: border-box; font-size: 14px; margin: 0;">
                         {% for line in footers %}
-                        <tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                        <tr style="font-family: {{- fontFamily | raw -}}; box-sizing: border-box; font-size: 14px; margin: 0;">
                             <td class="aligncenter content-block"
-                                style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 12px; vertical-align: top; color: #999; text-align: center; margin: 0; padding: 0 0 15px; text-align: {{- line.alignment.name | lower -}};"
+                                style="font-family: {{- fontFamily | raw -}}; box-sizing: border-box; font-size: 12px; vertical-align: top; color: #999; text-align: center; margin: 0; padding: 0 0 15px; text-align: {{- line.alignment.name | lower -}};"
                                 align="{{- line.alignment.name | lower -}}" valign="top">
                                 {% if line.asHtml %}
                                     {{ line.text | raw}}
@@ -207,12 +239,12 @@ margin: 0 0 {{bottom}} auto
                         </tr>
                         {% endfor %}
                         {% if copyright != null %}
-                        <tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                        <tr style="font-family: {{- fontFamily | raw -}}; box-sizing: border-box; font-size: 14px; margin: 0;">
                             <td class="aligncenter content-block"
-                                style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 12px; vertical-align: top; color: #999; text-align: center; margin: 0; padding: 0 0 15px;"
+                                style="font-family: {{- fontFamily | raw -}}; box-sizing: border-box; font-size: 12px; vertical-align: top; color: #999; text-align: center; margin: 0; padding: 0 0 15px;"
                                 align="center" valign="top">
 
-                                &copy; {{ copyright.year }} {% if copyright.url is not empty %}<a href="{{ copyright.url | raw }}" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 12px; color: #999; text-decoration: underline; margin: 0;">{% endif %}{{copyright.name }}{% if copyright.url is not empty %}</a>{% endif %}
+                                &copy; {{ copyright.year }} {% if copyright.url is not empty %}<a href="{{ copyright.url | raw }}" style="font-family: {{- fontFamily | raw -}}; box-sizing: border-box; font-size: 12px; color: #999; text-decoration: underline; margin: 0;">{% endif %}{{copyright.name }}{% if copyright.url is not empty %}</a>{% endif %}
                             </td>
                         </tr>
                         {% endif %}
@@ -221,7 +253,7 @@ margin: 0 0 {{bottom}} auto
                 {% endif %}
             </div>
         </td>
-        <td style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0;"
+        <td style="font-family: {{- fontFamily | raw -}}; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0;"
             valign="top"></td>
     </tr>
 </table>

@@ -26,12 +26,13 @@ public final class EmailTemplateBuilder {
 
 
     @SneakyThrows
-    static HtmlTextEmail build(List<TemplateLine> templateLines, ImageLine logo, HeaderConfig headerConfig, CopyrightConfig copyrightConfig, TableConfig tableConfig) throws PebbleException {
+    static HtmlTextEmail build(String fontFamily, List<TemplateLine> templateLines, ImageLine logo, HeaderConfig headerConfig, CopyrightConfig copyrightConfig) throws PebbleException {
         PebbleTemplate htmlTemplate = ENGINE.getTemplate("templates/email/base.html");
         PebbleTemplate textTemplate = ENGINE.getTemplate("templates/email/base.txt");
 
 
         Map<String, Object> template = new HashMap<>();
+        template.put("fontFamily", fontFamily);
         template.put("logo", logo);
         template.put("header", headerConfig);
         template.put("lines", templateLines.stream()
@@ -54,11 +55,16 @@ public final class EmailTemplateBuilder {
 
     public static class EmailTemplateConfigBuilder {
 
+        private String fontFamily = "'Helvetica Neue',Helvetica,Arial,sans-serif";
         private List<TemplateLine> templateLines = new ArrayList<>();
         private ImageLine logo;
         private HeaderConfig headerConfig;
         private CopyrightConfig copyrightConfig;
-        private TableConfig tableConfig;
+
+        public EmailTemplateConfigBuilder fontFamiliy(String fontFamily) {
+            this.fontFamily = fontFamily;
+            return this;
+        }
 
         public ImageLine logo(String src, String alt, int width, int height) {
             logo = new ImageLine(this, src, alt, width, height);
@@ -74,7 +80,8 @@ public final class EmailTemplateBuilder {
          * @param
          */
         public TableConfig addTable() {
-            tableConfig = new TableConfig(this);
+            TableConfig tableConfig = new TableConfig(this);
+            templateLines.add(tableConfig);
             return tableConfig;
         }
 
@@ -158,7 +165,7 @@ public final class EmailTemplateBuilder {
         }
 
         public HtmlTextEmail build() {
-            return EmailTemplateBuilder.build(templateLines, logo, headerConfig, copyrightConfig, tableConfig);
+            return EmailTemplateBuilder.build(fontFamily, templateLines, logo, headerConfig, copyrightConfig);
         }
 
     }

@@ -10,6 +10,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.junit.Test;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import static org.hamcrest.Matchers.*;
@@ -42,7 +43,7 @@ public class EmailTemplateBuilderTest {
     }
 
     @Test
-    public void standartTableTestHtml() {
+    public void standardTableTestHtml() {
         // given
         EmailTemplateConfigBuilder builder = EmailTemplateBuilder.builder();
 
@@ -54,8 +55,10 @@ public class EmailTemplateBuilderTest {
                 .addText("sample-text").and()
 
                 .addTable()
-                .addItemRow("123", "123").nextRow()
-                .addToalRow("123").alignment(Alignment.LEFT)
+                .addHeader("Invoice #12345<br>June 01 2014", true, Alignment.LEFT)
+                .addItemRow("Special Product", "123,00 €").nextRow()
+                .addItemRow("Short service", BigDecimal.valueOf(103, 1)).nextRow()
+                .addTotalRow(BigDecimal.valueOf(13333, 2)).totalCaption("Gesamt")
 
                 .and()
                 .addButton("button 1", "http://adasd").and()

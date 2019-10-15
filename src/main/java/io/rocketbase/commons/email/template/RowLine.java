@@ -3,6 +3,8 @@ package io.rocketbase.commons.email.template;
 import io.rocketbase.commons.email.EmailTemplateBuilder;
 import io.rocketbase.commons.email.TableConfig;
 
+import java.text.DecimalFormat;
+
 public interface RowLine {
 
     RowLineType getType();
@@ -11,8 +13,7 @@ public interface RowLine {
 
     EmailTemplateBuilder.EmailTemplateConfigBuilder and();
 
-    TableConfig alignment(Alignment alignment);
-
+    void formatPrice(DecimalFormat decimalFormat);
 
     enum RowLineType {
         ITEM, TOTAL;
