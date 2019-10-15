@@ -23,6 +23,7 @@ For sending the email I can recommend the spring-boot-starter-mail or simplejava
   - Button with custom Styling
   - Footer with HTML support and Alignment configuration
   - Copyright with dynamic Year and Link options
+  - table with header, item/price, total
 
 ## usage
 
