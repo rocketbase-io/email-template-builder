@@ -30,6 +30,18 @@ public class ImageLine implements TemplateLine {
         this.height = height;
     }
 
+    /**
+     * create a full width image
+     */
+    ImageLine(EmailTemplateConfigBuilder builder, String src, String alt) {
+        this.builder = builder;
+
+        this.src = src;
+        this.alt = alt;
+        this.width = -1;
+        this.height = -1;
+    }
+
     public ImageLine title(String title) {
         this.title = title;
         return this;

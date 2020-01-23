@@ -37,7 +37,7 @@ public class TableConfig implements TemplateLine {
     }
 
     public TableConfig addHeader(String text, boolean asHtml, Alignment alignment) {
-        headerLine = new TextLine(null, text, asHtml);
+        headerLine = new TextLine(TemplateLineType.TEXT, null, text, asHtml);
         if (alignment != null) {
             headerLine.alignment(alignment);
         }

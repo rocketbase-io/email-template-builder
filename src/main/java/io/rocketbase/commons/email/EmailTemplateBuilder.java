@@ -91,13 +91,13 @@ public final class EmailTemplateBuilder {
          *                   sometime the detection is not working as expected. then you can use addPlainText or addHtml to overrule the detection
          */
         public TextLine addText(String textOrHtml) {
-            TextLine line = new TextLine(this, textOrHtml);
+            TextLine line = new TextLine(TemplateLineType.TEXT, this, textOrHtml);
             templateLines.add(line);
             return line;
         }
 
         private TextLine addText(String textOrHtml, boolean asHtml) {
-            TextLine line = new TextLine(this, textOrHtml, asHtml);
+            TextLine line = new TextLine(TemplateLineType.TEXT, this, textOrHtml, asHtml);
             templateLines.add(line);
             return line;
         }
@@ -128,19 +128,25 @@ public final class EmailTemplateBuilder {
             return line;
         }
 
+        public ImageLine addImageFullWidth(String src, String alt) {
+            ImageLine line = new ImageLine(this, src, alt);
+            templateLines.add(line);
+            return line;
+        }
+
 
         /**
          * @param textOrHtml detects whether text or html <br>
          *                   sometime the detection is not working as expected. then you can use addPlainText or addHtml to overrule the detection
          */
-        public FooterLine addFooter(String textOrHtml) {
-            FooterLine line = new FooterLine(this, textOrHtml);
+        public TextLine addFooter(String textOrHtml) {
+            TextLine line = new TextLine(TemplateLineType.FOOTER, this, textOrHtml);
             templateLines.add(line);
             return line;
         }
 
-        private FooterLine addFooter(String textOrHtml, boolean asHtml) {
-            FooterLine line = new FooterLine(this, textOrHtml, asHtml);
+        private TextLine addFooter(String textOrHtml, boolean asHtml) {
+            TextLine line = new TextLine(TemplateLineType.FOOTER, this, textOrHtml, asHtml);
             templateLines.add(line);
             return line;
         }
@@ -148,14 +154,14 @@ public final class EmailTemplateBuilder {
         /**
          * @param html HTML formatted text
          */
-        public FooterLine addHtmlFooter(String html) {
+        public TextLine addHtmlFooter(String html) {
             return addFooter(html, true);
         }
 
         /**
          * @param text text that shall be shown exactly as given - e.g. it will be encoded when it shall be shown as HTML
          */
-        public FooterLine addPlainTextFooter(String text) {
+        public TextLine addPlainTextFooter(String text) {
             return addFooter(text, true);
         }
 

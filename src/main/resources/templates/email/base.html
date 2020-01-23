@@ -139,7 +139,7 @@ margin: 0 0 {{bottom}} auto
                                 {% if line.type == 'TEXT' %}
                                 <tr style="font-family: {{- fontFamily | raw -}}; box-sizing: border-box; font-size: 14px; margin: 0;">
                                     <td class="content-block"
-                                        style="font-family: {{- fontFamily | raw -}}; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px; text-align: {{- line.alignment.name | lower -}};"
+                                        style="font-family: {{- fontFamily | raw -}}; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px; text-align: {{- line.alignment.name | lower -}};{{- line.textCssStyle -}}"
                                         align="{{- line.alignment.name | lower -}}" valign="top">
                                         {% if line.asHtml %}
                                         {{ line.text | raw}}
@@ -155,8 +155,8 @@ margin: 0 0 {{bottom}} auto
                                         align="{{- line.alignment.name | lower -}}" valign="top">
                                         {% if line.linkUrl is not empty %}<a target="_blank" style="text-decoration: none; border: 0;" href="{{line.linkUrl | raw}}" {{- line.title -}}>{% endif %}
                                             <img border="0" vspace="0" hspace="0"
-                                                 src="{{- line.src -}}" width="{{- line.width -}}" height="{{- line.height -}}" alt="{{- line.alt -}}" title="{{- line.title -}}"
-                                                 style="color: #000000; font-size: 10px; {{- styleMargin(alignment=line.alignment,bottom="0") -}}; padding: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; border: none; display: block;" />
+                                                 src="{{- line.src -}}" {% if line.width > 0 %}width="{{- line.width -}}"{% endif %} {% if line.height > 0 %}height="{{- line.height -}}"{% endif %} alt="{{- line.alt -}}" title="{{- line.title -}}"
+                                                 style="color: #000000; font-size: 10px; {{- styleMargin(alignment=line.alignment,bottom="0") -}}; padding: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; border: none; display: block;{% if line.width <= 0 and line.height <= 0 %}width: 100%; min-width:100%; height: auto;{% endif %}" />
                                         {% if line.linkUrl is not empty %}</a>{% endif %}
                                     </td>
                                 </tr>
@@ -228,7 +228,7 @@ margin: 0 0 {{bottom}} auto
                         {% for line in footers %}
                         <tr style="font-family: {{- fontFamily | raw -}}; box-sizing: border-box; font-size: 14px; margin: 0;">
                             <td class="aligncenter content-block"
-                                style="font-family: {{- fontFamily | raw -}}; box-sizing: border-box; font-size: 12px; vertical-align: top; color: #999; text-align: center; margin: 0; padding: 0 0 15px; text-align: {{- line.alignment.name | lower -}};"
+                                style="font-family: {{- fontFamily | raw -}}; box-sizing: border-box; font-size: 12px; vertical-align: top; color: #999; text-align: center; margin: 0; padding: 0 0 15px; text-align: {{- line.alignment.name | lower -}};{{- line.textCssStyle -}}"
                                 align="{{- line.alignment.name | lower -}}" valign="top">
                                 {% if line.asHtml %}
                                     {{ line.text | raw}}
