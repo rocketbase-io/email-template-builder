@@ -54,7 +54,6 @@ public abstract class AbstractRowLine<T extends RowLine> implements RowLine {
         return tableConfig.build();
     }
 
-
     public void formatPrice(DecimalFormat decimalFormat) {
         if (priceValue != null && decimalFormat != null) {
             this.price = decimalFormat.format(priceValue);

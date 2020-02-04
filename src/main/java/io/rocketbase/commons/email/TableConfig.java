@@ -28,9 +28,14 @@ public class TableConfig implements TemplateLine {
     DecimalFormat decimalFormat = new DecimalFormat("0.00 '€'", DecimalFormatSymbols.getInstance(Locale.GERMAN));
 
     TextLine headerLine;
-    String tableWidth = "90%";
+    String tableWidth = "95%";
     String firstColumnWidth = "80%";
+    String prefixWidth;
+    String middleWidth;
     String priceWidth;
+    boolean hasPrefixColumn;
+    boolean hasMiddleColumn;
+
 
     TableConfig(EmailTemplateConfigBuilder builder) {
         this.builder = builder;
@@ -45,15 +50,110 @@ public class TableConfig implements TemplateLine {
     }
 
     public ItemRow addItemRow(String product, String price) {
-        ItemRow itemRow = new ItemRow(this, product, price);
+        ItemRow itemRow = new ItemRow(this, null, product, null, price);
         rows.add(itemRow);
         return itemRow;
     }
 
+    public ItemRow addItemRowWithPrefix(String prefix, String product, String price) {
+        ItemRow itemRow = new ItemRow(this, prefix, product, null, price);
+        rows.add(itemRow);
+        handlePrefix();
+        return itemRow;
+    }
+
+    public ItemRow addItemRowWithPrefix(Number prefix, String product, String price) {
+        ItemRow itemRow = new ItemRow(this, String.valueOf(prefix), product, null, price);
+        rows.add(itemRow);
+        handlePrefix();
+        return itemRow;
+    }
+
     public ItemRow addItemRow(String product, BigDecimal price) {
-        ItemRow itemRow = new ItemRow(this, product, price);
+        ItemRow itemRow = new ItemRow(this, null, product, null, price);
         rows.add(itemRow);
         return itemRow;
+    }
+
+    public ItemRow addItemRowWithPrefix(String prefix, String product, BigDecimal price) {
+        ItemRow itemRow = new ItemRow(this, prefix, product, null, price);
+        rows.add(itemRow);
+        handlePrefix();
+        return itemRow;
+    }
+
+    public ItemRow addItemRowWithPrefix(Number prefix, String product, BigDecimal price) {
+        ItemRow itemRow = new ItemRow(this, String.valueOf(prefix), product, null, price);
+        rows.add(itemRow);
+        handlePrefix();
+        return itemRow;
+    }
+
+    public ItemRow addItemRowWithMiddle(String product, String middle, String price) {
+        ItemRow itemRow = new ItemRow(this, null, product, middle, price);
+        rows.add(itemRow);
+
+        handleMiddle();
+        return itemRow;
+    }
+
+    public ItemRow addItemRowWithPrefixMiddle(String prefix, String product, String middle, String price) {
+        ItemRow itemRow = new ItemRow(this, prefix, product, middle, price);
+        rows.add(itemRow);
+
+        handlePrefix();
+        handleMiddle();
+        return itemRow;
+    }
+
+    public ItemRow addItemRowWithPrefixMiddle(Number prefix, String product, String middle, String price) {
+        ItemRow itemRow = new ItemRow(this, String.valueOf(prefix), product, middle, price);
+        rows.add(itemRow);
+
+        handlePrefix();
+        handleMiddle();
+        return itemRow;
+    }
+
+    public ItemRow addItemRowWithMiddle(String product, String middle, BigDecimal price) {
+        ItemRow itemRow = new ItemRow(this, null, product, middle, price);
+        rows.add(itemRow);
+        handleMiddle();
+        return itemRow;
+    }
+
+    public ItemRow addItemRowWithPrefixMiddle(String prefix, String product, String middle, BigDecimal price) {
+        ItemRow itemRow = new ItemRow(this, prefix, product, middle, price);
+        rows.add(itemRow);
+
+        handlePrefix();
+        handleMiddle();
+        return itemRow;
+    }
+
+    public ItemRow addItemRowWithPrefixMiddle(Number prefix, String product, String middle, BigDecimal price) {
+        ItemRow itemRow = new ItemRow(this, String.valueOf(prefix), product, middle, price);
+        rows.add(itemRow);
+
+        handlePrefix();
+        handleMiddle();
+        return itemRow;
+    }
+
+    private void handleMiddle() {
+        if (!hasMiddleColumn) {
+            // first time change first column width for better fitting
+            firstColumnWidth = null;
+        }
+        hasMiddleColumn = true;
+    }
+
+    private void handlePrefix() {
+        if (!hasPrefixColumn) {
+            // first time change first column width for better fitting
+            firstColumnWidth = "80%";
+        }
+        hasPrefixColumn = true;
     }
 
     public TotalRow addTotalRow(String price) {
@@ -82,24 +182,49 @@ public class TableConfig implements TemplateLine {
         return this;
     }
 
-    /**
-     * you can specify one width explicitly. productWidth = 80% is default
-     */
+    public TableConfig widthPrefixColumnClear(int value, TableWidthUnit unit) {
+        this.prefixWidth = unit.getHtmlValue(value);
+        return this;
+    }
+
+    public TableConfig widthPrefixColumnClear() {
+        this.prefixWidth = null;
+        return this;
+    }
+
     public TableConfig widthFirstColumn(int value, TableWidthUnit unit) {
         this.firstColumnWidth = unit.getHtmlValue(value);
+        return this;
+    }
+
+    public TableConfig widthFirstColumnClear() {
+        this.firstColumnWidth = null;
+        return this;
+    }
+
+    public TableConfig widthMiddleColumn(int value, TableWidthUnit unit) {
+        this.middleWidth = unit.getHtmlValue(value);
+        return this;
+    }
+
+    public TableConfig widthMiddleColumnClear() {
+        this.middleWidth = null;
+        return this;
+    }
+
+    public TableConfig widthPriceColumn(int value, TableWidthUnit unit) {
+        this.priceWidth = unit.getHtmlValue(value);
+        return this;
+    }
+
+    public TableConfig widthPriceColumnClear() {
         this.priceWidth = null;
         return this;
     }
 
     /**
-     * you can specify one width explicitly. productWidth = 80% is default
+     * you can specify table, with = 95% is default
      */
-    public TableConfig widthPriceColumn(int value, TableWidthUnit unit) {
-        this.firstColumnWidth = null;
-        this.priceWidth = unit.getHtmlValue(value);
-        return this;
-    }
-
     public TableConfig widthTable(int value, TableWidthUnit unit) {
         this.tableWidth = unit.getHtmlValue(value);
         return this;

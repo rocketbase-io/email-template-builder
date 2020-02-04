@@ -11,6 +11,8 @@ import java.math.BigDecimal;
 public class TotalRow extends AbstractRowLine<ItemRow> {
 
     String total = "Total";
+    boolean borderBottom = true;
+    boolean borderTop = true;
 
     public TotalRow(TableConfig tableConfig, BigDecimal priceValue) {
         super(RowLineType.TOTAL, tableConfig, null, priceValue);
@@ -24,6 +26,22 @@ public class TotalRow extends AbstractRowLine<ItemRow> {
 
     public TotalRow totalCaption(String total) {
         this.total = total;
+        return this;
+    }
+
+    public TotalRow borderTop(boolean enable) {
+        this.borderTop = enable;
+        return this;
+    }
+
+    public TotalRow borderBottom(boolean enable) {
+        this.borderBottom = enable;
+        return this;
+    }
+
+    public TotalRow border(boolean enable) {
+        this.borderTop = enable;
+        this.borderBottom = enable;
         return this;
     }
 
