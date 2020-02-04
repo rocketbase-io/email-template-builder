@@ -27,6 +27,7 @@ For sending the email I can recommend the spring-boot-starter-mail or simplejava
 
 ## usage
 
+## sample html/text
 ```java
 // generate html/text content
 HtmlTextEmail htmlTextEmail = EmailTemplateBuilder.builder()
@@ -77,3 +78,33 @@ Unsubscribe -> http://unsubscribe from these alerts.
 
 
 [Email-on-acid-report](https://app.emailonacid.com/app/acidtest/ObQRaQOYKG17yavB6MUHxXXfujAASn6v9iK3JSwFpSteP/list)
+
+### sample table
+```java
+HtmlTextEmail htmlTextEmail = builder
+        .header(header).and()
+        .addText("Ihre Bestellung wurde geprüft und wird im nächsten Schritt verpackt.").and()
+
+        .addTable()
+        .addHeader("Bestellnr.: #12345<br>Datum: Februar 04 2020", true, Alignment.RIGHT)
+        .addItemRowWithPrefixMiddle("Menge", "Produkt", "Mwst", "Preis").headerRow().nextRow()
+        .addItemRowWithPrefixMiddle(3, "Bandnudel", "19%", BigDecimal.valueOf(1320, 2)).nextRow()
+        .addItemRowWithPrefixMiddle(2, "Ravioli", "7%", BigDecimal.valueOf(1040, 2)).nextRow()
+        .addItemRowWithPrefixMiddle(1, "Spaghetti Sack", "19%", BigDecimal.valueOf(2755, 2)).nextRow()
+        .addTotalRow(BigDecimal.valueOf(5115, 2)).totalCaption("Zwischensumme netto").borderBottom(false).nextRow()
+        .addTotalRow(BigDecimal.valueOf(73, 2)).totalCaption("zzgl. MwSt. 7%").borderTop(false).borderBottom(false).nextRow()
+        .addTotalRow(BigDecimal.valueOf(774, 2)).totalCaption("zzgl. MwSt. 19%").borderTop(false).borderBottom(false).nextRow()
+        .addTotalRow(BigDecimal.valueOf(5115 + 73 + 774, 2)).totalCaption("Rechnungsbetrag").borderTop(false)
+
+        .and()
+        .addText("Vielen Dank für Ihren Auftrag").and()
+        .addButton("Link zur Bestellhistorie", "http://adasd").and()
+        .addText("Freundliche Grüße,").and()
+        .addText("Team XYZ").and()
+        .copyright("rocketbase").url("https://www.rocketbase.io")
+        .build();
+```
+
+### preview HTML-Version
+
+![sample-table](assets/mail-sample-table.png)
