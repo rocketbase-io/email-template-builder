@@ -1,6 +1,7 @@
 package io.rocketbase.commons.email.template;
 
-import io.rocketbase.commons.email.template.ColorPalette.RgbColor;
+import io.rocketbase.commons.colors.ColorPalette;
+import io.rocketbase.commons.colors.RgbColor;
 import lombok.Getter;
 
 @Getter
@@ -25,16 +26,20 @@ public class ColorStyle {
     }
 
     public ColorStyle(ColorPalette colorPalette) {
-        this.text = colorPalette.isTextContrastBlack() ? BLACK : WHITE;
+        this.text = colorPalette.isBlackContrastingColor() ? BLACK : WHITE;
         this.bg = colorPalette.getHexCode();
     }
 
     /**
-     * specify background color - code detect automatically the text-color (black/white)
+     * specify background color - code detect automatically the text-color (black/white)<br>
+     * format could be #fff, ffffff, rgb(255,255,255)
      */
     public ColorStyle(String bg) {
-        RgbColor color = ColorPalette.hex2rgb(bg);
-        this.text = color.isTextContrastBlack() ? BLACK : WHITE;
+        RgbColor color = RgbColor.hex2rgb(bg);
+        if (color == null) {
+            color = RgbColor.readRgb(bg);
+        }
+        this.text = color.isBlackContrastingColor() ? BLACK : WHITE;
         this.bg = color.getHexCode();
     }
 
