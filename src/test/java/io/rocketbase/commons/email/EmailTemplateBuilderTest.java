@@ -196,7 +196,7 @@ public class EmailTemplateBuilderTest {
         assertThat(style, containsString("background-color: #" + headerStyle.getBg()));
         assertThat(style, containsString("color: #" + headerStyle.getText()));
         assertThat(text, containsString(header));
-        assertThat(htmlTextEmail.getHtml(), containsString("sample \n<b>bold</b> text Ümlaut &lt; 17"));
+        assertThat(htmlTextEmail.getHtml(), containsString("sample <b>bold</b> text Ümlaut &lt; 17"));
         assertThat(htmlTextEmail.getText(), containsString("sample bold text Ümlaut < 17"));
     }
 }
