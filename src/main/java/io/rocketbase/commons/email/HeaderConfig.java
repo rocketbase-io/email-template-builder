@@ -3,6 +3,7 @@ package io.rocketbase.commons.email;
 import io.rocketbase.commons.email.EmailTemplateBuilder.EmailTemplateConfigBuilder;
 import io.rocketbase.commons.email.model.HtmlTextEmail;
 import io.rocketbase.commons.email.template.Alignment;
+import io.rocketbase.commons.email.template.ColorPalette;
 import io.rocketbase.commons.email.template.ColorStyle;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -25,6 +26,11 @@ public class HeaderConfig {
 
     public HeaderConfig color(ColorStyle color) {
         this.color = color;
+        return this;
+    }
+
+    public HeaderConfig color(ColorPalette colorPalette) {
+        this.color = new ColorStyle(colorPalette);
         return this;
     }
 

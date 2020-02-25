@@ -3,6 +3,7 @@ package io.rocketbase.commons.email;
 import io.rocketbase.commons.email.EmailTemplateBuilder.EmailTemplateConfigBuilder;
 import io.rocketbase.commons.email.model.HtmlTextEmail;
 import io.rocketbase.commons.email.template.Alignment;
+import io.rocketbase.commons.email.template.ColorPalette;
 import io.rocketbase.commons.email.template.TemplateLine;
 import io.rocketbase.commons.email.template.styling.FontStyle;
 import io.rocketbase.commons.email.template.styling.FontWeight;
@@ -140,6 +141,11 @@ public class TextLine implements TemplateLine {
      */
     public TextLine color(String color) {
         this.color = color;
+        return this;
+    }
+
+    public TextLine color(ColorPalette color) {
+        this.color = "#" + color.getHexCode();
         return this;
     }
 

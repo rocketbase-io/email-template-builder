@@ -3,6 +3,7 @@ package io.rocketbase.commons.email;
 import io.rocketbase.commons.email.EmailTemplateBuilder.EmailTemplateConfigBuilder;
 import io.rocketbase.commons.email.model.HtmlTextEmail;
 import io.rocketbase.commons.email.template.Alignment;
+import io.rocketbase.commons.email.template.ColorPalette;
 import io.rocketbase.commons.email.template.ColorStyle;
 import io.rocketbase.commons.email.template.TemplateLine;
 import lombok.AccessLevel;
@@ -28,6 +29,11 @@ public class ButtonLine implements TemplateLine {
 
     public ButtonLine color(ColorStyle color) {
         this.color = color;
+        return this;
+    }
+
+    public ButtonLine color(ColorPalette colorPalette) {
+        this.color = new ColorStyle(colorPalette);
         return this;
     }
 
