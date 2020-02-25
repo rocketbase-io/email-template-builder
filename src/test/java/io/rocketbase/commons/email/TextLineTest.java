@@ -76,7 +76,7 @@ public class TextLineTest {
         TextLine textLine = new TextLine(TemplateLine.TemplateLineType.TEXT, null, input, true);
         // then
         assertThat(textLine.asHtml, equalTo(true));
-        assertThat(textLine.text, equalTo("sample \n<b>bold</b> text"));
+        assertThat(textLine.text, equalTo("sample <b>bold</b> text"));
         assertThat(textLine.escapedText, equalTo("sample bold text"));
     }
 
