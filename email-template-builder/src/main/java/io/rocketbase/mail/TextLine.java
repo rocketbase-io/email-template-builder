@@ -19,6 +19,7 @@ public class TextLine implements TemplateLine {
     FontStyle fontStyle;
     FontWeight fontWeight;
     TextDecoration textDecoration;
+    String color;
 
     @Getter(AccessLevel.PRIVATE)
     EmailTemplateBuilder.EmailTemplateConfigBuilder builder;
@@ -90,6 +91,14 @@ public class TextLine implements TemplateLine {
 
     public TextLine lineThrough() {
         this.textDecoration = TextDecoration.LINE_THROUGH;
+        return this;
+    }
+
+    /**
+     * color with starting # or valid style-color lige rgb()
+     */
+    public TextLine color(String color) {
+        this.color = color;
         return this;
     }
 

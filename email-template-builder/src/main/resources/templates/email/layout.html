@@ -198,10 +198,6 @@
             text-align: {{ c.header.align | default('center') }};
         }
 
-        .email-masthead_logo {
-            width: {{ c.header.logoWidth | default('94') -}}px;
-        }
-
         .email-masthead_name {
             font-size: {{ c.header.size | default('16px') }};
             font-weight: {{ c.header.weight | default('bold') }};
@@ -212,7 +208,6 @@
         /* Body ------------------------------ */
 
         .email-body {
-            width: 100%;
             margin: 0;
             padding: 0;
             background-color: {{ c.content.background | default('#FFFFFF') }};
@@ -323,7 +318,7 @@
                 <tr>
                     <td class="email-masthead" style="color: {{ c.font.table.color | default('#333333') }}; font-family: {{ c.font.family | default("'Nunito Sans', Helvetica, Arial, sans-serif") | raw }}; font-size: {{ c.font.table.size | default('16px') }}; padding: {{ c.header.padding | default('25px 0') }}; word-break: break-word;" align="{{ c.header.align | default('center') }}">
                         {% if header.linkUrl is not empty %}<a href="{{- header.linkUrl | raw -}}" class="f-fallback email-masthead_name" style="color: {{ c.header.color | default('#A8AAAF') }}; font-size: {{ c.header.size | default('16px') }}; font-weight: {{ c.header.weight | default('bold') }}; text-decoration: none; text-shadow: {{ c.header.textShadow | default('0 1px 0 white') }};">{% endif %}
-                            {% if header.logo is not empty %}<img src="{{- header.logo | raw -}}" alt="{{- header.text | default('') | escape -}}" {% if header.logoWidth is not empty %}width="{{- header.logoWidth -}}" {% endif %} {% if header.logoHeight is not empty %}height="{{- header.logoHeight -}}" {% endif %} class="email-masthead_logo" style="border: none; width: {{ c.header.logoWidth | default('94') -}}px;" width="{{ c.header.logoWidth | default('94') -}}">{% endif %}
+                            {% if header.logo is not empty %}<img src="{{- header.logo | raw -}}" alt="{{- header.text | default('') | escape -}}" {% if header.logoWidth is not empty %}width="{{- header.logoWidth -}}" {% endif %} {% if header.logoHeight is not empty %}height="{{- header.logoHeight -}}" {% endif %} style="border: none;">{% endif %}
                             {% if header.logo is empty and header.text is not empty %}{% if header.href is empty %}<span class="email-masthead_name" style="color: {{ c.header.color | default('#A8AAAF') }}; font-size: {{ c.header.size | default('16px') }}; font-weight: {{ c.header.weight | default('bold') }}; text-decoration: none; text-shadow: {{ c.header.textShadow | default('0 1px 0 white') }};">{% endif %}{{- header.text | escape -}}{% if header.href is empty %}</span>{% endif %}{% endif %}
                         {% if header.linkUrl is not empty %}</a>{% endif %}
                     </td>
@@ -332,7 +327,7 @@
                 {% if contentLines is not empty %}
                 <!-- Email Body -->
                 <tr>
-                    <td class="email-body" width="100%" cellpadding="0" cellspacing="0" style="color: {{ c.font.table.color | default('#333333') }}; font-family: {{ c.font.family | default("'Nunito Sans', Helvetica, Arial, sans-serif") | raw }}; font-size: {{ c.font.table.size | default('16px') }}; margin: 0; padding: 0; word-break: break-word;" bgcolor="{{ c.content.background | default('#FFFFFF') }}">
+                    <td class="email-body" width="{% if c.content.full %}100%{% else %}{{- c.content.width | default('570') -}}{% endif %}" cellpadding="0" cellspacing="0" style="color: {{ c.font.table.color | default('#333333') }}; font-family: {{ c.font.family | default("'Nunito Sans', Helvetica, Arial, sans-serif") | raw }}; font-size: {{ c.font.table.size | default('16px') }}; margin: 0; padding: 0; word-break: break-word;" bgcolor="{{ c.content.background | default('#FFFFFF') }}">
                         <table class="email-body_inner" align="center" width="{{ c.content.width | default('570') -}}" cellpadding="0" cellspacing="0" role="presentation" style="margin: 0 auto; padding: 0;" border="0" bgcolor="#FFFFFF">
                             <!-- Body content -->
                             <tr>
@@ -342,10 +337,10 @@
 {% for line in contentLines %}
 
     {% if line.type == 'HR' %}
-        <hr>
+        <hr {% if line.margin is not empty %}style="margin: {{ line.margin}}" {% endif %}>
 
     {% elseif line.type == 'TEXT' %}
-        <p style="{% if line.alignment is not empty %}text-align: {{ line.alignment.value }}; {% endif %}{% if line.fontWeight is not empty %}font-weight: {{ line.fontWeight.value }}{% endif %}; {% if line.fontStyle is not empty %}font-style: {{ line.fontStyle.value }}{% endif %}; {% if line.textDecoration is not empty %}text-decoration: {{ line.textDecoration.value }}{% endif %}; color: {{ c.text.color | default('#51545E') }}; font-size: {{ c.text.size | default('16px') }}; line-height: {{ c.text.lineHeight | default('1.625') }}; margin: {{ c.text.margin | default('.4em 0 1.1875em') }};">{% if line.linkUrl is not empty %}<a target="_blank" href="{{- line.linkUrl | raw -}}" style="color: {{ c.text.linkColor | default('#3869D4') }};">{% endif %}{{ line.text | escape }}{% if line.linkUrl is not empty %}</a>{% endif %}</p>
+        <p style="{% if line.alignment is not empty %}text-align: {{ line.alignment.value }}; {% endif %}{% if line.fontWeight is not empty %}font-weight: {{ line.fontWeight.value }}{% endif %}; {% if line.fontStyle is not empty %}font-style: {{ line.fontStyle.value }}{% endif %}; {% if line.textDecoration is not empty %}text-decoration: {{ line.textDecoration.value }}{% endif %}; color: {{ line.color | default(c.text.color) | default('#51545E') }}; font-size: {{ c.text.size | default('16px') }}; line-height: {{ c.text.lineHeight | default('1.625') }}; margin: {{ c.text.margin | default('.4em 0 1.1875em') }};">{% if line.linkUrl is not empty %}<a target="_blank" href="{{- line.linkUrl | raw -}}" style="color: {{ line.color | default(c.text.linkColor) | default('#3869D4')  }};">{% endif %}{{ line.text | escape }}{% if line.linkUrl is not empty %}</a>{% endif %}</p>
 
     {% elseif line.type == 'HTML' %}
         <p style="color: {{ c.text.color | default('#51545E') }}; font-size: {{ c.text.size | default('16px') }}; line-height: {{ c.text.lineHeight | default('1.625') }}; margin: {{ c.text.margin | default('.4em 0 1.1875em') }};">{{ line.html | raw }}</p>
@@ -378,7 +373,7 @@
             <tr>
                 <td align="{{- line.alignment.value | default('center') -}}" style="color: {{ c.font.table.color | default('#333333') }}; font-family: {{ c.font.family | default("'Nunito Sans', Helvetica, Arial, sans-serif") | raw }}; font-size: {{ c.font.table.size | default('16px') }}; word-break: break-word;">
                     {% if line.linkUrl is not empty %}<a target="_blank" href="{{- line.linkUrl | raw -}}" style="color: {{ c.text.linkColor | default('#3869D4') }};">{% endif %}
-                    <img border="0" vspace="0" hspace="0" alt="{{- line.alt | default('') -}}" title="{{- line.title | escape -}}" {% if line.width is not empty %}width="{{- line.width -}}" {% endif %} {% if line.height is not empty %}height="{{- line.height -}}" {% endif %} style="border: none;">
+                    <img border="0" vspace="0" hspace="0" src="{{- line.src | raw -}}" alt="{{- line.alt | default('') -}}" title="{{- line.title | escape -}}" {% if line.width is not empty %}width="{{- line.width -}}" {% endif %} {% if line.height is not empty %}height="{{- line.height -}}" {% endif %} style="border: none;">
                     {% if line.linkUrl is not empty %}</a>{% endif %}
                 </td>
             </tr>
@@ -423,7 +418,7 @@
 
                     {% elseif col.type == 'IMAGE' %}
                         {% if col.image.linkUrl is not empty %}<a target="_blank" href="{{- col.image.linkUrl | raw -}}" style="color: {{ c.text.linkColor | default('#3869D4') }};">{% endif %}
-                        <img border="0" vspace="0" hspace="0" alt="{{- col.image.alt | default('') | escape -}}" title="{{- col.image.title | escape -}}" {% if col.image.width is not empty %}width="{{- col.image.width -}}" {% endif %} {% if col.image.height is not empty %}height="{{- col.image.height -}}" {% endif %} style="border: none;">
+                        <img border="0" vspace="0" hspace="0" src="{{- line.src | raw -}}" alt="{{- col.image.alt | default('') | escape -}}" title="{{- col.image.title | escape -}}" {% if col.image.width is not empty %}width="{{- col.image.width -}}" {% endif %} {% if col.image.height is not empty %}height="{{- col.image.height -}}" {% endif %} style="border: none;">
                         {% if col.image.linkUrl is not empty %}</a>{% endif %}
 
                     {% endif %}
@@ -458,35 +453,35 @@
                 <tr>
                     <td style="color: {{ c.font.table.color | default('#333333') }}; font-family: {{ c.font.family | default("'Nunito Sans', Helvetica, Arial, sans-serif") | raw }}; font-size: {{ c.font.table.size | default('16px') }}; word-break: break-word;">
                         <table class="email-footer" align="center" width="{{ c.content.width | default('570') -}}" cellpadding="0" cellspacing="0" role="presentation" style="margin: 0 auto; padding: 0; text-align: center;" border="0">
+                            <tr>
+                                <td class="content-cell" align="{{ line.alignment.value | default('center') }}" style="color: {{ c.font.table.color | default('#333333') }}; font-family: {{ c.font.family | default("'Nunito Sans', Helvetica, Arial, sans-serif") | raw }}; font-size: {{ c.font.table.size | default('16px') }}; padding: {{ c.content.padding | default('35px') }}; word-break: break-word;">
 {% for line in footerLines %}
-    <tr>
-        <td class="content-cell" align="center" style="color: {{ c.font.table.color | default('#333333') }}; font-family: {{ c.font.family | default("'Nunito Sans', Helvetica, Arial, sans-serif") | raw }}; font-size: {{ c.font.table.size | default('16px') }}; padding: {{ c.content.padding | default('35px') }}; word-break: break-word;">
     {% if line.type == 'HR' %}
-    <hr>
+    <hr {% if line.margin is not empty %}style="margin: {{ line.margin}}" {% endif %}>
 
     {% elseif line.type == 'COPYRIGHT' %}
-    <p class="f-fallback sub align-center" style="color: {{ c.footer.color | default('#6B6E76') }}; font-size: {{ c.font.sub.size | default('13px') }}; line-height: {{ c.text.lineHeight | default('1.625') }}; margin: {{ c.text.margin | default('.4em 0 1.1875em') }}; text-align: center;">&copy;{{ line.year }} {% if line.url is not empty %}<a href="{{- line.url | raw -}}" style="color: {{ c.footer.link.color | default('#6B6E76') }}; text-decoration: {{ c.footer.link.textDecoration | default('underline') }};">{% endif %}{{ line.name | escape }}{% if line.url is not empty %}</a>{% endif %}</p>
+    <p class="f-fallback sub" style="color: {{ c.footer.color | default('#6B6E76') }}; font-size: {{ c.font.sub.size | default('13px') }}; line-height: {{ c.text.lineHeight | default('1.625') }}; margin: {{ c.text.margin | default('.4em 0 1.1875em') }};">&copy;{{ line.year }} {% if line.url is not empty %}<a href="{{- line.url | raw -}}" style="color: {{ c.footer.link.color | default('#6B6E76') }}; text-decoration: {{ c.footer.link.textDecoration | default('underline') }};">{% endif %}{{ line.name | escape }}{% if line.url is not empty %}</a>{% endif %}</p>
 
     {% elseif line.type == 'TEXT' %}
-    <p class="f-fallback sub align-center" style="{% if line.alignment is not empty %}text-align: {{ line.alignment.value }}; {% endif %}{% if line.fontWeight is not empty %}font-weight: {{ line.fontWeight.value }}{% endif %}; {% if line.fontStyle is not empty %}font-style: {{ line.fontStyle.value }}{% endif %}; {% if line.textDecoration is not empty %}text-decoration: {{ line.textDecoration.value }}{% endif %}; color: {{ c.footer.color | default('#6B6E76') }}; font-size: {{ c.font.sub.size | default('13px') }}; line-height: {{ c.text.lineHeight | default('1.625') }}; margin: {{ c.text.margin | default('.4em 0 1.1875em') }}; text-align: center;">{% if line.linkUrl is not empty %}<a target="_blank" href="{{- line.linkUrl | raw -}}" style="color: {{ c.footer.link.color | default('#6B6E76') }}; text-decoration: {{ c.footer.link.textDecoration | default('underline') }};">{% endif %}{{ line.text | escape }}{% if line.linkUrl is not empty %}</a>{% endif %}</p>
+    <p class="f-fallback sub" style="{% if line.alignment is not empty %}text-align: {{ line.alignment.value }}; {% endif %}{% if line.fontWeight is not empty %}font-weight: {{ line.fontWeight.value }}{% endif %}; {% if line.fontStyle is not empty %}font-style: {{ line.fontStyle.value }}{% endif %}; {% if line.textDecoration is not empty %}text-decoration: {{ line.textDecoration.value }}{% endif %}; color: {{ c.footer.color | default('#6B6E76') }}; font-size: {{ c.font.sub.size | default('13px') }}; line-height: {{ c.text.lineHeight | default('1.625') }}; margin: {{ c.text.margin | default('.4em 0 1.1875em') }};">{% if line.linkUrl is not empty %}<a target="_blank" href="{{- line.linkUrl | raw -}}" style="color: {{ c.footer.link.color | default('#6B6E76') }}; text-decoration: {{ c.footer.link.textDecoration | default('underline') }};">{% endif %}{{ line.text | escape }}{% if line.linkUrl is not empty %}</a>{% endif %}</p>
 
     {% elseif line.type == 'HTML' %}
-    <p class="f-fallback sub align-center" style="color: {{ c.footer.color | default('#6B6E76') }}; font-size: {{ c.font.sub.size | default('13px') }}; line-height: {{ c.text.lineHeight | default('1.625') }}; margin: {{ c.text.margin | default('.4em 0 1.1875em') }}; text-align: center;">{{ line.html | raw }}</p>
+    <p class="f-fallback sub" style="color: {{ c.footer.color | default('#6B6E76') }}; font-size: {{ c.font.sub.size | default('13px') }}; line-height: {{ c.text.lineHeight | default('1.625') }}; margin: {{ c.text.margin | default('.4em 0 1.1875em') }};">{{ line.html | raw }}</p>
 
     {% elseif line.type == 'MARKDOWN' %}
-    <p class="f-fallback sub align-center" style="color: {{ c.footer.color | default('#6B6E76') }}; font-size: {{ c.font.sub.size | default('13px') }}; line-height: {{ c.text.lineHeight | default('1.625') }}; margin: {{ c.text.margin | default('.4em 0 1.1875em') }}; text-align: center;">{{ line.html | raw }}</p>
+    <p class="f-fallback sub" style="color: {{ c.footer.color | default('#6B6E76') }}; font-size: {{ c.font.sub.size | default('13px') }}; line-height: {{ c.text.lineHeight | default('1.625') }}; margin: {{ c.text.margin | default('.4em 0 1.1875em') }};">{{ line.html | raw }}</p>
 
     {% elseif line.type == 'IMAGE' %}
-    <p class="f-fallback sub align-center" style="color: {{ c.footer.color | default('#6B6E76') }}; font-size: {{ c.font.sub.size | default('13px') }}; line-height: {{ c.text.lineHeight | default('1.625') }}; margin: {{ c.text.margin | default('.4em 0 1.1875em') }}; text-align: center;">
+    <p class="f-fallback sub" style="color: {{ c.footer.color | default('#6B6E76') }}; font-size: {{ c.font.sub.size | default('13px') }}; line-height: {{ c.text.lineHeight | default('1.625') }}; margin: {{ c.text.margin | default('.4em 0 1.1875em') }};">
         {% if line.linkUrl is not empty %}<a target="_blank" href="{{- line.linkUrl | raw -}}" style="color: {{ c.footer.link.color | default('#6B6E76') }}; text-decoration: {{ c.footer.link.textDecoration | default('underline') }};">{% endif %}
-        <img border="0" vspace="0" hspace="0" alt="{{- line.alt | default('') -}}" title="{{- line.title | escape -}}" {% if line.width is not empty %}width="{{- line.width -}}" {% endif %} {% if line.height is not empty %}height="{{- line.height -}}" {% endif %} style="border: none;">
+        <img border="0" vspace="0" hspace="0" src="{{- line.src | raw -}}" alt="{{- line.alt | default('') -}}" title="{{- line.title | escape -}}" {% if line.width is not empty %}width="{{- line.width -}}" {% endif %} {% if line.height is not empty %}height="{{- line.height -}}" {% endif %} style="border: none;">
         {% if line.linkUrl is not empty %}</a>{% endif %}
     </p>
 
     {% endif %}
-        </td>
-    </tr>
 {% endfor %}
+                                </td>
+                            </tr>
                         </table>
                     </td>
                 </tr>

@@ -1,6 +1,7 @@
 package io.rocketbase.mail;
 
 import io.rocketbase.mail.model.HtmlTextEmail;
+import io.rocketbase.mail.styling.ColorStyle;
 import io.rocketbase.mail.styling.ColorStyleSimple;
 import org.junit.Test;
 import org.simplejavamail.api.email.Email;
@@ -48,11 +49,23 @@ public class EmailTemplateBuilderTest {
         String header = "test";
         // when
         HtmlTextEmail htmlTextEmail = builder.header()
-                .text(header)
+                .logo("https://www.rocketbase.io/img/logo-dark.png").logoHeight(100)
                 .and()
                 .text("sample-text").and()
+                .text("link to google").linkUrl("https://www.google").and()
+                .text("link to rocketbase").bold().underline().linkUrl("https://www.rocketbase.io").color(ColorStyle.RED).center().and()
+                .image("https://cdn.rocketbase.io/assets/loading/no-image.jpg").alt("no-picture").width(300).center().and()
+                .hr().margin("20px 0").and()
+                .image("https://cdn.rocketbase.io/assets/signature/rocketbase-logo-signature-2020.png").alt("rocketbase").width(150).linkUrl("https://www.rocketbase.io").right().and()
+                .button("click me here", "http://localhost").red().right().and()
+                .button("gray is the new pink", "http://localhost").gray().left().and()
                 .button("button 1", "http://adasd").and()
-                .copyright("rocketbase").url("https://www.rocketbase.io")
+                .copyright("rocketbase").url("https://www.rocketbase.io").and()
+                .footerText("my agb can be found here").linkUrl("http://localhost").and()
+                .footerImage("https://cdn.rocketbase.io/assets/loading/no-image.jpg").height(50).right().and()
+                .footerHr().and()
+                .footerText("my little text").underline().bold().and()
+                .footerImage("https://cdn.rocketbase.io/assets/loading/no-image.jpg").width(100).left().linkUrl("https://www.rocketbase.io").and()
                 .build();
         // then
         assertThat(htmlTextEmail, notNullValue());

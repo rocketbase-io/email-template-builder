@@ -8,12 +8,18 @@ import lombok.Getter;
 @Getter
 public class HrLine implements TemplateLine {
 
+    String margin;
 
     @Getter(AccessLevel.PRIVATE)
     EmailTemplateConfigBuilder builder;
 
     HrLine(EmailTemplateConfigBuilder builder) {
         this.builder = builder;
+    }
+
+    public HrLine margin(String margin) {
+        this.margin = margin;
+        return this;
     }
 
     @Override

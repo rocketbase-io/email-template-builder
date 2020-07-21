@@ -198,10 +198,6 @@
             text-align: {{ c.header.align | default('center') }};
         }
 
-        .email-masthead_logo {
-            width: {{ c.header.logoWidth | default('94') -}}px;
-        }
-
         .email-masthead_name {
             font-size: {{ c.header.size | default('16px') }};
             font-weight: {{ c.header.weight | default('bold') }};
@@ -212,7 +208,6 @@
         /* Body ------------------------------ */
 
         .email-body {
-            width: 100%;
             margin: 0;
             padding: 0;
             background-color: {{ c.content.background | default('#FFFFFF') }};
@@ -323,7 +318,7 @@
                 <tr>
                     <td class="email-masthead">
                         {% if header.linkUrl is not empty %}<a href="{{- header.linkUrl | raw -}}" class="f-fallback email-masthead_name">{% endif %}
-                            {% if header.logo is not empty %}<img src="{{- header.logo | raw -}}" alt="{{- header.text | default('') | escape -}}" {% if header.logoWidth is not empty %}width="{{- header.logoWidth -}}"{% endif %} {% if header.logoHeight is not empty %}height="{{- header.logoHeight -}}"{% endif %} class="email-masthead_logo">{% endif %}
+                            {% if header.logo is not empty %}<img src="{{- header.logo | raw -}}" alt="{{- header.text | default('') | escape -}}" {% if header.logoWidth is not empty %}width="{{- header.logoWidth -}}"{% endif %} {% if header.logoHeight is not empty %}height="{{- header.logoHeight -}}"{% endif %}>{% endif %}
                             {% if header.logo is empty and header.text is not empty %}{% if header.href is empty %}<span class="email-masthead_name">{% endif %}{{- header.text | escape -}}{% if header.href is empty %}</span>{% endif %}{% endif %}
                         {% if header.linkUrl is not empty %}</a>{% endif %}
                     </td>
@@ -332,7 +327,7 @@
                 {% if contentLines is not empty %}
                 <!-- Email Body -->
                 <tr>
-                    <td class="email-body" width="100%" cellpadding="0" cellspacing="0">
+                    <td class="email-body" width="{% if c.content.full %}100%{% else %}{{- c.content.width | default('570') -}}{% endif %}" cellpadding="0" cellspacing="0">
                         <table class="email-body_inner" align="center" width="{{- c.content.width | default('570') -}}" cellpadding="0" cellspacing="0" role="presentation">
                             <!-- Body content -->
                             <tr>
@@ -342,10 +337,10 @@
 {% for line in contentLines %}
 
     {% if line.type == 'HR' %}
-        <hr >
+        <hr {% if line.margin is not empty %}style="margin: {{ line.margin}}"{% endif %}>
 
     {% elseif line.type == 'TEXT' %}
-        <p style="{% if line.alignment is not empty %}text-align: {{ line.alignment.value }};{% endif %}{% if line.fontWeight is not empty %}font-weight: {{ line.fontWeight.value }}{% endif %};{% if line.fontStyle is not empty %}font-style: {{ line.fontStyle.value }}{% endif %};{% if line.textDecoration is not empty %}text-decoration: {{ line.textDecoration.value }}{% endif %};">{% if line.linkUrl is not empty %}<a target="_blank" href="{{- line.linkUrl | raw -}}" >{% endif %}{{ line.text | escape }}{% if line.linkUrl is not empty %}</a>{% endif %}</p>
+        <p style="color: {{ line.color | default(c.text.color) | default('#51545E') }}; {% if line.alignment is not empty %}text-align: {{ line.alignment.value }};{% endif %}{% if line.fontWeight is not empty %}font-weight: {{ line.fontWeight.value }}{% endif %};{% if line.fontStyle is not empty %}font-style: {{ line.fontStyle.value }}{% endif %};{% if line.textDecoration is not empty %}text-decoration: {{ line.textDecoration.value }}{% endif %};">{% if line.linkUrl is not empty %}<a target="_blank" href="{{- line.linkUrl | raw -}}" style="color: {{ line.color | default(c.text.linkColor) | default('#3869D4')  }};">{% endif %}{{ line.text | escape }}{% if line.linkUrl is not empty %}</a>{% endif %}</p>
 
     {% elseif line.type == 'HTML' %}
         <p>{{ line.html | raw }}</p>
@@ -378,7 +373,7 @@
             <tr>
                 <td align="{{- line.alignment.value | default('center') -}}">
                     {% if line.linkUrl is not empty %}<a target="_blank" href="{{- line.linkUrl | raw -}}">{% endif %}
-                    <img border="0" vspace="0" hspace="0" alt="{{- line.alt | default('') -}}" title="{{- line.title | escape -}}" {% if line.width is not empty %}width="{{- line.width -}}"{% endif %} {% if line.height is not empty %}height="{{- line.height -}}"{% endif %}/>
+                    <img border="0" vspace="0" hspace="0" src="{{- line.src | raw -}}" alt="{{- line.alt | default('') -}}" title="{{- line.title | escape -}}" {% if line.width is not empty %}width="{{- line.width -}}"{% endif %} {% if line.height is not empty %}height="{{- line.height -}}"{% endif %}/>
                     {% if line.linkUrl is not empty %}</a>{% endif %}
                 </td>
             </tr>
@@ -425,7 +420,7 @@
 
                     {% elseif col.type == 'IMAGE' %}
                         {% if col.image.linkUrl is not empty %}<a target="_blank" href="{{- col.image.linkUrl | raw -}}">{% endif %}
-                        <img border="0" vspace="0" hspace="0" alt="{{- col.image.alt | default('') | escape -}}" title="{{- col.image.title | escape -}}" {% if col.image.width is not empty %}width="{{- col.image.width -}}"{% endif %} {% if col.image.height is not empty %}height="{{- col.image.height -}}"{% endif %}/>
+                        <img border="0" vspace="0" hspace="0" src="{{- line.src | raw -}}" alt="{{- col.image.alt | default('') | escape -}}" title="{{- col.image.title | escape -}}" {% if col.image.width is not empty %}width="{{- col.image.width -}}"{% endif %} {% if col.image.height is not empty %}height="{{- col.image.height -}}"{% endif %}/>
                         {% if col.image.linkUrl is not empty %}</a>{% endif %}
 
                     {% endif %}
@@ -460,35 +455,35 @@
                 <tr>
                     <td>
                         <table class="email-footer" align="center" width="{{- c.content.width | default('570') -}}" cellpadding="0" cellspacing="0" role="presentation">
+                            <tr>
+                                <td class="content-cell" align="{{ line.alignment.value | default('center') }}">
 {% for line in footerLines %}
-    <tr>
-        <td class="content-cell" align="center">
     {% if line.type == 'HR' %}
-    <hr >
+    <hr {% if line.margin is not empty %}style="margin: {{ line.margin}}"{% endif %}>
 
     {% elseif line.type == 'COPYRIGHT' %}
-    <p class="f-fallback sub align-center">&copy;{{ line.year }} {% if line.url is not empty %}<a href="{{- line.url | raw -}}">{% endif %}{{ line.name | escape }}{% if line.url is not empty %}</a>{% endif %}</p>
+    <p class="f-fallback sub">&copy;{{ line.year }} {% if line.url is not empty %}<a href="{{- line.url | raw -}}">{% endif %}{{ line.name | escape }}{% if line.url is not empty %}</a>{% endif %}</p>
 
     {% elseif line.type == 'TEXT' %}
-    <p class="f-fallback sub align-center" style="{% if line.alignment is not empty %}text-align: {{ line.alignment.value }};{% endif %}{% if line.fontWeight is not empty %}font-weight: {{ line.fontWeight.value }}{% endif %};{% if line.fontStyle is not empty %}font-style: {{ line.fontStyle.value }}{% endif %};{% if line.textDecoration is not empty %}text-decoration: {{ line.textDecoration.value }}{% endif %};">{% if line.linkUrl is not empty %}<a target="_blank" href="{{- line.linkUrl | raw -}}" >{% endif %}{{ line.text | escape }}{% if line.linkUrl is not empty %}</a>{% endif %}</p>
+    <p class="f-fallback sub" style="{% if line.alignment is not empty %}text-align: {{ line.alignment.value }};{% endif %}{% if line.fontWeight is not empty %}font-weight: {{ line.fontWeight.value }}{% endif %};{% if line.fontStyle is not empty %}font-style: {{ line.fontStyle.value }}{% endif %};{% if line.textDecoration is not empty %}text-decoration: {{ line.textDecoration.value }}{% endif %};">{% if line.linkUrl is not empty %}<a target="_blank" href="{{- line.linkUrl | raw -}}" >{% endif %}{{ line.text | escape }}{% if line.linkUrl is not empty %}</a>{% endif %}</p>
 
     {% elseif line.type == 'HTML' %}
-    <p class="f-fallback sub align-center">{{ line.html | raw }}</p>
+    <p class="f-fallback sub">{{ line.html | raw }}</p>
 
     {% elseif line.type == 'MARKDOWN' %}
-    <p class="f-fallback sub align-center">{{ line.html | raw }}</p>
+    <p class="f-fallback sub">{{ line.html | raw }}</p>
 
     {% elseif line.type == 'IMAGE' %}
-    <p class="f-fallback sub align-center">
+    <p class="f-fallback sub">
         {% if line.linkUrl is not empty %}<a target="_blank" href="{{- line.linkUrl | raw -}}">{% endif %}
-        <img border="0" vspace="0" hspace="0" alt="{{- line.alt | default('') -}}" title="{{- line.title | escape -}}" {% if line.width is not empty %}width="{{- line.width -}}"{% endif %} {% if line.height is not empty %}height="{{- line.height -}}"{% endif %}/>
+        <img border="0" vspace="0" hspace="0" src="{{- line.src | raw -}}" alt="{{- line.alt | default('') -}}" title="{{- line.title | escape -}}" {% if line.width is not empty %}width="{{- line.width -}}"{% endif %} {% if line.height is not empty %}height="{{- line.height -}}"{% endif %}/>
         {% if line.linkUrl is not empty %}</a>{% endif %}
     </p>
 
     {% endif %}
-        </td>
-    </tr>
 {% endfor %}
+                                </td>
+                            </tr>
                         </table>
                     </td>
                 </tr>

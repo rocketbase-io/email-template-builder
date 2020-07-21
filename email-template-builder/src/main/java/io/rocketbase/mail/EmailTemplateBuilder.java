@@ -84,9 +84,10 @@ public final class EmailTemplateBuilder {
             return header;
         }
 
-        public EmailTemplateConfigBuilder hr() {
-            contentLines.add(new HrLine(this));
-            return this;
+        public HrLine hr() {
+            HrLine line = new HrLine(this);
+            contentLines.add(line);
+            return line;
         }
 
         public TextLine text(String text) {
@@ -148,9 +149,10 @@ public final class EmailTemplateBuilder {
             return line;
         }
 
-        public EmailTemplateConfigBuilder footerHr() {
-            footerLines.add(new HrLine(this));
-            return this;
+        public HrLine footerHr() {
+            HrLine line = new HrLine(this);
+            footerLines.add(line);
+            return line;
         }
 
         public TextLine footerText(String text) {
