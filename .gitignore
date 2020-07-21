@@ -16,4 +16,5 @@ buildNumber.properties
 .idea
 *.iml
 
-/src/test/java/io/rocketbase/commons/email/EmailTemplateReadmeTest.java
+/template/node_modules/
+/email-template-builder/src/test/java/io/rocketbase/mail/EmailTemplateReadmeTest.java

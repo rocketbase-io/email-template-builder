@@ -28,9 +28,15 @@ SOFTWARE.
         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.rocketbase.commons</groupId>
-    <artifactId>email-template-builder</artifactId>
+    <groupId>io.rocketbase.mail</groupId>
+    <artifactId>email-template-builder-root</artifactId>
+    <packaging>pom</packaging>
     <version>LATEST-SNAPSHOT</version>
+
+    <modules>
+        <module>email-template-builder</module>
+        <module>email-template-builder-markdown</module>
+    </modules>
 
     <name>rocketbase.io email template builder</name>
     <description>let this service generate your custom html/text emails</description>
@@ -80,54 +86,21 @@ SOFTWARE.
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
-        <pebble.version>3.1.2</pebble.version>
-        <lombok.version>1.18.10</lombok.version>
+        <pebble.version>3.1.4</pebble.version>
+        <lombok.version>1.18.12</lombok.version>
         <junit.version>4.12</junit.version>
         <hamcrest.version>1.3</hamcrest.version>
-        <jsoup.version>1.12.2</jsoup.version>
-        <colors.version>0.5.0</colors.version>
+        <colors.version>0.5.1</colors.version>
+        <commonmark.version>0.15.0</commonmark.version>
+        <simple-java-mail.version>6.4.0</simple-java-mail.version>
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>io.pebbletemplates</groupId>
-            <artifactId>pebble</artifactId>
-            <version>${pebble.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jsoup</groupId>
-            <artifactId>jsoup</artifactId>
-            <version>${jsoup.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.rocketbase.commons</groupId>
-            <artifactId>colors</artifactId>
-            <version>${colors.version}</version>
-        </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
             <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-core</artifactId>
-            <version>${hamcrest.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-library</artifactId>
-            <version>${hamcrest.version}</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 

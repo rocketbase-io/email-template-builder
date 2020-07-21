@@ -1,0 +1,501 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="x-apple-disable-message-reformatting" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="supported-color-schemes" content="light dark" />
+    {% if header.text is empty %}<title>{{- header.text -}}</title>{% endif %}
+    <style type="text/css" rel="stylesheet" media="all">
+        /* Base ------------------------------ */
+
+        {{ c.font.cssImport | default("@import url('https://fonts.googleapis.com/css?family=Nunito+Sans:400,700&display=swap');") | raw }}
+        body {
+            width: 100% !important;
+            height: 100%;
+            margin: 0;
+            -webkit-text-size-adjust: none;
+        }
+
+        a {
+            color: {{ c.text.linkColor | default('#3869D4') }};
+        }
+
+        a img {
+            border: none;
+        }
+
+        td {
+            word-break: break-word;
+        }
+
+        .preheader {
+            display: none !important;
+            visibility: hidden;
+            mso-hide: all;
+            font-size: 1px;
+            line-height: 1px;
+            max-height: 0;
+            max-width: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        /* Type ------------------------------ */
+
+        body,
+        td,
+        th {
+            font-family: {{ c.font.family | default("'Nunito Sans', Helvetica, Arial, sans-serif") | raw }};
+        }
+
+        h1 {
+            margin-top: 0;
+            color: {{ c.font.h1.color | default('#333333') }};
+            font-size: {{ c.font.h1.size | default('22px') }};
+            font-weight: bold;
+            text-align: left;
+        }
+
+        h2 {
+            margin-top: 0;
+            color: {{ c.font.h2.color | default('#333333') }};
+            font-size: {{ c.font.h2.size | default('16px') }};
+            font-weight: bold;
+            text-align: left;
+        }
+
+        h3 {
+            margin-top: 0;
+            color: {{ c.font.h3.color | default('#333333') }};
+            font-size: {{ c.font.h2.size | default('14px') }};
+            font-weight: bold;
+            text-align: left;
+        }
+
+        td,
+        th {
+            font-size: {{ c.font.table.size | default('16px') }};
+            color: {{ c.font.table.color | default('#333333') }};
+        }
+
+        p,
+        ul,
+        ol,
+        blockquote {
+            margin: {{ c.text.margin | default('.4em 0 1.1875em') }};
+            font-size: {{ c.text.size | default('16px') }};
+            line-height: {{ c.text.lineHeight | default('1.625') }};
+        }
+
+        p.sub {
+            font-size: {{ c.font.sub.size | default('13px') }};
+        }
+        /* Utilities ------------------------------ */
+
+        .align-right {
+            text-align: right;
+        }
+
+        .align-left {
+            text-align: left;
+        }
+
+        .align-center {
+            text-align: center;
+        }
+        /* Buttons ------------------------------ */
+
+        .button {
+            display: inline-block;
+            text-decoration: none;
+            border-radius: {{ c.button.borderRadius | default('3px') }};
+            box-shadow: {{ c.button.boxShadow | default('0 2px 3px rgba(0, 0, 0, 0.16)') }};
+            -webkit-text-size-adjust: none;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width: 500px) {
+            .button {
+                width: 100% !important;
+                text-align: center !important;
+            }
+        }
+        /* Attribute list ------------------------------ */
+
+        .attributes {
+            margin: {{ c.attribute.margin | default('0 0 21px') }};
+        }
+
+        .attributes_content {
+            background-color: {{ c.attribute.background | default('#F4F4F7') }};
+            padding: {{ c.attribute.padding | default('16px') }};
+        }
+
+        .attributes_item {
+            padding: 0;
+        }
+
+        /* Data table ------------------------------ */
+
+        .table_wrapper {
+            width: 100%;
+            margin: 0;
+        }
+
+        .table_item {
+            padding: 10px 0;
+            color: {{ c.table.item.color | default('#51545E') }};
+            font-size: {{ c.table.item.size | default('15px') }};
+            line-height: {{ c.table.item.lineHeight | default('18px') }};
+        }
+
+        .table_heading {
+            padding-bottom: 8px;
+            border-bottom: {{ c.table.border.size | default('1px') }} solid {{ c.table.border.color | default('#EAEAEC') }};
+        }
+
+        .table_heading p {
+            margin: 0;
+            color: {{ c.table.heading.color | default('#85878E') }};
+            font-size: {{ c.table.heading.size | default('12px') }};
+        }
+
+        .table_footer {
+            padding-top: 15px;
+            border-top: {{ c.table.border.size | default('1px') }} solid {{ c.table.border.color | default('#EAEAEC') }};
+        }
+
+        body {
+            background-color: {{ c.body.background | default('#F4F4F7') }};
+            color: {{ c.text.color | default('#51545E') }};
+        }
+
+        p {
+            color: {{ c.text.color | default('#51545E') }};
+        }
+
+        p.sub {
+            color: {{ c.font.sub.color | default('#6B6E76') }};
+        }
+
+        .email-wrapper {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            background-color: {{ c.body.background | default('#F4F4F7') }};
+        }
+
+        .email-content {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        /* Masthead ----------------------- */
+
+        .email-masthead {
+            padding: {{ c.header.padding | default('25px 0') }};
+            text-align: {{ c.header.align | default('center') }};
+        }
+
+        .email-masthead_logo {
+            width: {{ c.header.logoWidth | default('94') -}}px;
+        }
+
+        .email-masthead_name {
+            font-size: {{ c.header.size | default('16px') }};
+            font-weight: {{ c.header.weight | default('bold') }};
+            color: {{ c.header.color | default('#A8AAAF') }};
+            text-decoration: none;
+            text-shadow: {{ c.header.textShadow | default('0 1px 0 white') }};
+        }
+        /* Body ------------------------------ */
+
+        .email-body {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            background-color: {{ c.content.background | default('#FFFFFF') }};
+        }
+
+        .email-body_inner {
+            width: {{ c.content.width | default('570') -}}px;
+            margin: 0 auto;
+            padding: 0;
+            background-color: #FFFFFF;
+        }
+
+        .email-footer {
+            width: {{ c.content.width | default('570') -}}px;
+            margin: 0 auto;
+            padding: 0;
+            text-align: center;
+        }
+
+        .email-footer p {
+            color: {{ c.footer.color | default('#6B6E76') }};
+        }
+
+        .email-footer a {
+            color: {{ c.footer.link.color | default('#6B6E76') }};
+            text-decoration: {{ c.footer.link.textDecoration | default('underline') }};
+        }
+
+        .body-action {
+            width: 100%;
+            margin: 30px auto;
+            padding: 0;
+            text-align: center;
+        }
+
+        .body-image {
+            width: 100%;
+            padding: 0;
+        }
+
+        .body-sub {
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: {{ c.body.border.size | default('1px') }} solid {{ c.body.border.color | default('#EAEAEC') }};
+        }
+
+        .content-cell {
+            padding: {{ c.content.padding | default('35px') }};
+        }
+        /*Media Queries ------------------------------ */
+
+        @media only screen and (max-width: 600px) {
+            .email-body_inner,
+            .email-footer {
+                width: 100% !important;
+            }
+        }
+
+        @media (prefers-color-scheme: dark) {
+            body,
+            .email-body,
+            .email-body_inner,
+            .email-content,
+            .email-wrapper,
+            .email-masthead,
+            .email-footer {
+                background-color: {{ c.body.dark.background | default('#333333') }} !important;
+                color: {{ c.body.dark.color | default('#FFF') }} !important;
+            }
+            p,
+            ul,
+            ol,
+            blockquote,
+            h1,
+            h2,
+            h3 {
+                color: {{ c.body.dark.color | default('#FFF') }} !important;
+            }
+            .attributes_content {
+                background-color: {{ c.box.dark.background | default('#222') }} !important;
+            }
+            .email-masthead_name {
+                text-shadow: none !important;
+            }
+        }
+
+        :root {
+            color-scheme: light dark;
+            supported-color-schemes: light dark;
+        }
+    </style>
+    <!--[if mso]>
+    <!--
+    <style type="text/css">
+        .f-fallback  {
+            font-family: {{ c.font.fallback | default('Arial, sans-serif') }};
+        }
+    </style>
+    -->
+    <![endif]-->
+</head>
+<body>
+<table class="email-wrapper" width="100%" cellpadding="0" cellspacing="0" role="presentation">
+    <tr>
+        <td align="center">
+            <table class="email-content" width="100%" cellpadding="0" cellspacing="0" role="presentation">
+                {% if header is not empty %}
+                <tr>
+                    <td class="email-masthead">
+                        {% if header.linkUrl is not empty %}<a href="{{- header.linkUrl | raw -}}" class="f-fallback email-masthead_name">{% endif %}
+                            {% if header.logo is not empty %}<img src="{{- header.logo | raw -}}" alt="{{- header.text | default('') | escape -}}" {% if header.logoWidth is not empty %}width="{{- header.logoWidth -}}"{% endif %} {% if header.logoHeight is not empty %}height="{{- header.logoHeight -}}"{% endif %} class="email-masthead_logo">{% endif %}
+                            {% if header.logo is empty and header.text is not empty %}{% if header.href is empty %}<span class="email-masthead_name">{% endif %}{{- header.text | escape -}}{% if header.href is empty %}</span>{% endif %}{% endif %}
+                        {% if header.linkUrl is not empty %}</a>{% endif %}
+                    </td>
+                </tr>
+                {% endif %}
+                {% if contentLines is not empty %}
+                <!-- Email Body -->
+                <tr>
+                    <td class="email-body" width="100%" cellpadding="0" cellspacing="0">
+                        <table class="email-body_inner" align="center" width="{{- c.content.width | default('570') -}}" cellpadding="0" cellspacing="0" role="presentation">
+                            <!-- Body content -->
+                            <tr>
+                                <td class="content-cell">
+                                    <div class="f-fallback">
+
+{% for line in contentLines %}
+
+    {% if line.type == 'HR' %}
+        <hr >
+
+    {% elseif line.type == 'TEXT' %}
+        <p style="{% if line.alignment is not empty %}text-align: {{ line.alignment.value }};{% endif %}{% if line.fontWeight is not empty %}font-weight: {{ line.fontWeight.value }}{% endif %};{% if line.fontStyle is not empty %}font-style: {{ line.fontStyle.value }}{% endif %};{% if line.textDecoration is not empty %}text-decoration: {{ line.textDecoration.value }}{% endif %};">{% if line.linkUrl is not empty %}<a target="_blank" href="{{- line.linkUrl | raw -}}" >{% endif %}{{ line.text | escape }}{% if line.linkUrl is not empty %}</a>{% endif %}</p>
+
+    {% elseif line.type == 'HTML' %}
+        <p>{{ line.html | raw }}</p>
+
+    {% elseif line.type == 'MARKDOWN' %}
+        {{ line.html | raw }}
+
+    {% elseif line.type == 'ATTRIBUTE' %}
+        <table class="attributes" width="100%" cellpadding="0" cellspacing="0" role="presentation">
+            <tr>
+                <td class="attributes_content">
+                    <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
+                        {% for entry in line.map %}
+                        <tr>
+                            <td class="attributes_item">
+                                <span class="f-fallback"><strong>{{entry.key | escape}}:</strong></span>
+                            </td>
+                            <td class="attributes_item">
+                                <span class="f-fallback">{{entry.value | escape}}</span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </td>
+            </tr>
+        </table>
+
+    {% elseif line.type == 'IMAGE' %}
+        <table class="body-image" align="center" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="margin: {{ line.margin | default('margin: 20px auto') }};">
+            <tr>
+                <td align="{{- line.alignment.value | default('center') -}}">
+                    {% if line.linkUrl is not empty %}<a target="_blank" href="{{- line.linkUrl | raw -}}">{% endif %}
+                    <img border="0" vspace="0" hspace="0" alt="{{- line.alt | default('') -}}" title="{{- line.title | escape -}}" {% if line.width is not empty %}width="{{- line.width -}}"{% endif %} {% if line.height is not empty %}height="{{- line.height -}}"{% endif %}/>
+                    {% if line.linkUrl is not empty %}</a>{% endif %}
+                </td>
+            </tr>
+        </table>
+
+    {% elseif line.type == 'BUTTON' %}
+        <table class="body-action" align="center" width="100%" cellpadding="0" cellspacing="0" role="presentation">
+            <tr>
+                <td align="center">
+                    <!-- button -->
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0" role="presentation">
+                        <tr>
+                            <td align="{{- line.alignment | default('center') -}}">
+                                <a href="{{- line.url | raw -}}" class="f-fallback button"
+                                   style="background-color: {{ line.color.bg | default(c.button.background) }}; border-top: {{ c.button.border.top }} solid {{ line.color.bg | default(c.button.background) }}; border-right: {{ c.button.border.right }} solid {{ line.color.bg | default(c.button.background) }}; border-bottom: {{ c.button.border.bottom }} solid {{ line.color.bg | default(c.button.background) }}; border-left: {{ c.button.border.left }} solid {{ line.color.bg | default(c.button.background) }}; color: {{ line.color.text | default(c.button.color) }};"
+                                   arget="_blank">{{- line.text | escape -}}</a>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+
+    {% elseif line.type == 'TABLE' %}
+        <table class="table_wrapper" width="100%" cellpadding="0" cellspacing="0" stlye="{{ line.padding | default('padding: 35px 0;') }}">
+            {% for head in line.headerRows %}
+            <tr>
+                {% for col in head %}
+                <th class="table_heading" align="{{- line.header[loop.index].alignment.value | default('left') -}}" {% if line.header[loop.index].width is not empty %}width="{{- line.header[loop.index].width -}}"{% endif %} colspan="{{- line.header[loop.index].colspan | default('1') -}}">
+                    <p class="f-fallback" style="{% if col.alignment is not empty %}text-align: {{ col.alignment.value }};{% endif %}{% if col.fontWeight is not empty %}font-weight: {{ col.fontWeight.value }}{% endif %};{% if col.fontStyle is not empty %}font-style: {{ col.fontStyle.value }}{% endif %};{% if col.textDecoration is not empty %}text-decoration: {{ col.textDecoration.value }}{% endif %};">{{ col | escape }}</p>
+                </th>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+            {% for item in line.itemRows %}
+            <tr>
+                {% for col in item %}
+                <td class="table_item" align="{{- line.item[loop.index].alignment.value | default('left') -}}" {% if line.item[loop.index].width is not empty %}width="{{- line.item[loop.index].width -}}"{% endif %} colspan="{{- line.item[loop.index].colspan | default('1') -}}">
+                    {% if col.type is empty %}
+                        <span class="f-fallback" style="{% if line.item[loop.index].alignment is not empty %}text-align: {{ line.item[loop.index].alignment.value }};{% endif %}{% if line.item[loop.index].fontWeight is not empty %}font-weight: {{ line.item[loop.index].fontWeight.value }}{% endif %};{% if line.item[loop.index].fontStyle is not empty %}font-style: {{ line.item[loop.index].fontStyle.value }}{% endif %};{% if line.item[loop.index].textDecoration is not empty %}text-decoration: {{ line.item[loop.index].textDecoration.value }}{% endif %};">{% if line.item[loop.index].numberFormat is empty %}{{ col | escape }}{% else %}{{ col | numberformat(line.item[loop.index].numberFormat) }}{% endif %}</span>
+
+                    {% elseif col.type == 'LINK' %}
+                        <a class="f-fallback" style="{% if line.item[loop.index].alignment is not empty %}text-align: {{ line.item[loop.index].alignment.value }};{% endif %}{% if line.item[loop.index].fontWeight is not empty %}font-weight: {{ line.item[loop.index].fontWeight.value }}{% endif %};{% if line.item[loop.index].fontStyle is not empty %}font-style: {{ line.item[loop.index].fontStyle.value }}{% endif %};{% if line.item[loop.index].textDecoration is not empty %}text-decoration: {{ line.item[loop.index].textDecoration.value }}{% endif %};" href="{{- col.linkUrl | raw -}}">{{ col.text | escape }}</a>
+
+                    {% elseif col.type == 'IMAGE' %}
+                        {% if col.image.linkUrl is not empty %}<a target="_blank" href="{{- col.image.linkUrl | raw -}}">{% endif %}
+                        <img border="0" vspace="0" hspace="0" alt="{{- col.image.alt | default('') | escape -}}" title="{{- col.image.title | escape -}}" {% if col.image.width is not empty %}width="{{- col.image.width -}}"{% endif %} {% if col.image.height is not empty %}height="{{- col.image.height -}}"{% endif %}/>
+                        {% if col.image.linkUrl is not empty %}</a>{% endif %}
+
+                    {% endif %}
+                </td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+            {% for footer in line.footerRows %}
+            <tr>
+                {% for col in footer %}
+                <td class="table_footer" align="{{- line.footer[loop.index].alignment.value | default('left') -}}" {% if line.footer[loop.index].width is not empty %}width="{{- line.footer[loop.index].width -}}"{% endif %} colspan="{{- line.footer[loop.index].colspan | default('1') -}}">
+                    <p class="f-fallback" style="{% if line.footer[loop.index].alignment is not empty %}text-align: {{ line.footer[loop.index].alignment.value }};{% endif %}{% if line.footer[loop.index].fontWeight is not empty %}font-weight: {{ line.footer[loop.index].fontWeight.value }}{% endif %};{% if line.footer[loop.index].fontStyle is not empty %}font-style: {{ line.footer[loop.index].fontStyle.value }}{% endif %};{% if line.footer[loop.index].textDecoration is not empty %}text-decoration: {{ line.footer[loop.index].textDecoration.value }}{% endif %};">{% if line.item[loop.index].numberFormat is empty %}{{ col | escape }}{% else %}{{ col | numberformat(line.item[loop.index].numberFormat) }}{% endif %}</p>
+                </td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+
+{% endfor %}
+
+
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                {% endif %}
+                {% if footerLines is not empty %}
+                <!-- Email Footer -->
+                <tr>
+                    <td>
+                        <table class="email-footer" align="center" width="{{- c.content.width | default('570') -}}" cellpadding="0" cellspacing="0" role="presentation">
+{% for line in footerLines %}
+    <tr>
+        <td class="content-cell" align="center">
+    {% if line.type == 'HR' %}
+    <hr >
+
+    {% elseif line.type == 'COPYRIGHT' %}
+    <p class="f-fallback sub align-center">&copy;{{ line.year }} {% if line.url is not empty %}<a href="{{- line.url | raw -}}">{% endif %}{{ line.name | escape }}{% if line.url is not empty %}</a>{% endif %}</p>
+
+    {% elseif line.type == 'TEXT' %}
+    <p class="f-fallback sub align-center" style="{% if line.alignment is not empty %}text-align: {{ line.alignment.value }};{% endif %}{% if line.fontWeight is not empty %}font-weight: {{ line.fontWeight.value }}{% endif %};{% if line.fontStyle is not empty %}font-style: {{ line.fontStyle.value }}{% endif %};{% if line.textDecoration is not empty %}text-decoration: {{ line.textDecoration.value }}{% endif %};">{% if line.linkUrl is not empty %}<a target="_blank" href="{{- line.linkUrl | raw -}}" >{% endif %}{{ line.text | escape }}{% if line.linkUrl is not empty %}</a>{% endif %}</p>
+
+    {% elseif line.type == 'HTML' %}
+    <p class="f-fallback sub align-center">{{ line.html | raw }}</p>
+
+    {% elseif line.type == 'MARKDOWN' %}
+    <p class="f-fallback sub align-center">{{ line.html | raw }}</p>
+
+    {% elseif line.type == 'IMAGE' %}
+    <p class="f-fallback sub align-center">
+        {% if line.linkUrl is not empty %}<a target="_blank" href="{{- line.linkUrl | raw -}}">{% endif %}
+        <img border="0" vspace="0" hspace="0" alt="{{- line.alt | default('') -}}" title="{{- line.title | escape -}}" {% if line.width is not empty %}width="{{- line.width -}}"{% endif %} {% if line.height is not empty %}height="{{- line.height -}}"{% endif %}/>
+        {% if line.linkUrl is not empty %}</a>{% endif %}
+    </p>
+
+    {% endif %}
+        </td>
+    </tr>
+{% endfor %}
+                        </table>
+                    </td>
+                </tr>
+                {% endif %}
+            </table>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

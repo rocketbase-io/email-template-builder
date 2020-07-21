@@ -1,0 +1,15 @@
+{
+  "name": "css-inliner",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "gulp"
+  },
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-inline-css": "^3.5.0"
+  },
+  "dependencies": {
+    "gulp-juice": "^0.1.0"
+  }
+}
