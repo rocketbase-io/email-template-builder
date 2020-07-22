@@ -18,8 +18,9 @@ public class CssInlinerAttributeProvider implements AttributeProviderFactory {
         return (node, tagName, attributes) -> {
             if (node instanceof Link) {
                 attributes.put("style", "font-family: " + configuration.getFont().getFamily() +
-                        "; color: " + configuration.getText().getColor());
-            } if (node instanceof Image) {
+                        "; color: " + configuration.getText().getLinkColor());
+            }
+            if (node instanceof Image) {
                 attributes.put("style", "border: none");
             } else if (node instanceof Paragraph ||
                     node instanceof OrderedList ||

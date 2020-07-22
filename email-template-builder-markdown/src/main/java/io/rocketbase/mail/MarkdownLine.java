@@ -1,5 +1,6 @@
 package io.rocketbase.mail;
 
+import io.rocketbase.mail.EmailTemplateBuilder.EmailTemplateConfigBuilder;
 import io.rocketbase.mail.config.TbConfiguration;
 import io.rocketbase.mail.markdown.CssInlinerAttributeProvider;
 import io.rocketbase.mail.model.HtmlTextEmail;
@@ -17,21 +18,18 @@ import java.util.List;
 
 public class MarkdownLine implements TemplateLine {
 
+    private static List<Extension> extensions;
     private static Parser parser;
-    private static HtmlRenderer renderer;
 
     static {
-        List<Extension> extensions = Arrays.asList(ImageAttributesExtension.create(), StrikethroughExtension.create(), InsExtension.create());
+        extensions = Arrays.asList(ImageAttributesExtension.create(), StrikethroughExtension.create(), InsExtension.create());
 
         parser = Parser.builder()
                 .extensions(extensions)
                 .build();
-        renderer = HtmlRenderer.builder()
-                .extensions(extensions)
-                .attributeProviderFactory(new CssInlinerAttributeProvider(TbConfiguration.newInstance()))
-                .build();
     }
 
+    private final EmailTemplateConfigBuilder builder;
     @Getter
     private String markdown;
     @Getter
@@ -39,8 +37,19 @@ public class MarkdownLine implements TemplateLine {
 
 
     public MarkdownLine(String markdown) {
+        this(null, markdown);
+    }
+
+    public MarkdownLine(EmailTemplateConfigBuilder builder, String markdown) {
+        this.builder = builder;
         this.markdown = markdown;
-        this.html = renderer.render(parser.parse(markdown));
+
+        HtmlRenderer htmlRenderer = HtmlRenderer.builder()
+                .extensions(extensions)
+                .attributeProviderFactory(new CssInlinerAttributeProvider(builder != null ? builder.getConfiguration() : TbConfiguration.newInstance()))
+                .build();
+
+        this.html = htmlRenderer.render(parser.parse(markdown));
     }
 
     @Override
@@ -49,12 +58,18 @@ public class MarkdownLine implements TemplateLine {
     }
 
     @Override
-    public EmailTemplateBuilder.EmailTemplateConfigBuilder and() {
-        throw new RuntimeException("not supported");
+    public EmailTemplateConfigBuilder and() {
+        if (builder == null) {
+            throw new RuntimeException("not supported");
+        }
+        return builder;
     }
 
     @Override
     public HtmlTextEmail build() {
-        throw new RuntimeException("not supported");
+        if (builder == null) {
+            throw new RuntimeException("not supported");
+        }
+        return builder.build();
     }
 }

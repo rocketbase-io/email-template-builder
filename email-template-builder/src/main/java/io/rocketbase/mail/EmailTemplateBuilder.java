@@ -8,6 +8,7 @@ import io.rocketbase.mail.model.HtmlTextEmail;
 import io.rocketbase.mail.preset.TableFourColumnPreset;
 import io.rocketbase.mail.preset.TableSimplePreset;
 import io.rocketbase.mail.preset.TableSimpleWithImagePreset;
+import lombok.Getter;
 import lombok.SneakyThrows;
 
 import java.io.StringWriter;
@@ -53,6 +54,7 @@ public final class EmailTemplateBuilder {
 
     public static class EmailTemplateConfigBuilder {
 
+        @Getter
         private TbConfiguration configuration = TbConfiguration.newInstance();
         private Header header;
         private List<TemplateLine> contentLines = new ArrayList<>();
