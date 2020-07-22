@@ -1,19 +1,23 @@
 package io.rocketbase.mail.config.config;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
-@Getter
-@RequiredArgsConstructor
+@Data
+@AllArgsConstructor
 public class TbAttributeConfig {
 
-    public static final TbAttributeConfig DEFAULT = new TbAttributeConfig("0 0 21px",
+    static final TbAttributeConfig DEFAULT = new TbAttributeConfig("0 0 21px",
             "#F4F4F7",
             "16px");
 
-    private final String margin;
-    private final String background;
-    private final String padding;
+    public static final TbAttributeConfig newInstance() {
+        return new TbAttributeConfig(DEFAULT);
+    }
+
+    private String margin;
+    private String background;
+    private String padding;
 
     public TbAttributeConfig(TbAttributeConfig other) {
         this.margin = other.margin;

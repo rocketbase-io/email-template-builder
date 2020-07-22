@@ -1,48 +1,67 @@
 package io.rocketbase.mail.config.config;
 
 import io.rocketbase.mail.config.base.TbBorderColorSize;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
-@Getter
-@RequiredArgsConstructor
+@Data
+@AllArgsConstructor
 public class TbTableConfig {
 
-    public static final TbTableConfig DEFAULT = new TbTableConfig(new TbTableItem("#51545E", "15px", "18px"),
+    static final TbTableConfig DEFAULT = new TbTableConfig(new TbTableItem("#51545E", "15px", "18px"),
             new TbBorderColorSize("#EAEAEC", "1px"),
             new TbTableHeading("#85878E", "12px"),
             new TbTableTotal("#333333"));
 
-    private final TbTableItem item;
-    private final TbBorderColorSize border;
-    private final TbTableHeading heading;
-    private final TbTableTotal total;
+    public static final TbTableConfig newInstance() {
+        return new TbTableConfig(DEFAULT);
+    }
+
+    private TbTableItem item;
+    private TbBorderColorSize border;
+    private TbTableHeading heading;
+    private TbTableTotal total;
 
     public TbTableConfig(TbTableConfig other) {
-        this.item = other.item;
-        this.border = other.border;
-        this.heading = other.heading;
-        this.total = other.total;
+        this.item = new TbTableItem(other.item);
+        this.border = new TbBorderColorSize(other.border);
+        this.heading = new TbTableHeading(other.heading);
+        this.total = new TbTableTotal(other.total);
     }
 
-    @Getter
-    @RequiredArgsConstructor
+    @Data
+    @AllArgsConstructor
     public static class TbTableItem {
-        private final String color;
-        private final String size;
-        private final String lineHeight;
+        private String color;
+        private String size;
+        private String lineHeight;
+
+        public TbTableItem(TbTableItem other) {
+            this.color = other.color;
+            this.size = other.size;
+            this.lineHeight = other.lineHeight;
+        }
     }
 
-    @Getter
-    @RequiredArgsConstructor
+    @Data
+    @AllArgsConstructor
     public static class TbTableHeading {
-        private final String color;
-        private final String size;
+        private String color;
+        private String size;
+
+        public TbTableHeading(TbTableHeading other) {
+            this.color = other.color;
+            this.size = other.size;
+        }
     }
 
-    @Getter
-    @RequiredArgsConstructor
+    @Data
+    @AllArgsConstructor
     public static class TbTableTotal {
-        private final String color;
+        private String color;
+
+        public TbTableTotal(TbTableTotal other) {
+            this.color = other.color;
+        }
     }
 }

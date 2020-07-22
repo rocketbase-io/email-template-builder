@@ -1,13 +1,15 @@
 package io.rocketbase.mail.config.base;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Getter
-@RequiredArgsConstructor
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class TbBorderColorSize {
-    private final String color;
-    private final String size;
+    private String color;
+    private String size;
 
     public TbBorderColorSize(TbBorderColorSize other) {
         this.color = other.color;

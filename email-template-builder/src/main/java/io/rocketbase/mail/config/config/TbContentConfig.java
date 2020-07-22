@@ -1,27 +1,31 @@
 package io.rocketbase.mail.config.config;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
-@Getter
-@RequiredArgsConstructor
+@Data
+@AllArgsConstructor
 public class TbContentConfig {
 
-    public static final TbContentConfig DEFAULT = new TbContentConfig("#FFFFFF",
+    static final TbContentConfig DEFAULT = new TbContentConfig("#FFFFFF",
             570,
             false,
             "35px");
 
-    private final String background;
+    public static final TbContentConfig newInstance() {
+        return new TbContentConfig(DEFAULT);
+    }
+
+    private String background;
     /**
      * width of inner-content
      */
-    private final Integer width;
+    private Integer width;
     /**
      * table around content - full width, then white till edges otherwise gray
      */
-    private final boolean full;
-    private final String padding;
+    private boolean full;
+    private String padding;
 
     public TbContentConfig(TbContentConfig other) {
         this.background = other.background;

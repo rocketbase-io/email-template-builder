@@ -28,7 +28,7 @@ public class MarkdownLine implements TemplateLine {
                 .build();
         renderer = HtmlRenderer.builder()
                 .extensions(extensions)
-                .attributeProviderFactory(new CssInlinerAttributeProvider(TbConfiguration.DEFAULT))
+                .attributeProviderFactory(new CssInlinerAttributeProvider(TbConfiguration.newInstance()))
                 .build();
     }
 

@@ -1,13 +1,15 @@
 package io.rocketbase.mail.config.base;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Getter
-@RequiredArgsConstructor
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class TbBackgroundColor {
-    private final String background;
-    private final String color;
+    private String background;
+    private String color;
 
     public TbBackgroundColor(TbBackgroundColor other) {
         this.background = other.background;

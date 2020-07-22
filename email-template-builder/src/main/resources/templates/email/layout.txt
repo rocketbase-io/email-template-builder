@@ -1,7 +1,7 @@
 {% if header is not empty and header.text is not empty %}
 ***************************
 {{ header.text }}{% if header.linkUrl is not empty %}
- -> {{- header.linkUrl | raw -}}{% endif %}
+ -> {{ header.linkUrl | raw }}{% endif %}
 
 ***************************
 {% endif %}
@@ -9,29 +9,38 @@
 {% if contentLines is not empty %}
 {% for line in contentLines %}
 {% if line.type == 'HR' %}
+
 ---
 
 {% elseif line.type == 'TEXT' %}
-{{ line.text }}{% if line.linkUrl is not empty %} -> {{- line.linkUrl | raw -}}{% endif %}
+
+{{ line.text }}{% if line.linkUrl is not empty %} -> {{ line.linkUrl | raw }}{% endif %}
 
 {% elseif line.type == 'HTML' %}
+
 {{ line.text | raw }}
 
 {% elseif line.type == 'MARKDOWN' %}
+
 {{ line.markdown }}
 
 {% elseif line.type == 'IMAGE' %}
-{{ line.alt | default(line.title) | default('image') }} {% if line.linkUrl is not empty %} -> {{- line.linkUrl | raw -}}{% endif %}
+
+{{ line.alt | default(line.title) | default('image') }} {% if line.linkUrl is not empty %} -> {{ line.linkUrl | raw }}{% endif %}
 
 {% elseif line.type == 'ATTRIBUTE' %}
+
 {% for entry in line.map %}
 {{entry.key}}: {{entry.value}}
+
 {% endfor %}
 
 {% elseif line.type == 'BUTTON' %}
+
 {{line.text }} -> {{line.url | raw}}
 
 {% elseif line.type == 'TABLE' %}
+
 TABLE IS NOT YET AVAILABLE ON TXT-EMAIL
 
 {% endif %}
@@ -43,22 +52,28 @@ TABLE IS NOT YET AVAILABLE ON TXT-EMAIL
 
 {% for line in footerLines %}
 {% if line.type == 'HR' %}
+
 ---
 
 {% elseif line.type == 'COPYRIGHT' %}
+
 ©{{ line.year }} {{line.name }}{% if line.url is not empty %} -> {{ line.url | raw }}{% endif %}
 
 {% elseif line.type == 'TEXT' %}
-{{ line.text }}{% if line.linkUrl is not empty %} -> {{- line.linkUrl | raw -}}{% endif %}
+
+{{ line.text }}{% if line.linkUrl is not empty %} > {{ line.linkUrl | raw }}{% endif %}
 
 {% elseif line.type == 'HTML' %}
+
 {{ line.text | raw }}
 
 {% elseif line.type == 'MARKDOWN' %}
+
 {{ line.markdown }}
 
 {% elseif line.type == 'IMAGE' %}
-{{ line.alt | default(line.title) | default('image') }} {% if line.linkUrl is not empty %} -> {{- line.linkUrl | raw -}}{% endif %}
+
+{{ line.alt | default(line.title) | default('image') }} {% if line.linkUrl is not empty %} -> {{ line.linkUrl | raw }}{% endif %}
 
 {% endif %}
 {% endfor %}

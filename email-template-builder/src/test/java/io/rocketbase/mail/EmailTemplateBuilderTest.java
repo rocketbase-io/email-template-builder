@@ -1,5 +1,6 @@
 package io.rocketbase.mail;
 
+import io.rocketbase.mail.config.TbConfiguration;
 import io.rocketbase.mail.model.HtmlTextEmail;
 import io.rocketbase.mail.styling.ColorStyle;
 import io.rocketbase.mail.styling.ColorStyleSimple;
@@ -48,8 +49,13 @@ public class EmailTemplateBuilderTest {
         EmailTemplateBuilder.EmailTemplateConfigBuilder builder = EmailTemplateBuilder.builder();
         String header = "test";
         // when
-        HtmlTextEmail htmlTextEmail = builder.header()
-                .logo("https://www.rocketbase.io/img/logo-dark.png").logoHeight(100)
+        TbConfiguration config = TbConfiguration.newInstance();
+        config.getContent().setWidth(800);
+        config.getContent().setFull(true);
+        HtmlTextEmail htmlTextEmail = builder
+                .configuration(config)
+                .header()
+                .logo("https://www.rocketbase.io/img/logo-dark.png").logoHeight(41)
                 .and()
                 .text("sample-text").and()
                 .text("link to google").linkUrl("https://www.google").and()
@@ -60,6 +66,12 @@ public class EmailTemplateBuilderTest {
                 .button("click me here", "http://localhost").red().right().and()
                 .button("gray is the new pink", "http://localhost").gray().left().and()
                 .button("button 1", "http://adasd").and()
+                .text("sample text").and()
+                .attribute()
+                .keyValue("KEY 1", "Value 123")
+                .keyValue("KEY 2", "Value ABC")
+                .and()
+                .text("another text").and()
                 .copyright("rocketbase").url("https://www.rocketbase.io").and()
                 .footerText("my agb can be found here").linkUrl("http://localhost").and()
                 .footerImage("https://cdn.rocketbase.io/assets/loading/no-image.jpg").height(50).right().and()
@@ -147,10 +159,10 @@ public class EmailTemplateBuilderTest {
         assertThat(htmlTextEmail.getText(), equalTo(new StringBuffer()
                 .append("***************************").append(lineBreak)
                 .append(header).append(lineBreak)
-                .append("***************************").append(lineBreak).append(lineBreak)
-                .append(text).append(lineBreak)
+                .append("***************************").append(lineBreak).append(lineBreak).append(lineBreak)
+                .append(text).append(lineBreak).append(lineBreak)
                 .append(buttonText).append(" -> ").append(buttonUrl).append(lineBreak).append(lineBreak)
-                .append("-----------").append(lineBreak).append(lineBreak)
+                .append("-----------").append(lineBreak).append(lineBreak).append(lineBreak)
                 .append("©").append(LocalDate.now().getYear()).append(" ").append(copyrightName).append(" -> ").append(copyrightUrl)
                 .append(lineBreak)
                 .toString()

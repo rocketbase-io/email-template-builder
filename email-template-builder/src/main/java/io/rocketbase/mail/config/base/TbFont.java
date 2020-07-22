@@ -1,13 +1,15 @@
 package io.rocketbase.mail.config.base;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Getter
-@RequiredArgsConstructor
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class TbFont {
-    private final String size;
-    private final String color;
+    private String size;
+    private String color;
 
     public TbFont(TbFont other) {
         this.size = other.size;

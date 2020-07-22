@@ -1,15 +1,17 @@
 package io.rocketbase.mail.config.base;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Getter
-@RequiredArgsConstructor
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class TbBorderDetailed {
-    private final String top;
-    private final String right;
-    private final String bottom;
-    private final String left;
+    private String top;
+    private String right;
+    private String bottom;
+    private String left;
 
     public TbBorderDetailed(TbBorderDetailed other) {
         this.top = other.top;

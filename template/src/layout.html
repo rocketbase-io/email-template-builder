@@ -134,6 +134,7 @@
 
         .attributes_item {
             padding: 0;
+            vertical-align: top;
         }
 
         /* Data table ------------------------------ */
@@ -187,7 +188,6 @@
         }
 
         .email-content {
-            width: 100%;
             margin: 0;
             padding: 0;
         }
@@ -313,7 +313,7 @@
 <table class="email-wrapper" width="100%" cellpadding="0" cellspacing="0" role="presentation">
     <tr>
         <td align="center">
-            <table class="email-content" width="100%" cellpadding="0" cellspacing="0" role="presentation">
+            <table class="email-content" width="{% if c.content.full %}100%{% else %}{{- c.content.width | default('570') -}}{% endif %}" cellpadding="0" cellspacing="0" role="presentation">
                 {% if header is not empty %}
                 <tr>
                     <td class="email-masthead">
@@ -327,7 +327,7 @@
                 {% if contentLines is not empty %}
                 <!-- Email Body -->
                 <tr>
-                    <td class="email-body" width="{% if c.content.full %}100%{% else %}{{- c.content.width | default('570') -}}{% endif %}" cellpadding="0" cellspacing="0">
+                    <td class="email-body" width="{{- c.content.width | default('570') -}}" cellpadding="0" cellspacing="0">
                         <table class="email-body_inner" align="center" width="{{- c.content.width | default('570') -}}" cellpadding="0" cellspacing="0" role="presentation">
                             <!-- Body content -->
                             <tr>
@@ -355,10 +355,10 @@
                     <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
                         {% for entry in line.map %}
                         <tr>
-                            <td class="attributes_item">
+                            <td class="attributes_item" {% if line.keyWidth is not empty %} width="{{- line.keyWidth -}}"{% endif %}>
                                 <span class="f-fallback"><strong>{{entry.key | escape}}:</strong></span>
                             </td>
-                            <td class="attributes_item">
+                            <td class="attributes_item" {% if line.valueWidth is not empty %} width="{{- line.valueWidth -}}"{% endif %}>
                                 <span class="f-fallback">{{entry.value | escape}}</span>
                             </td>
                         </tr>

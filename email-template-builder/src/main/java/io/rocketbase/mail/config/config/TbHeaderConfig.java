@@ -1,25 +1,29 @@
 package io.rocketbase.mail.config.config;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
-@Getter
-@RequiredArgsConstructor
+@Data
+@AllArgsConstructor
 public class TbHeaderConfig {
 
-    public static final TbHeaderConfig DEFAULT = new TbHeaderConfig("25px 0",
+    static final TbHeaderConfig DEFAULT = new TbHeaderConfig("25px 0",
             "center",
             "16px",
             "bold",
             "#A8AAAF",
             "0 1px 0 white");
 
-    private final String padding;
-    private final String align;
-    private final String size;
-    private final String weight;
-    private final String color;
-    private final String textShadow;
+    public static final TbHeaderConfig newInstance() {
+        return new TbHeaderConfig(DEFAULT);
+    }
+
+    private String padding;
+    private String align;
+    private String size;
+    private String weight;
+    private String color;
+    private String textShadow;
 
     public TbHeaderConfig(TbHeaderConfig other) {
         this.padding = other.padding;

@@ -1,19 +1,23 @@
 package io.rocketbase.mail.config.config;
 
 import io.rocketbase.mail.config.base.TbFont;
-import lombok.Getter;
+import lombok.Data;
 
-@Getter
+@Data
 public class TbTextConfig extends TbFont {
 
-    public static final TbTextConfig DEFAULT = new TbTextConfig(new TbFont("16px", "#51545E"),
+    static final TbTextConfig DEFAULT = new TbTextConfig(new TbFont("16px", "#51545E"),
             ".4em 0 1.1875em",
             "1.625",
             "#3869D4");
 
-    private final String margin;
-    private final String lineHeight;
-    private final String linkColor;
+    public static final TbTextConfig newInstance() {
+        return new TbTextConfig(DEFAULT);
+    }
+
+    private String margin;
+    private String lineHeight;
+    private String linkColor;
 
     public TbTextConfig(TbFont font, String margin, String lineHeight, String linkColor) {
         super(font);

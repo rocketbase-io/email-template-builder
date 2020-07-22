@@ -1,32 +1,40 @@
 package io.rocketbase.mail.config.config;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
-@Getter
-@RequiredArgsConstructor
+@Data
+@AllArgsConstructor
 public class TbBoxConfig {
 
-    public static final TbBoxConfig DEFAULT = new TbBoxConfig("24px",
+    static final TbBoxConfig DEFAULT = new TbBoxConfig("24px",
             "#F4F4F7",
             "2px dashed #CBCCCF",
             new TbBoxDark("#222"));
 
-    private final String padding;
-    private final String background;
-    private final String border;
-    private final TbBoxDark dark;
+    public static final TbBoxConfig newInstance() {
+        return new TbBoxConfig(DEFAULT);
+    }
+
+    private String padding;
+    private String background;
+    private String border;
+    private TbBoxDark dark;
 
     public TbBoxConfig(TbBoxConfig other) {
         this.padding = other.padding;
         this.background = other.background;
         this.border = other.border;
-        this.dark = other.dark;
+        this.dark = new TbBoxDark(other.dark);
     }
 
-    @Getter
-    @RequiredArgsConstructor
+    @Data
+    @AllArgsConstructor
     public static class TbBoxDark {
-        private final String background;
+        private String background;
+
+        public TbBoxDark(TbBoxDark other) {
+            this.background = other.background;
+        }
     }
 }

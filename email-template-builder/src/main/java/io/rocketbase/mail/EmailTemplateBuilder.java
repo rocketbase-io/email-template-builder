@@ -53,7 +53,7 @@ public final class EmailTemplateBuilder {
 
     public static class EmailTemplateConfigBuilder {
 
-        private TbConfiguration configuration = TbConfiguration.DEFAULT;
+        private TbConfiguration configuration = TbConfiguration.newInstance();
         private Header header;
         private List<TemplateLine> contentLines = new ArrayList<>();
         private List<TemplateLine> footerLines = new ArrayList<>();

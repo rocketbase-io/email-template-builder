@@ -1,27 +1,38 @@
 package io.rocketbase.mail.config.config;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-@Getter
-@RequiredArgsConstructor
+@Data
+@AllArgsConstructor
 public class TbFooterConfig {
 
-    public static final TbFooterConfig DEFAULT = new TbFooterConfig("#6B6E76",
+    static final TbFooterConfig DEFAULT = new TbFooterConfig("#6B6E76",
             new TbFooterLink("#6B6E76", "underline"));
 
-    private final String color;
-    private final TbFooterLink link;
+    public static final TbFooterConfig newInstance() {
+        return new TbFooterConfig(DEFAULT);
+    }
+
+    private String color;
+    private TbFooterLink link;
 
     public TbFooterConfig(TbFooterConfig other) {
         this.color = other.color;
-        this.link = other.link;
+        this.link = new TbFooterLink(other.link);
     }
 
-    @Getter
-    @RequiredArgsConstructor
+    @Data
+    @AllArgsConstructor
     public static class TbFooterLink {
-        private final String color;
-        private final String textDecoration;
+        private String color;
+        private String textDecoration;
+
+        public TbFooterLink(TbFooterLink other) {
+            this.color = other.color;
+            this.textDecoration = other.textDecoration;
+        }
     }
 }

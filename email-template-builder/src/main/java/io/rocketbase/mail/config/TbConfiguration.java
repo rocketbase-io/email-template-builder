@@ -1,45 +1,49 @@
 package io.rocketbase.mail.config;
 
 import io.rocketbase.mail.config.config.*;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
-@Getter
-@RequiredArgsConstructor
+@Data
+@AllArgsConstructor
 public class TbConfiguration {
 
-    public static final TbConfiguration DEFAULT = new TbConfiguration(TbFontConfig.DEFAULT,
-            TbTextConfig.DEFAULT,
-            TbButtonConfig.DEFAULT,
-            TbAttributeConfig.DEFAULT,
-            TbBoxConfig.DEFAULT,
-            TbTableConfig.DEFAULT,
-            TbBodyConfig.DEFAULT,
-            TbHeaderConfig.DEFAULT,
-            TbContentConfig.DEFAULT,
-            TbFooterConfig.DEFAULT);
+    static final TbConfiguration DEFAULT = new TbConfiguration(TbFontConfig.newInstance(),
+            TbTextConfig.newInstance(),
+            TbButtonConfig.newInstance(),
+            TbAttributeConfig.newInstance(),
+            TbBoxConfig.newInstance(),
+            TbTableConfig.newInstance(),
+            TbBodyConfig.newInstance(),
+            TbHeaderConfig.newInstance(),
+            TbContentConfig.newInstance(),
+            TbFooterConfig.newInstance());
 
-    private final TbFontConfig font;
-    private final TbTextConfig text;
-    private final TbButtonConfig button;
-    private final TbAttributeConfig attribute;
-    private final TbBoxConfig box;
-    private final TbTableConfig table;
-    private final TbBodyConfig body;
-    private final TbHeaderConfig header;
-    private final TbContentConfig content;
-    private final TbFooterConfig footer;
+    public static final TbConfiguration newInstance() {
+        return new TbConfiguration(DEFAULT);
+    }
+
+    private TbFontConfig font;
+    private TbTextConfig text;
+    private TbButtonConfig button;
+    private TbAttributeConfig attribute;
+    private TbBoxConfig box;
+    private TbTableConfig table;
+    private TbBodyConfig body;
+    private TbHeaderConfig header;
+    private TbContentConfig content;
+    private TbFooterConfig footer;
 
     public TbConfiguration(TbConfiguration other) {
-        this.font = other.font;
-        this.text = other.text;
-        this.button = other.button;
-        this.attribute = other.attribute;
-        this.box = other.box;
-        this.table = other.table;
-        this.body = other.body;
-        this.header = other.header;
-        this.content = other.content;
-        this.footer = other.footer;
+        this.font = new TbFontConfig(other.font);
+        this.text = new TbTextConfig(other.text);
+        this.button = new TbButtonConfig(other.button);
+        this.attribute = new TbAttributeConfig(other.attribute);
+        this.box = new TbBoxConfig(other.box);
+        this.table = new TbTableConfig(other.table);
+        this.body = new TbBodyConfig(other.body);
+        this.header = new TbHeaderConfig(other.header);
+        this.content = new TbContentConfig(other.content);
+        this.footer = new TbFooterConfig(other.footer);
     }
 }

@@ -1,37 +1,51 @@
 package io.rocketbase.mail.config.config;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
-@Getter
-@RequiredArgsConstructor
+@Data
+@AllArgsConstructor
 public class TbBodyConfig {
 
-    public static final TbBodyConfig DEFAULT = new TbBodyConfig("#F4F4F7",
+    static final TbBodyConfig DEFAULT = new TbBodyConfig("#F4F4F7",
             new TbBodyBorder("1px", "#EAEAEC"),
             new TbBodyDark("#333333", "#FFF"));
 
-    private final String background;
-    private final TbBodyBorder border;
-    private final TbBodyDark dark;
+    public static final TbBodyConfig newInstance() {
+        return new TbBodyConfig(DEFAULT);
+    }
+
+    private String background;
+    private TbBodyBorder border;
+    private TbBodyDark dark;
 
     public TbBodyConfig(TbBodyConfig other) {
         this.background = other.background;
-        this.border = other.border;
-        this.dark = other.dark;
+        this.border = new TbBodyBorder(other.border);
+        this.dark = new TbBodyDark(other.dark);
     }
 
-    @Getter
-    @RequiredArgsConstructor
+    @Data
+    @AllArgsConstructor
     public static class TbBodyBorder {
-        private final String size;
-        private final String color;
+        private String size;
+        private String color;
+
+        public TbBodyBorder(TbBodyBorder other) {
+            this.size = other.size;
+            this.color = other.color;
+        }
     }
 
-    @Getter
-    @RequiredArgsConstructor
+    @Data
+    @AllArgsConstructor
     public static class TbBodyDark {
-        private final String background;
-        private final String color;
+        private String background;
+        private String color;
+
+        public TbBodyDark(TbBodyDark other) {
+            this.background = other.background;
+            this.color = other.color;
+        }
     }
 }
