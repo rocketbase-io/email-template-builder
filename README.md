@@ -5,44 +5,69 @@
 [![Build Status](https://travis-ci.com/rocketbase-io/email-template-builder.svg?branch=master)](https://travis-ci.com/rocketbase-io/email-template-builder)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.rocketbase.commons/email-template-builder/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.rocketbase.commons/email-template-builder)
 
-Let this service build your html/text emails in a fluient manner. It doesn't try to reinvent the wheel - it simply extends the given [email-template](https://github.com/mailgun/transactional-email-templates) of mailgun and backed it for java to use it for many purposes.
+Let this service build your html/text emails in a fluent manner. It doesn't try to reinvent the wheel - it simply extends the given [email-template](https://postmarkapp.com/mailmason) of postmark and backed it for java to use it for many purposes.
 
 You can write your email content fluently and the template builder cares for the correct instyling, conversation to txt version etc...
 
-For sending the email I can recommend the spring-boot-starter-mail or simplejavamail...
+For sending the email I can recommend the spring-boot-starter-mail, simplejavamail or my [postmark-spring](https://github.com/rocketbase-io/postmark-spring)...
+
+### release notes
+- 1.x bases mailgun templates
+  - extra dependency on jsoup for auto inlining/transpiling to text
+  - doc for old api could be found in wiki
+  
+- 2.x bases on new postmark templates
+  - pom artifact group changed to **io.rocketbase.mail**
+  - removed jsoup from dependency and changed api in many cases
+  - cleaned up a lot of code
+  - separated module in two pices
+    - common builder
+    - markdown (with markdown support)
 
 ## features
 
 - generate html and text mail via one fluent build
-- just a few dependencies: jsoup + pebble-template engine
+- just pebble-template engine as dependency
 - support for the following content-types
   - Logo in the header
-  - Header with custom Styling
   - Text also with HTML support and Alignment configuration
   - Image with Alignment configuration and Link options
   - Button with custom Styling
   - Footer with HTML support and Alignment configuration
   - Copyright with dynamic Year and Link options
   - table with header, item/price, total
+  - key value pairs
+  - interface for tables to provide custom layouts
+  - extra module to transpile markdown
 
 ## usage
 
 ## sample html/text
 ```java
 // generate html/text content
-HtmlTextEmail htmlTextEmail = EmailTemplateBuilder.builder()
-      .logo("https://cdn.rocketbase.io/assets/signature/rocketbase-signature-20179.png", "rocketbase-logo", 250, 50).title("visit rocketbase.io").linkUrl("https://www.rocketbase.io").and()
-      .header("Warning: You're approaching your limit").color(new ColorStyle("ffffff", "ff9f00")).and()
-      .addText("You have 1 <b>free report</b> remaining.").and()
-      .addText("Add your credit card now to upgrade your account to a premium plan to ensure you don't miss out on any reports.").and()
-      .addButton("Upgrade My Account", "http//upgrade").color(new ColorStyle("ffffff", "348eda")).center().and()
-      .addText("Thanks for choosing Acme Inc.").and()
-      .addText("<i>Ps. This email has been build with template-builder</i>").center().and()
-      .addImage("https://assets-cdn.github.com/images/modules/logos_page/GitHub-Logo.png", "rocketbase-io/email-template-builder", 250, 65).center().title("link to github project").linkUrl("https://github.com/rocketbase-io/email-template-builder").and()
-      .addText("<strong><i>Cheers your rocketbase-team</i></strong>").center().and()
-      .addFooter("<a href=\"http://unsubscribe\">Unsubscribe</a> from these alerts.").and()
-      .copyright("rocketbase.io").url("https://www.rocketbase.io")
-      .build();
+HtmlTextEmail htmlTextEmail = builder
+        .header()
+        .logo("https://www.rocketbase.io/img/logo-dark.png").logoHeight(41)
+        .and()
+        .text("Welcome, {{name}}!").h1().center().and()
+        .text("Thanks for trying [Product Name]. We’re thrilled to have you on board. To get the most out of [Product Name], do this primary next step:").and()
+        .button("Do this Next", "http://localhost").blue().and()
+        .text("For reference, here's your login information:").and()
+        .attribute()
+        .keyValue("Login Page", "{{login_url}}")
+        .keyValue("Username", "{{username}}")
+        .and()
+        .html("If you have any questions, feel free to <a href=\"mailto:{{support_email}}\">email our customer success team</a>. (We're lightning quick at replying.) We also offer <a href=\"{{live_chat_url}}\">live chat</a> during business hours.",
+                "If you have any questions, feel free to email our customer success team\n" +
+                        "(We're lightning quick at replying.) We also offer live chat during business hours.").and()
+        .text("Cheers,\n" +
+                "The [Product Name] Team").and()
+        .copyright("rocketbase").url("https://www.rocketbase.io").suffix(". All rights reserved.").and()
+        .footerText("[Company Name, LLC]\n" +
+                "1234 Street Rd.\n" +
+                "Suite 1234").and()
+        .footerImage("https://cdn.rocketbase.io/assets/loading/no-image.jpg").width(100).linkUrl("https://www.rocketbase.io").and()
+        .build();
 
 // sent email
 MimeMessage message = emailSender.createMimeMessage();
@@ -59,52 +84,94 @@ emailSender.send(message);
 
 ### preview HTML-Version
 
-![sample](assets/mail-sample.png)
+![sample](assets/v2-mail-sample.png)
 
 ### preview Text-Version
 
 ```
-Warning: You're approaching your limit
-You have 1 free report remaining.
-Add your credit card now to upgrade your account to a premium plan to ensure you don't miss out on any reports.
-Upgrade My Account -> http//upgrade
-Thanks for choosing Acme Inc.
-Ps. This email has been build with template-builder
+Welcome, {{name}}!
 
-Cheers your rocketbase-team
-Unsubscribe -> http://unsubscribe from these alerts.
-2018 rocketbase.io -> https://www.rocketbase.io
+Thanks for trying [Product Name]. We=E2=80=99re thrilled to have you on boa=
+rd. To get the most out of [Product Name], do this primary next step:
+
+Do this Next -> http://localhost
+
+For reference, here's your login information:
+
+Login Page: {{login_url}}
+Username: {{username}}
+
+
+If you have any questions, feel free to email our customer success team
+(We're lightning quick at replying.) We also offer live chat during business hours.
+
+Cheers,
+The [Product Name] Team
 ```
 
 
-[Email-on-acid-report](https://app.emailonacid.com/app/acidtest/ObQRaQOYKG17yavB6MUHxXXfujAASn6v9iK3JSwFpSteP/list)
-
 ### sample table
 ```java
+TbConfiguration config = TbConfiguration.newInstance();
+config.getContent().setFull(true);
+
 HtmlTextEmail htmlTextEmail = builder
-        .header(header).and()
-        .addText("Ihre Bestellung wurde geprüft und wird im nächsten Schritt verpackt.").and()
-
-        .addTable()
-        .addHeader("Bestellnr.: #12345<br>Datum: Februar 04 2020", true, Alignment.RIGHT)
-        .addItemRowWithPrefixMiddle("Menge", "Produkt", "Mwst", "Preis").headerRow().nextRow()
-        .addItemRowWithPrefixMiddle(3, "Bandnudel", "19%", BigDecimal.valueOf(1320, 2)).nextRow()
-        .addItemRowWithPrefixMiddle(2, "Ravioli", "7%", BigDecimal.valueOf(1040, 2)).nextRow()
-        .addItemRowWithPrefixMiddle(1, "Spaghetti Sack", "19%", BigDecimal.valueOf(2755, 2)).nextRow()
-        .addTotalRow(BigDecimal.valueOf(5115, 2)).totalCaption("Zwischensumme netto").borderBottom(false).nextRow()
-        .addTotalRow(BigDecimal.valueOf(73, 2)).totalCaption("zzgl. MwSt. 7%").borderTop(false).borderBottom(false).nextRow()
-        .addTotalRow(BigDecimal.valueOf(774, 2)).totalCaption("zzgl. MwSt. 19%").borderTop(false).borderBottom(false).nextRow()
-        .addTotalRow(BigDecimal.valueOf(5115 + 73 + 774, 2)).totalCaption("Rechnungsbetrag").borderTop(false)
-
+        .configuration(config)
+        .header().text(header).and()
+        .text("Hi {{name}},").and()
+        .text("Thanks for using [Product Name]. This is an invoice for your recent purchase").and()
+        .tableSimple("#.## '€'")
+        .headerRow("Description", "Amount")
+        .itemRow("Special Product\n" +
+                "Some extra explanations in separate line", BigDecimal.valueOf(1333, 2))
+        .itemRow("Short service", BigDecimal.valueOf(103, 1))
+        .footerRow("Total", BigDecimal.valueOf(2363, 2))
         .and()
-        .addText("Vielen Dank für Ihren Auftrag").and()
-        .addButton("Link zur Bestellhistorie", "http://adasd").and()
-        .addText("Freundliche Grüße,").and()
-        .addText("Team XYZ").and()
-        .copyright("rocketbase").url("https://www.rocketbase.io")
+        .button("Download PDF", "http://localhost").gray().right().and()
+        .text("If you have any questions about this receipt, simply reply to this email or reach out to our support team for help.").and()
+        .copyright("rocketbase").url("https://www.rocketbase.io").suffix(". All rights reserved.").and()
+        .footerText("[Company Name, LLC]\n" +
+                "1234 Street Rd.\n" +
+                "Suite 1234").and()
         .build();
 ```
 
 ### preview HTML-Version
 
-![sample-table](assets/mail-sample-table.png)
+![sample-table](assets/v2-mail-sample-table.png)
+
+### sample table with image
+
+```java
+TbConfiguration config = TbConfiguration.newInstance();
+config.getContent().setWidth(800);
+
+HtmlTextEmail htmlTextEmail = builder
+        .configuration(config)
+        .header().text(header).and()
+        .text("Hi {{name}},").and()
+        .text("Thanks for using [Product Name]. This is an invoice for your recent purchase").and()
+        .tableSimpleWithImage("#.## '€'")
+        .headerRow("Preview", "Description", "Amount")
+        .itemRow("https://cdn.shopify.com/s/files/1/0255/1211/6260/products/TCW1142-07052_small.jpg?v=1589200198", "Damen Harbour Tanktop × 1\n" +
+                "QUARTZ PINK / S", BigDecimal.valueOf(4995, 2))
+        .itemRow("https://cdn.shopify.com/s/files/1/0255/1211/6260/products/TCM1886-0718_201_fdf0be52-639f-4ea8-9143-6bd75e0821b1_small.jpg?v=1583509609", "Herren ten Classic T-Shirt\n"+
+                "FOREST GREEN HEATHER / XL", BigDecimal.valueOf(3995, 2))
+        .itemRow("https://cdn.shopify.com/s/files/1/0255/1211/6260/products/TCM1939-0439_1332_da6f3e7c-e18d-4778-be97-c6c0b482b643_small.jpg?v=1583509671", "Herren Joshua Hanfshorts\n" +
+                "DARK OCEAN BLUE / XL", BigDecimal.valueOf(6995, 2))
+        .footerRow("Sum", BigDecimal.valueOf(15985, 2))
+        .footerRow("Code - PLANT5", BigDecimal.valueOf(-799, 2))
+        .footerRow("Total incl. Tax\n", BigDecimal.valueOf(15186, 2))
+        .and()
+        .button("Download PDF", "http://localhost").gray().right().and()
+        .text("If you have any questions about this receipt, simply reply to this email or reach out to our support team for help.").and()
+        .copyright("rocketbase").url("https://www.rocketbase.io").suffix(". All rights reserved.").and()
+        .footerText("[Company Name, LLC]\n" +
+                "1234 Street Rd.\n" +
+                "Suite 1234").and()
+        .build();
+```
+
+### preview HTML-Version
+
+![sample-table](assets/v2-mail-sample-table-image.png)
