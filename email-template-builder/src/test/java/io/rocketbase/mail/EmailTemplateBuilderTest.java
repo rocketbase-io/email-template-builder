@@ -2,8 +2,6 @@ package io.rocketbase.mail;
 
 import io.rocketbase.mail.config.TbConfiguration;
 import io.rocketbase.mail.model.HtmlTextEmail;
-import io.rocketbase.mail.styling.ColorStyle;
-import io.rocketbase.mail.styling.ColorStyleSimple;
 import org.junit.Test;
 import org.simplejavamail.api.email.Email;
 import org.simplejavamail.api.mailer.Mailer;
@@ -22,6 +20,7 @@ public class EmailTemplateBuilderTest {
 
     protected Mailer getMailer() {
         if (mailer == null) {
+            // default
             mailer = MailerBuilder.withSMTPServer("localhost", 1025)
                     .buildMailer();
         }
@@ -31,14 +30,15 @@ public class EmailTemplateBuilderTest {
     protected void sentEmail(String subject, HtmlTextEmail content) {
         try {
             Email email = EmailBuilder.startingBlank()
-                    .to("hello@test.de")
-                    .from("test@localhost")
+                    .to("melistik@icloud.com")
+                    .from("service@rocketbase.io")
                     .withSubject(subject)
                     .withHTMLText(content.getHtml())
                     .withPlainText(content.getText())
                     .buildEmail();
             getMailer().sendMail(email);
         } catch (Exception e) {
+
             // ignore error here - works only on local machine for visible test-purpose
         }
     }
@@ -49,35 +49,28 @@ public class EmailTemplateBuilderTest {
         EmailTemplateBuilder.EmailTemplateConfigBuilder builder = EmailTemplateBuilder.builder();
         String header = "test";
         // when
-        TbConfiguration config = TbConfiguration.newInstance();
-        config.getContent().setWidth(800);
-        config.getContent().setFull(true);
         HtmlTextEmail htmlTextEmail = builder
-                .configuration(config)
                 .header()
                 .logo("https://www.rocketbase.io/img/logo-dark.png").logoHeight(41)
                 .and()
-                .text("sample-text").and()
-                .text("link to google").linkUrl("https://www.google").and()
-                .text("link to rocketbase").bold().underline().linkUrl("https://www.rocketbase.io").color(ColorStyle.RED).center().and()
-                .image("https://cdn.rocketbase.io/assets/loading/no-image.jpg").alt("no-picture").width(300).center().and()
-                .hr().margin("20px 0").and()
-                .image("https://cdn.rocketbase.io/assets/signature/rocketbase-logo-signature-2020.png").alt("rocketbase").width(150).linkUrl("https://www.rocketbase.io").right().and()
-                .button("click me here", "http://localhost").red().right().and()
-                .button("gray is the new pink", "http://localhost").gray().left().and()
-                .button("button 1", "http://adasd").and()
-                .text("sample text").and()
+                .text("Welcome, {{name}}!").h1().center().and()
+                .text("Thanks for trying [Product Name]. We’re thrilled to have you on board. To get the most out of [Product Name], do this primary next step:").and()
+                .button("Do this Next", "http://localhost").blue().and()
+                .text("For reference, here's your login information:").and()
                 .attribute()
-                .keyValue("KEY 1", "Value 123")
-                .keyValue("KEY 2", "Value ABC")
+                .keyValue("Login Page", "{{login_url}}")
+                .keyValue("Username", "{{username}}")
                 .and()
-                .text("another text").and()
-                .copyright("rocketbase").url("https://www.rocketbase.io").and()
-                .footerText("my agb can be found here").linkUrl("http://localhost").and()
-                .footerImage("https://cdn.rocketbase.io/assets/loading/no-image.jpg").height(50).right().and()
-                .footerHr().and()
-                .footerText("my little text").underline().bold().and()
-                .footerImage("https://cdn.rocketbase.io/assets/loading/no-image.jpg").width(100).left().linkUrl("https://www.rocketbase.io").and()
+                .html("If you have any questions, feel free to <a href=\"mailto:{{support_email}}\">email our customer success team</a>. (We're lightning quick at replying.) We also offer <a href=\"{{live_chat_url}}\">live chat</a> during business hours.",
+                        "If you have any questions, feel free to email our customer success team\n" +
+                                "(We're lightning quick at replying.) We also offer live chat during business hours.").and()
+                .text("Cheers,\n" +
+                        "The [Product Name] Team").and()
+                .copyright("rocketbase").url("https://www.rocketbase.io").suffix(". All rights reserved.").and()
+                .footerText("[Company Name, LLC]\n" +
+                        "1234 Street Rd.\n" +
+                        "Suite 1234").and()
+                .footerImage("https://cdn.rocketbase.io/assets/loading/no-image.jpg").width(100).linkUrl("https://www.rocketbase.io").and()
                 .build();
         // then
         assertThat(htmlTextEmail, notNullValue());
@@ -90,24 +83,71 @@ public class EmailTemplateBuilderTest {
         // given
         EmailTemplateBuilder.EmailTemplateConfigBuilder builder = EmailTemplateBuilder.builder();
 
-        String header = "test";
-        ColorStyleSimple headerStyle = new ColorStyleSimple("000000", "ff0000");
+        String header = "Invoice {{invoice_id}}";
         // when
+        TbConfiguration config = TbConfiguration.newInstance();
+        config.getContent().setFull(true);
         HtmlTextEmail htmlTextEmail = builder
+                .configuration(config)
                 .header().text(header).and()
-                .text("sample-text").and()
+                .text("Hi {{name}},").and()
+                .text("Thanks for using [Product Name]. This is an invoice for your recent purchase").and()
                 .tableSimple("#.## '€'")
                 .headerRow("Description", "Amount")
-                .itemRow("Special Product", BigDecimal.valueOf(1333, 2))
+                .itemRow("Special Product\n" +
+                        "Some extra explanations in separate line", BigDecimal.valueOf(1333, 2))
                 .itemRow("Short service", BigDecimal.valueOf(103, 1))
                 .footerRow("Total", BigDecimal.valueOf(2363, 2))
                 .and()
-                .button("button 1", "http://adasd").and()
-                .copyright("rocketbase").url("https://www.rocketbase.io")
+                .button("Download PDF", "http://localhost").gray().right().and()
+                .text("If you have any questions about this receipt, simply reply to this email or reach out to our support team for help.").and()
+                .copyright("rocketbase").url("https://www.rocketbase.io").suffix(". All rights reserved.").and()
+                .footerText("[Company Name, LLC]\n" +
+                        "1234 Street Rd.\n" +
+                        "Suite 1234").and()
                 .build();
         // then
         assertThat(htmlTextEmail, notNullValue());
         sentEmail("standardTableTestHtml", htmlTextEmail);
+    }
+
+    @Test
+    public void standardTableExtendedTestHtml() {
+        // given
+        EmailTemplateBuilder.EmailTemplateConfigBuilder builder = EmailTemplateBuilder.builder();
+
+        String header = "Invoice {{invoice_id}}";
+        // when
+        TbConfiguration config = TbConfiguration.newInstance();
+        config.getContent().setWidth(800);
+
+        HtmlTextEmail htmlTextEmail = builder
+                .configuration(config)
+                .header().text(header).and()
+                .text("Hi {{name}},").and()
+                .text("Thanks for using [Product Name]. This is an invoice for your recent purchase").and()
+                .tableSimpleWithImage("#.## '€'")
+                .headerRow("Preview", "Description", "Amount")
+                .itemRow("https://cdn.shopify.com/s/files/1/0255/1211/6260/products/TCW1142-07052_small.jpg?v=1589200198", "Damen Harbour Tanktop × 1\n" +
+                        "QUARTZ PINK / S", BigDecimal.valueOf(4995, 2))
+                .itemRow("https://cdn.shopify.com/s/files/1/0255/1211/6260/products/TCM1886-0718_201_fdf0be52-639f-4ea8-9143-6bd75e0821b1_small.jpg?v=1583509609", "Herren ten Classic T-Shirt\n"+
+                        "FOREST GREEN HEATHER / XL", BigDecimal.valueOf(3995, 2))
+                .itemRow("https://cdn.shopify.com/s/files/1/0255/1211/6260/products/TCM1939-0439_1332_da6f3e7c-e18d-4778-be97-c6c0b482b643_small.jpg?v=1583509671", "Herren Joshua Hanfshorts\n" +
+                        "DARK OCEAN BLUE / XL", BigDecimal.valueOf(6995, 2))
+                .footerRow("Sum", BigDecimal.valueOf(15985, 2))
+                .footerRow("Code - PLANT5", BigDecimal.valueOf(-799, 2))
+                .footerRow("Total incl. Tax\n", BigDecimal.valueOf(15186, 2))
+                .and()
+                .button("Download PDF", "http://localhost").gray().right().and()
+                .text("If you have any questions about this receipt, simply reply to this email or reach out to our support team for help.").and()
+                .copyright("rocketbase").url("https://www.rocketbase.io").suffix(". All rights reserved.").and()
+                .footerText("[Company Name, LLC]\n" +
+                        "1234 Street Rd.\n" +
+                        "Suite 1234").and()
+                .build();
+        // then
+        assertThat(htmlTextEmail, notNullValue());
+        sentEmail("standardTableExtendedTestHtml", htmlTextEmail);
     }
 
     @Test

@@ -91,6 +91,12 @@
             margin: {{ c.text.margin | default('.4em 0 1.1875em') }};
             line-height: {{ c.text.lineHeight | default('1.625') }};
         }
+
+        .table_footer p {
+            margin: auto;
+            line-height: auto;
+        }
+
         /* Utilities ------------------------------ */
 
         .align-right {
@@ -160,11 +166,6 @@
             margin: 0;
             color: {{ c.table.heading.color | default('#85878E') }};
             font-size: {{ c.table.heading.size | default('12px') }};
-        }
-
-        .table_footer {
-            padding-top: 15px;
-            border-top: {{ c.table.border.size | default('1px') }} solid {{ c.table.border.color | default('#EAEAEC') }};
         }
 
         body {
@@ -340,7 +341,7 @@
         <hr {% if line.margin is not empty %}style="margin: {{ line.margin}}"{% endif %}>
 
     {% elseif line.type == 'TEXT' %}
-        <p class="f-fallback" style="color: {{ line.color | default(c.text.color) | default('#51545E') }}; {% if line.alignment is not empty %}text-align: {{ line.alignment.value }}; {% endif %}{% if line.fontWeight is not empty %}font-weight: {{ line.fontWeight.value }}{% endif %}; {% if line.fontStyle is not empty %}font-style: {{ line.fontStyle.value }}{% endif %}; {% if line.textDecoration is not empty %}text-decoration: {{ line.textDecoration.value }}{% endif %}; color: {{ line.color | default(c.text.color) | default('#51545E') }}; font-size: {{ line.fontSize | default(c.text.size) | default('16px') }};">{% if line.linkUrl is not empty %}<a target="_blank" href="{{- line.linkUrl | raw -}}" style="color: {{ line.color | default(c.text.linkColor) | default('#3869D4')  }};">{% endif %}{{ line.text | escape }}{% if line.linkUrl is not empty %}</a>{% endif %}</p>
+        <p class="f-fallback" style="color: {{ line.color | default(c.text.color) | default('#51545E') }}; {% if line.alignment is not empty %}text-align: {{ line.alignment.value }}; {% endif %}{% if line.fontWeight is not empty %}font-weight: {{ line.fontWeight.value }}{% endif %}; {% if line.fontStyle is not empty %}font-style: {{ line.fontStyle.value }}{% endif %}; {% if line.textDecoration is not empty %}text-decoration: {{ line.textDecoration.value }}{% endif %}; color: {{ line.color | default(c.text.color) | default('#51545E') }}; font-size: {{ line.fontSize | default(c.text.size) | default('16px') }};">{% if line.linkUrl is not empty %}<a target="_blank" href="{{- line.linkUrl | raw -}}" style="color: {{ line.color | default(c.text.linkColor) | default('#3869D4')  }};">{% endif %}{{ line.text | escape | br | raw }}{% if line.linkUrl is not empty %}</a>{% endif %}</p>
 
     {% elseif line.type == 'HTML' %}
         <p class="f-fallback" >{{ line.html | raw }}</p>
@@ -403,7 +404,7 @@
             <tr>
                 {% for col in head %}
                 <th class="table_heading" align="{{- line.header[loop.index].alignment.value | default('left') -}}" {% if line.header[loop.index].width is not empty %}width="{{- line.header[loop.index].width -}}"{% endif %} colspan="{{- line.header[loop.index].colspan | default('1') -}}">
-                    <p class="f-fallback" style="{% if col.alignment is not empty %}text-align: {{ col.alignment.value }};{% endif %}{% if col.fontWeight is not empty %}font-weight: {{ col.fontWeight.value }}{% endif %};{% if col.fontStyle is not empty %}font-style: {{ col.fontStyle.value }}{% endif %};{% if col.textDecoration is not empty %}text-decoration: {{ col.textDecoration.value }}{% endif %};">{{ col | escape }}</p>
+                    <p class="f-fallback" style="{% if col.alignment is not empty %}text-align: {{ col.alignment.value }};{% endif %}{% if col.fontWeight is not empty %}font-weight: {{ col.fontWeight.value }}{% endif %};{% if col.fontStyle is not empty %}font-style: {{ col.fontStyle.value }}{% endif %};{% if col.textDecoration is not empty %}text-decoration: {{ col.textDecoration.value }}{% endif %};">{{ col | escape | br | raw }}</p>
                 </th>
                 {% endfor %}
             </tr>
@@ -413,7 +414,7 @@
                 {% for col in item %}
                 <td class="table_item" align="{{- line.item[loop.index].alignment.value | default('left') -}}" {% if line.item[loop.index].width is not empty %}width="{{- line.item[loop.index].width -}}"{% endif %} colspan="{{- line.item[loop.index].colspan | default('1') -}}">
                     {% if col.type is empty %}
-                        <span class="f-fallback" style="{% if line.item[loop.index].alignment is not empty %}text-align: {{ line.item[loop.index].alignment.value }};{% endif %}{% if line.item[loop.index].fontWeight is not empty %}font-weight: {{ line.item[loop.index].fontWeight.value }}{% endif %};{% if line.item[loop.index].fontStyle is not empty %}font-style: {{ line.item[loop.index].fontStyle.value }}{% endif %};{% if line.item[loop.index].textDecoration is not empty %}text-decoration: {{ line.item[loop.index].textDecoration.value }}{% endif %};">{% if line.item[loop.index].numberFormat is empty %}{{ col | escape }}{% else %}{{ col | numberformat(line.item[loop.index].numberFormat) }}{% endif %}</span>
+                        <span class="f-fallback" style="{% if line.item[loop.index].alignment is not empty %}text-align: {{ line.item[loop.index].alignment.value }};{% endif %}{% if line.item[loop.index].fontWeight is not empty %}font-weight: {{ line.item[loop.index].fontWeight.value }}{% endif %};{% if line.item[loop.index].fontStyle is not empty %}font-style: {{ line.item[loop.index].fontStyle.value }}{% endif %};{% if line.item[loop.index].textDecoration is not empty %}text-decoration: {{ line.item[loop.index].textDecoration.value }}{% endif %};">{% if line.item[loop.index].numberFormat is empty %}{{ col | escape | br | raw }}{% else %}{{ col | numberformat(line.item[loop.index].numberFormat) }}{% endif %}</span>
 
                     {% elseif col.type == 'LINK' %}
                         <a class="f-fallback" style="{% if line.item[loop.index].alignment is not empty %}text-align: {{ line.item[loop.index].alignment.value }};{% endif %}{% if line.item[loop.index].fontWeight is not empty %}font-weight: {{ line.item[loop.index].fontWeight.value }}{% endif %};{% if line.item[loop.index].fontStyle is not empty %}font-style: {{ line.item[loop.index].fontStyle.value }}{% endif %};{% if line.item[loop.index].textDecoration is not empty %}text-decoration: {{ line.item[loop.index].textDecoration.value }}{% endif %};" href="{{- col.linkUrl | raw -}}">{{ col.text | escape }}</a>
@@ -430,9 +431,10 @@
             {% endfor %}
             {% for footer in line.footerRows %}
             <tr>
+                {% set firstLoop = loop.first %}
                 {% for col in footer %}
-                <td class="table_footer" align="{{- line.footer[loop.index].alignment.value | default('left') -}}" {% if line.footer[loop.index].width is not empty %}width="{{- line.footer[loop.index].width -}}"{% endif %} colspan="{{- line.footer[loop.index].colspan | default('1') -}}">
-                    <p class="f-fallback" style="{% if line.footer[loop.index].alignment is not empty %}text-align: {{ line.footer[loop.index].alignment.value }};{% endif %}{% if line.footer[loop.index].fontWeight is not empty %}font-weight: {{ line.footer[loop.index].fontWeight.value }}{% endif %};{% if line.footer[loop.index].fontStyle is not empty %}font-style: {{ line.footer[loop.index].fontStyle.value }}{% endif %};{% if line.footer[loop.index].textDecoration is not empty %}text-decoration: {{ line.footer[loop.index].textDecoration.value }}{% endif %};">{% if line.item[loop.index].numberFormat is empty %}{{ col | escape }}{% else %}{{ col | numberformat(line.item[loop.index].numberFormat) }}{% endif %}</p>
+                <td class="table_footer" align="{{- line.footer[loop.index].alignment.value | default('left') -}}" {% if line.footer[loop.index].width is not empty %}width="{{- line.footer[loop.index].width -}}"{% endif %} colspan="{{- line.footer[loop.index].colspan | default('1') -}}" style="{% if firstLoop %}border-top: {{ c.table.border.size | default('1px') }} solid {{ c.table.border.color | default('#EAEAEC') }};padding-top: 15px;{% endif %}">
+                    <p class="f-fallback" style="{% if line.footer[loop.index].alignment is not empty %}text-align: {{ line.footer[loop.index].alignment.value }};{% endif %}{% if line.footer[loop.index].fontWeight is not empty %}font-weight: {{ line.footer[loop.index].fontWeight.value }}{% endif %};{% if line.footer[loop.index].fontStyle is not empty %}font-style: {{ line.footer[loop.index].fontStyle.value }}{% endif %};{% if line.footer[loop.index].textDecoration is not empty %}text-decoration: {{ line.footer[loop.index].textDecoration.value }}{% endif %};">{% if line.item[loop.index].numberFormat is empty %}{{ col | escape | br | raw }}{% else %}{{ col | numberformat(line.item[loop.index].numberFormat) }}{% endif %}</p>
                 </td>
                 {% endfor %}
             </tr>
@@ -462,10 +464,10 @@
     <hr {% if line.margin is not empty %}style="margin: {{ line.margin}}"{% endif %}>
 
     {% elseif line.type == 'COPYRIGHT' %}
-    <p class="f-fallback sub" style="font-size: {{ c.font.sub.size | default('13px') }};">&copy;{{ line.year }} {% if line.url is not empty %}<a href="{{- line.url | raw -}}">{% endif %}{{ line.name | escape }}{% if line.url is not empty %}</a>{% endif %}</p>
+    <p class="f-fallback sub" style="font-size: {{ c.font.sub.size | default('13px') }};">&copy;{{ line.year }} {% if line.url is not empty %}<a href="{{- line.url | raw -}}">{% endif %}{{ line.name | escape }}{% if line.url is not empty %}</a>{% endif %}{% if line.suffix is not empty %}{{ line.suffix }}{% endif %}</p>
 
     {% elseif line.type == 'TEXT' %}
-    <p class="f-fallback sub" style="{% if line.alignment is not empty %}text-align: {{ line.alignment.value }}; {% endif %}{% if line.fontWeight is not empty %}font-weight: {{ line.fontWeight.value }}{% endif %}; {% if line.fontStyle is not empty %}font-style: {{ line.fontStyle.value }}{% endif %}; {% if line.textDecoration is not empty %}text-decoration: {{ line.textDecoration.value }}{% endif %}; font-size: {{ line.fontSize | default(c.font.sub.size) | default('13px') }};">{% if line.linkUrl is not empty %}<a target="_blank" href="{{- line.linkUrl | raw -}}" >{% endif %}{{ line.text | escape }}{% if line.linkUrl is not empty %}</a>{% endif %}</p>
+    <p class="f-fallback sub" style="{% if line.alignment is not empty %}text-align: {{ line.alignment.value }}; {% endif %}{% if line.fontWeight is not empty %}font-weight: {{ line.fontWeight.value }}{% endif %}; {% if line.fontStyle is not empty %}font-style: {{ line.fontStyle.value }}{% endif %}; {% if line.textDecoration is not empty %}text-decoration: {{ line.textDecoration.value }}{% endif %}; font-size: {{ line.fontSize | default(c.font.sub.size) | default('13px') }};">{% if line.linkUrl is not empty %}<a target="_blank" href="{{- line.linkUrl | raw -}}" >{% endif %}{{ line.text | escape | br | raw }}{% if line.linkUrl is not empty %}</a>{% endif %}</p>
 
     {% elseif line.type == 'HTML' %}
     <p class="f-fallback sub" style="font-size: {{ c.font.sub.size | default('13px') }};">{{ line.html | raw }}</p>

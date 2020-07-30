@@ -2,6 +2,9 @@ package io.rocketbase.mail;
 
 import com.mitchellbosecke.pebble.PebbleEngine;
 import com.mitchellbosecke.pebble.error.PebbleException;
+import com.mitchellbosecke.pebble.extension.AbstractExtension;
+import com.mitchellbosecke.pebble.extension.Filter;
+import com.mitchellbosecke.pebble.template.EvaluationContext;
 import com.mitchellbosecke.pebble.template.PebbleTemplate;
 import io.rocketbase.mail.config.TbConfiguration;
 import io.rocketbase.mail.model.HtmlTextEmail;
@@ -23,10 +26,37 @@ public final class EmailTemplateBuilder {
     private static final PebbleEngine ENGINE = new PebbleEngine.Builder()
             .strictVariables(false)
             .autoEscaping(false)
+            .extension(new PebbleEmailExtension())
             .build();
 
     public static EmailTemplateConfigBuilder builder() {
         return new EmailTemplateConfigBuilder();
+    }
+
+
+    public static class PebbleEmailExtension extends AbstractExtension {
+        @Override
+        public Map<String, Filter> getFilters() {
+            Map<String, Filter> filters = new HashMap<>();
+            filters.put("br", new BrFilter());
+            return filters;
+        }
+
+        public static final class BrFilter implements Filter {
+
+            @Override
+            public Object apply(Object o, Map<String, Object> map, PebbleTemplate pebbleTemplate, EvaluationContext evaluationContext, int i) throws PebbleException {
+                if (o == null) {
+                    return null;
+                }
+                return o.toString().replace("\n", "<br>");
+            }
+
+            @Override
+            public List<String> getArgumentNames() {
+                return null;
+            }
+        }
     }
 
 

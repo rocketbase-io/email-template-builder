@@ -57,7 +57,7 @@ TABLE IS NOT YET AVAILABLE ON TXT-EMAIL
 
 {% elseif line.type == 'COPYRIGHT' %}
 
-©{{ line.year }} {{line.name }}{% if line.url is not empty %} -> {{ line.url | raw }}{% endif %}
+©{{ line.year }} {{line.name }}{% if line.url is not empty %} -> {{ line.url | raw }}{% endif %}{% if line.suffix is not empty %}{{ line.suffix }}{% endif %}
 
 {% elseif line.type == 'TEXT' %}
 

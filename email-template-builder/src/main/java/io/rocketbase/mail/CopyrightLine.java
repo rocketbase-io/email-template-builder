@@ -12,6 +12,7 @@ public class CopyrightLine implements TemplateLine {
     final String name;
     Integer year;
     String url;
+    String suffix;
 
     @Getter(AccessLevel.PRIVATE)
     EmailTemplateBuilder.EmailTemplateConfigBuilder builder;
@@ -29,6 +30,11 @@ public class CopyrightLine implements TemplateLine {
 
     public CopyrightLine url(String url) {
         this.url = url;
+        return this;
+    }
+
+    public CopyrightLine suffix(String suffix) {
+        this.suffix = suffix;
         return this;
     }
 
