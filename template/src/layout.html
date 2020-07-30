@@ -79,7 +79,6 @@
             color: {{ c.font.table.color | default('#333333') }};
         }
 
-        p,
         ul,
         ol,
         blockquote {
@@ -88,8 +87,9 @@
             line-height: {{ c.text.lineHeight | default('1.625') }};
         }
 
-        p.sub {
-            font-size: {{ c.font.sub.size | default('13px') }};
+        p {
+            margin: {{ c.text.margin | default('.4em 0 1.1875em') }};
+            line-height: {{ c.text.lineHeight | default('1.625') }};
         }
         /* Utilities ------------------------------ */
 
@@ -340,10 +340,10 @@
         <hr {% if line.margin is not empty %}style="margin: {{ line.margin}}"{% endif %}>
 
     {% elseif line.type == 'TEXT' %}
-        <p style="color: {{ line.color | default(c.text.color) | default('#51545E') }}; {% if line.alignment is not empty %}text-align: {{ line.alignment.value }};{% endif %}{% if line.fontWeight is not empty %}font-weight: {{ line.fontWeight.value }}{% endif %};{% if line.fontStyle is not empty %}font-style: {{ line.fontStyle.value }}{% endif %};{% if line.textDecoration is not empty %}text-decoration: {{ line.textDecoration.value }}{% endif %};">{% if line.linkUrl is not empty %}<a target="_blank" href="{{- line.linkUrl | raw -}}" style="color: {{ line.color | default(c.text.linkColor) | default('#3869D4')  }};">{% endif %}{{ line.text | escape }}{% if line.linkUrl is not empty %}</a>{% endif %}</p>
+        <p class="f-fallback" style="color: {{ line.color | default(c.text.color) | default('#51545E') }}; {% if line.alignment is not empty %}text-align: {{ line.alignment.value }}; {% endif %}{% if line.fontWeight is not empty %}font-weight: {{ line.fontWeight.value }}{% endif %}; {% if line.fontStyle is not empty %}font-style: {{ line.fontStyle.value }}{% endif %}; {% if line.textDecoration is not empty %}text-decoration: {{ line.textDecoration.value }}{% endif %}; color: {{ line.color | default(c.text.color) | default('#51545E') }}; font-size: {{ line.fontSize | default(c.text.size) | default('16px') }};">{% if line.linkUrl is not empty %}<a target="_blank" href="{{- line.linkUrl | raw -}}" style="color: {{ line.color | default(c.text.linkColor) | default('#3869D4')  }};">{% endif %}{{ line.text | escape }}{% if line.linkUrl is not empty %}</a>{% endif %}</p>
 
     {% elseif line.type == 'HTML' %}
-        <p>{{ line.html | raw }}</p>
+        <p class="f-fallback" >{{ line.html | raw }}</p>
 
     {% elseif line.type == 'MARKDOWN' %}
         {{ line.html | raw }}
@@ -462,19 +462,19 @@
     <hr {% if line.margin is not empty %}style="margin: {{ line.margin}}"{% endif %}>
 
     {% elseif line.type == 'COPYRIGHT' %}
-    <p class="f-fallback sub">&copy;{{ line.year }} {% if line.url is not empty %}<a href="{{- line.url | raw -}}">{% endif %}{{ line.name | escape }}{% if line.url is not empty %}</a>{% endif %}</p>
+    <p class="f-fallback sub" style="font-size: {{ c.font.sub.size | default('13px') }};">&copy;{{ line.year }} {% if line.url is not empty %}<a href="{{- line.url | raw -}}">{% endif %}{{ line.name | escape }}{% if line.url is not empty %}</a>{% endif %}</p>
 
     {% elseif line.type == 'TEXT' %}
-    <p class="f-fallback sub" style="{% if line.alignment is not empty %}text-align: {{ line.alignment.value }};{% endif %}{% if line.fontWeight is not empty %}font-weight: {{ line.fontWeight.value }}{% endif %};{% if line.fontStyle is not empty %}font-style: {{ line.fontStyle.value }}{% endif %};{% if line.textDecoration is not empty %}text-decoration: {{ line.textDecoration.value }}{% endif %};">{% if line.linkUrl is not empty %}<a target="_blank" href="{{- line.linkUrl | raw -}}" >{% endif %}{{ line.text | escape }}{% if line.linkUrl is not empty %}</a>{% endif %}</p>
+    <p class="f-fallback sub" style="{% if line.alignment is not empty %}text-align: {{ line.alignment.value }}; {% endif %}{% if line.fontWeight is not empty %}font-weight: {{ line.fontWeight.value }}{% endif %}; {% if line.fontStyle is not empty %}font-style: {{ line.fontStyle.value }}{% endif %}; {% if line.textDecoration is not empty %}text-decoration: {{ line.textDecoration.value }}{% endif %}; font-size: {{ line.fontSize | default(c.font.sub.size) | default('13px') }};">{% if line.linkUrl is not empty %}<a target="_blank" href="{{- line.linkUrl | raw -}}" >{% endif %}{{ line.text | escape }}{% if line.linkUrl is not empty %}</a>{% endif %}</p>
 
     {% elseif line.type == 'HTML' %}
-    <p class="f-fallback sub">{{ line.html | raw }}</p>
+    <p class="f-fallback sub" style="font-size: {{ c.font.sub.size | default('13px') }};">{{ line.html | raw }}</p>
 
     {% elseif line.type == 'MARKDOWN' %}
-    <p class="f-fallback sub">{{ line.html | raw }}</p>
+    <p class="f-fallback sub" style="font-size: {{ c.font.sub.size | default('13px') }};">{{ line.html | raw }}</p>
 
     {% elseif line.type == 'IMAGE' %}
-    <p class="f-fallback sub">
+    <p class="f-fallback sub" style="font-size: {{ c.font.sub.size | default('13px') }};">
         {% if line.linkUrl is not empty %}<a target="_blank" href="{{- line.linkUrl | raw -}}">{% endif %}
         <img border="0" vspace="0" hspace="0" src="{{- line.src | raw -}}" alt="{{- line.alt | default('') -}}" title="{{- line.title | escape -}}" {% if line.width is not empty %}width="{{- line.width -}}"{% endif %} {% if line.height is not empty %}height="{{- line.height -}}"{% endif %}/>
         {% if line.linkUrl is not empty %}</a>{% endif %}

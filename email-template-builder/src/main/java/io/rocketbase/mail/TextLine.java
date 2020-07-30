@@ -1,6 +1,7 @@
 package io.rocketbase.mail;
 
 import io.rocketbase.mail.EmailTemplateBuilder.EmailTemplateConfigBuilder;
+import io.rocketbase.mail.config.base.TbFont;
 import io.rocketbase.mail.model.HtmlTextEmail;
 import io.rocketbase.mail.styling.Alignment;
 import io.rocketbase.mail.styling.FontStyle;
@@ -18,6 +19,7 @@ public class TextLine implements TemplateLine {
     Alignment alignment;
     FontStyle fontStyle;
     FontWeight fontWeight;
+    String fontSize;
     TextDecoration textDecoration;
     String color;
 
@@ -91,6 +93,40 @@ public class TextLine implements TemplateLine {
 
     public TextLine lineThrough() {
         this.textDecoration = TextDecoration.LINE_THROUGH;
+        return this;
+    }
+
+    public TextLine fontSize(String fontSize) {
+        this.fontSize = fontSize;
+        return this;
+    }
+
+    public TextLine tbFont(TbFont tbFont) {
+        this.fontSize = tbFont.getSize();
+        this.color = tbFont.getColor();
+        return this;
+    }
+
+    public TextLine h1() {
+        tbFont(builder.getConfiguration().getFont().getH1());
+        this.fontWeight = FontWeight.BOLD;
+        return this;
+    }
+
+    public TextLine h2() {
+        tbFont(builder.getConfiguration().getFont().getH2());
+        this.fontWeight = FontWeight.BOLD;
+        return this;
+    }
+
+    public TextLine h3() {
+        tbFont(builder.getConfiguration().getFont().getH3());
+        this.fontWeight = FontWeight.BOLD;
+        return this;
+    }
+
+    public TextLine sub() {
+        tbFont(builder.getConfiguration().getFont().getSub());
         return this;
     }
 
