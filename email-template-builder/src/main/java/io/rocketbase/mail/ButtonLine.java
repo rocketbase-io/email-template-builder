@@ -3,6 +3,7 @@ package io.rocketbase.mail;
 import io.rocketbase.commons.colors.ColorPalette;
 import io.rocketbase.mail.model.HtmlTextEmail;
 import io.rocketbase.mail.styling.Alignment;
+import io.rocketbase.mail.styling.ColorStyle;
 import io.rocketbase.mail.styling.ColorStyleSimple;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -12,7 +13,7 @@ public class ButtonLine implements TemplateLine {
 
     final String text;
     final String url;
-    ColorStyleSimple color = ColorStyleSimple.BASE_STYLE;
+    ColorStyle color = ColorStyleSimple.BASE_STYLE;
     Alignment alignment = Alignment.CENTER;
 
     @Getter(AccessLevel.PRIVATE)
@@ -25,7 +26,7 @@ public class ButtonLine implements TemplateLine {
         this.url = url;
     }
 
-    public ButtonLine color(ColorStyleSimple color) {
+    public ButtonLine color(ColorStyle color) {
         this.color = color;
         return this;
     }
