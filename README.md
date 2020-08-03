@@ -175,3 +175,5 @@ HtmlTextEmail htmlTextEmail = builder
 ### preview HTML-Version
 
 ![sample-table](assets/v2-mail-sample-table-image.png)
+
+A custom table example could be found in [wiki](https://github.com/rocketbase-io/email-template-builder/wiki/Custom-Table).

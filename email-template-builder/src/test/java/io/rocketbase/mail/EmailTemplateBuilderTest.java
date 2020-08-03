@@ -163,14 +163,13 @@ public class EmailTemplateBuilderTest {
         // given
         EmailTemplateBuilder.EmailTemplateConfigBuilder builder = EmailTemplateBuilder.builder();
 
-        String header = "Invoice {{invoice_id}}";
-        // when
+// when
         TbConfiguration config = TbConfiguration.newInstance();
         config.getContent().setWidth(800);
 
         builder
                 .configuration(config)
-                .header().text(header).and()
+                .header().text("Invoice {{invoice_id}}").and()
                 .text("Hi {{name}},").and()
                 .text("Thanks for using [Product Name]. This is an invoice for your recent purchase");
 
@@ -298,79 +297,79 @@ public class EmailTemplateBuilderTest {
         sentEmail("forcedHtml", htmlTextEmail);
     }
 
-@Getter
-public static class CustomTable implements TableLine {
+    @Getter
+    public static class CustomTable implements TableLine {
 
-    List<List<Object>> headerRows = new ArrayList<>();
-    List<List<Object>> itemRows = new ArrayList<>();
-    List<List<Object>> footerRows = new ArrayList<>();
-    @Getter(AccessLevel.PRIVATE)
-    EmailTemplateBuilder.EmailTemplateConfigBuilder builder;
-    private AtomicInteger posCounter = new AtomicInteger(1);
+        List<List<Object>> headerRows = new ArrayList<>();
+        List<List<Object>> itemRows = new ArrayList<>();
+        List<List<Object>> footerRows = new ArrayList<>();
+        @Getter(AccessLevel.PRIVATE)
+        EmailTemplateBuilder.EmailTemplateConfigBuilder builder;
+        private AtomicInteger posCounter = new AtomicInteger(1);
 
-    public CustomTable(EmailTemplateBuilder.EmailTemplateConfigBuilder builder) {
-        this.builder = builder;
+        public CustomTable(EmailTemplateBuilder.EmailTemplateConfigBuilder builder) {
+            this.builder = builder;
 
-        headerRows.add(Arrays.asList("Pos", "Description", "Tax", "Amount"));
+            headerRows.add(Arrays.asList("Pos", "Description", "Tax", "Amount"));
+        }
+
+        @Override
+        public EmailTemplateBuilder.EmailTemplateConfigBuilder and() {
+            return builder;
+        }
+
+        @Override
+        public HtmlTextEmail build() {
+            return builder.build();
+        }
+
+        public CustomTable itemRow(TableCellImage image, TableCellLink description, BigDecimal tax, BigDecimal amount) {
+            itemRows.add(Arrays.asList(posCounter.getAndIncrement(), image, description, tax, amount));
+            return this;
+        }
+
+        public CustomTable footerRow(TableCellHtml label, TableCellHtml amount) {
+            footerRows.add(Arrays.asList(label, amount));
+            return this;
+        }
+
+        @Override
+        public List<ColumnConfig> getHeader() {
+            return Arrays.asList(new ColumnConfig()
+                            .center(),
+                    new ColumnConfig()
+                            .colspan(2)
+                            .width("60%"),
+                    new ColumnConfig()
+                            .alignment(Alignment.RIGHT),
+                    new ColumnConfig()
+                            .width("20%")
+                            .alignment(Alignment.RIGHT));
+        }
+
+        @Override
+        public List<ColumnConfig> getItem() {
+            return Arrays.asList(new ColumnConfig().center(),
+                    new ColumnConfig()
+                            .width(90),
+                    new ColumnConfig()
+                            .lighter(),
+                    new ColumnConfig()
+                            .numberFormat("# '%'")
+                            .italic()
+                            .right(),
+                    new ColumnConfig()
+                            .numberFormat("#.## '€'")
+                            .right());
+        }
+
+        @Override
+        public List<ColumnConfig> getFooter() {
+            return Arrays.asList(new ColumnConfig()
+                            .colspan(4)
+                            .alignment(Alignment.RIGHT),
+                    new ColumnConfig()
+                            .alignment(Alignment.RIGHT));
+        }
     }
-
-    @Override
-    public EmailTemplateBuilder.EmailTemplateConfigBuilder and() {
-        return builder;
-    }
-
-    @Override
-    public HtmlTextEmail build() {
-        return builder.build();
-    }
-
-    public CustomTable itemRow(TableCellImage image, TableCellLink description, BigDecimal tax, BigDecimal amount) {
-        itemRows.add(Arrays.asList(posCounter.getAndIncrement(), image, description, tax, amount));
-        return this;
-    }
-
-    public CustomTable footerRow(TableCellHtml label, TableCellHtml amount) {
-        footerRows.add(Arrays.asList(label, amount));
-        return this;
-    }
-
-    @Override
-    public List<ColumnConfig> getHeader() {
-        return Arrays.asList(new ColumnConfig()
-                        .center(),
-                new ColumnConfig()
-                        .colspan(2)
-                        .width("60%"),
-                new ColumnConfig()
-                        .alignment(Alignment.RIGHT),
-                new ColumnConfig()
-                        .width("20%")
-                        .alignment(Alignment.RIGHT));
-    }
-
-    @Override
-    public List<ColumnConfig> getItem() {
-        return Arrays.asList(new ColumnConfig().center(),
-                new ColumnConfig()
-                        .width(90),
-                new ColumnConfig()
-                        .lighter(),
-                new ColumnConfig()
-                        .numberFormat("# '%'")
-                        .italic()
-                        .right(),
-                new ColumnConfig()
-                        .numberFormat("#.## '€'")
-                        .right());
-    }
-
-    @Override
-    public List<ColumnConfig> getFooter() {
-        return Arrays.asList(new ColumnConfig()
-                        .colspan(4)
-                        .alignment(Alignment.RIGHT),
-                new ColumnConfig()
-                        .alignment(Alignment.RIGHT));
-    }
-}
 }
