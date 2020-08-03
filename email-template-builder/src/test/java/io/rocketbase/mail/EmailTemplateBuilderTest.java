@@ -2,6 +2,10 @@ package io.rocketbase.mail;
 
 import io.rocketbase.mail.config.TbConfiguration;
 import io.rocketbase.mail.model.HtmlTextEmail;
+import io.rocketbase.mail.styling.Alignment;
+import io.rocketbase.mail.table.*;
+import lombok.AccessLevel;
+import lombok.Getter;
 import org.junit.Test;
 import org.simplejavamail.api.email.Email;
 import org.simplejavamail.api.mailer.Mailer;
@@ -10,6 +14,10 @@ import org.simplejavamail.mailer.MailerBuilder;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
@@ -130,7 +138,7 @@ public class EmailTemplateBuilderTest {
                 .headerRow("Preview", "Description", "Amount")
                 .itemRow("https://cdn.shopify.com/s/files/1/0255/1211/6260/products/TCW1142-07052_small.jpg?v=1589200198", "Damen Harbour Tanktop × 1\n" +
                         "QUARTZ PINK / S", BigDecimal.valueOf(4995, 2))
-                .itemRow("https://cdn.shopify.com/s/files/1/0255/1211/6260/products/TCM1886-0718_201_fdf0be52-639f-4ea8-9143-6bd75e0821b1_small.jpg?v=1583509609", "Herren ten Classic T-Shirt\n"+
+                .itemRow("https://cdn.shopify.com/s/files/1/0255/1211/6260/products/TCM1886-0718_201_fdf0be52-639f-4ea8-9143-6bd75e0821b1_small.jpg?v=1583509609", "Herren ten Classic T-Shirt\n" +
                         "FOREST GREEN HEATHER / XL", BigDecimal.valueOf(3995, 2))
                 .itemRow("https://cdn.shopify.com/s/files/1/0255/1211/6260/products/TCM1939-0439_1332_da6f3e7c-e18d-4778-be97-c6c0b482b643_small.jpg?v=1583509671", "Herren Joshua Hanfshorts\n" +
                         "DARK OCEAN BLUE / XL", BigDecimal.valueOf(6995, 2))
@@ -148,6 +156,55 @@ public class EmailTemplateBuilderTest {
         // then
         assertThat(htmlTextEmail, notNullValue());
         sentEmail("standardTableExtendedTestHtml", htmlTextEmail);
+    }
+
+    @Test
+    public void customTableTest() {
+        // given
+        EmailTemplateBuilder.EmailTemplateConfigBuilder builder = EmailTemplateBuilder.builder();
+
+        String header = "Invoice {{invoice_id}}";
+        // when
+        TbConfiguration config = TbConfiguration.newInstance();
+        config.getContent().setWidth(800);
+
+
+        builder
+                .configuration(config)
+                .header().text(header).and()
+                .text("Hi {{name}},").and()
+                .text("Thanks for using [Product Name]. This is an invoice for your recent purchase");
+
+        CustomTable customTable = new CustomTable(builder);
+        customTable.itemRow(new TableCellImageSimple("https://cdn.shopify.com/s/files/1/0255/1211/6260/products/TCW1142-07052_small.jpg?v=1589200198").width(80),
+                new TableCellLinkSimple("Damen Harbour Tanktop × 1\nQUARTZ PINK / S", "http://localhost/?item=1234"),
+                BigDecimal.valueOf(19),
+                BigDecimal.valueOf(4995, 2));
+        customTable.itemRow(new TableCellImageSimple("https://cdn.shopify.com/s/files/1/0255/1211/6260/products/TCM1886-0718_201_fdf0be52-639f-4ea8-9143-6bd75e0821b1_small.jpg?v=1583509609").width(80),
+                new TableCellLinkSimple("Herren ten Classic T-Shirt\nFOREST GREEN HEATHER / XL", "http://localhost/?item=4567"),
+                BigDecimal.valueOf(16),
+                BigDecimal.valueOf(3995, 2));
+        customTable.itemRow(new TableCellImageSimple("https://cdn.shopify.com/s/files/1/0255/1211/6260/products/TCM1939-0439_1332_da6f3e7c-e18d-4778-be97-c6c0b482b643_small.jpg?v=1583509671").width(80),
+                new TableCellLinkSimple("Herren Joshua Hanfshorts\nDARK OCEAN BLUE / XL", "http://localhost/?item=890"),
+                BigDecimal.valueOf(19),
+                BigDecimal.valueOf(6995, 2));
+        customTable.footerRow(new TableCellHtmlSimple("<b>Net</b>", "Net"), new TableCellHtmlSimple("<b>159,85 €</b>", "159,85 €"));
+        customTable.footerRow(new TableCellHtmlSimple("Tax 19%<br>Tax 16%<br>Shipping", "Tax 19%\nTax 16%\nShipping"), new TableCellHtmlSimple("22,78 €<br>6,39 €<br>6,90 €", "22,78 €\n6,39 €\n6,90 €"));
+        customTable.footerRow(new TableCellHtmlSimple("<b>Total</b>", "Tax\n19%\n16%"), new TableCellHtmlSimple("<b>195,92 €</b>", "195,92 €"));
+
+
+        builder.table(customTable)
+                .button("Download PDF", "http://localhost").gray().right().and()
+                .text("If you have any questions about this receipt, simply reply to this email or reach out to our support team for help.").and()
+                .copyright("rocketbase").url("https://www.rocketbase.io").suffix(". All rights reserved.").and()
+                .footerText("[Company Name, LLC]\n" +
+                        "1234 Street Rd.\n" +
+                        "Suite 1234");
+
+        HtmlTextEmail htmlTextEmail = builder.build();
+        // then
+        assertThat(htmlTextEmail, notNullValue());
+        sentEmail("customTableTest", htmlTextEmail);
     }
 
     @Test
@@ -175,7 +232,6 @@ public class EmailTemplateBuilderTest {
 
         sentEmail("withoutHeaderAndFooterHtml", htmlTextEmail);
     }
-
 
     @Test
     public void standardTestText() {
@@ -241,5 +297,81 @@ public class EmailTemplateBuilderTest {
         assertThat(htmlTextEmail.getText(), containsString("sample bold text Ümlaut < 17"));
 
         sentEmail("forcedHtml", htmlTextEmail);
+    }
+
+    @Getter
+    public static class CustomTable implements TableLine {
+
+        List<List<Object>> headerRows = new ArrayList<>();
+        List<List<Object>> itemRows = new ArrayList<>();
+        List<List<Object>> footerRows = new ArrayList<>();
+        @Getter(AccessLevel.PRIVATE)
+        EmailTemplateBuilder.EmailTemplateConfigBuilder builder;
+        private AtomicInteger posCounter = new AtomicInteger(1);
+
+        public CustomTable(EmailTemplateBuilder.EmailTemplateConfigBuilder builder) {
+            this.builder = builder;
+
+            headerRows.add(Arrays.asList("Pos", "Description", "Tax", "Amount"));
+        }
+
+        @Override
+        public EmailTemplateBuilder.EmailTemplateConfigBuilder and() {
+            return builder;
+        }
+
+        @Override
+        public HtmlTextEmail build() {
+            return builder.build();
+        }
+
+        public CustomTable itemRow(TableCellImage image, TableCellLink description, BigDecimal tax, BigDecimal amount) {
+            itemRows.add(Arrays.asList(posCounter.getAndIncrement(), image, description, tax, amount));
+            return this;
+        }
+
+        public CustomTable footerRow(TableCellHtml label, TableCellHtml amount) {
+            footerRows.add(Arrays.asList(label, amount));
+            return this;
+        }
+
+        @Override
+        public List<ColumnConfig> getHeader() {
+            return Arrays.asList(new ColumnConfig()
+                            .center(),
+                    new ColumnConfig()
+                            .colspan(2)
+                            .width("60%"),
+                    new ColumnConfig()
+                            .alignment(Alignment.RIGHT),
+                    new ColumnConfig()
+                            .width("20%")
+                            .alignment(Alignment.RIGHT));
+        }
+
+        @Override
+        public List<ColumnConfig> getItem() {
+            return Arrays.asList(new ColumnConfig().center(),
+                    new ColumnConfig()
+                            .width(130),
+                    new ColumnConfig()
+                            .lighter(),
+                    new ColumnConfig()
+                            .numberFormat("# '%'")
+                            .italic()
+                            .right(),
+                    new ColumnConfig()
+                            .numberFormat("#.## '€'")
+                            .right());
+        }
+
+        @Override
+        public List<ColumnConfig> getFooter() {
+            return Arrays.asList(new ColumnConfig()
+                            .colspan(4)
+                            .alignment(Alignment.RIGHT),
+                    new ColumnConfig()
+                            .alignment(Alignment.RIGHT));
+        }
     }
 }

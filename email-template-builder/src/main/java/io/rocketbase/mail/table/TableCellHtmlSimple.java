@@ -1,13 +1,13 @@
 package io.rocketbase.mail.table;
 
+
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class TableCellLinkSimple implements TableCellLink {
+public class TableCellHtmlSimple implements TableCellHtml {
 
+    final String html;
     final String text;
-    final String linkUrl;
-
 }
