@@ -13,7 +13,7 @@ public interface TemplateLine {
 
     enum TemplateLineType {
 
-        HR, TEXT, HTML, MARKDOWN, BUTTON, IMAGE, ATTRIBUTE, TABLE, COPYRIGHT;
+        HR, TEXT, HTML, MARKDOWN, BUTTON, IMAGE, SIDE_IMAGE, ATTRIBUTE, TABLE, COPYRIGHT;
     }
 
 }

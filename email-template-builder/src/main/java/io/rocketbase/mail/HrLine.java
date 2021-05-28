@@ -1,25 +1,19 @@
 package io.rocketbase.mail;
 
 import io.rocketbase.mail.EmailTemplateBuilder.EmailTemplateConfigBuilder;
+import io.rocketbase.mail.line.AbstractHrLine;
 import io.rocketbase.mail.model.HtmlTextEmail;
 import lombok.AccessLevel;
 import lombok.Getter;
 
 @Getter
-public class HrLine implements TemplateLine {
-
-    String margin;
+public class HrLine extends AbstractHrLine<HrLine> implements TemplateLine {
 
     @Getter(AccessLevel.PRIVATE)
     EmailTemplateConfigBuilder builder;
 
     HrLine(EmailTemplateConfigBuilder builder) {
         this.builder = builder;
-    }
-
-    public HrLine margin(String margin) {
-        this.margin = margin;
-        return this;
     }
 
     @Override

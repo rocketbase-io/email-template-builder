@@ -3,6 +3,8 @@ package io.rocketbase.mail;
 import io.rocketbase.mail.config.TbConfiguration;
 import io.rocketbase.mail.model.HtmlTextEmail;
 import io.rocketbase.mail.styling.Alignment;
+import io.rocketbase.mail.styling.ColorStyle;
+import io.rocketbase.mail.styling.ColorStyleSimple;
 import io.rocketbase.mail.table.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -229,6 +231,23 @@ public class EmailTemplateBuilderTest {
         assertThat(htmlTextEmail, notNullValue());
 
         sentEmail("withoutHeaderAndFooterHtml", htmlTextEmail);
+    }
+
+    @Test
+    public void buttonColors() {
+        // given
+        // when
+        EmailTemplateBuilder.EmailTemplateConfigBuilder builder = EmailTemplateBuilder.builder()
+                .text("some text here...").and();
+        AtomicInteger stepper = new AtomicInteger(1);
+        for (ColorStyle s : ColorStyleSimple.getAllPresets()) {
+            builder.button("Button "+stepper.getAndIncrement(), "http://localhost:8080").color(s).center();
+        }
+        builder.button("Custom 1", "http://localhost:8080").color(new ColorStyleSimple("#000")).left();
+        builder.button("Custom 2", "http://localhost:8080").color(new ColorStyleSimple("#ff0000")).right();
+        builder.button("Custom 3", "http://localhost:8080").color(new ColorStyleSimple("00ff00")).right();
+        // then
+        sentEmail("buttonColors", builder.build());
     }
 
     @Test

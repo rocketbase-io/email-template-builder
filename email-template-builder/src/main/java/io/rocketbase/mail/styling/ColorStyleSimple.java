@@ -4,6 +4,9 @@ import io.rocketbase.commons.colors.ColorPalette;
 import io.rocketbase.commons.colors.RgbColor;
 import lombok.Getter;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 @Getter
 public class ColorStyleSimple implements ColorStyle {
 
@@ -44,5 +47,9 @@ public class ColorStyleSimple implements ColorStyle {
         }
         this.text = color.isBlackContrastingColor() ? BLACK : WHITE;
         this.bg = "#" + color.getHexCode();
+    }
+
+    public static Collection<ColorStyle> getAllPresets( ) {
+        return Arrays.asList(BASE_STYLE, WARNING_STYLE, BLACK_STYLE, GREEN_STYLE, RED_STYLE, YELLOW_STYLE, BLACK_STYLE, GRAY_STYLE);
     }
 }

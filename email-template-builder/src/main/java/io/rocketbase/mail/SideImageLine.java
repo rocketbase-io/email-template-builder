@@ -3,47 +3,42 @@ package io.rocketbase.mail;
 import io.rocketbase.mail.EmailTemplateBuilder.EmailTemplateConfigBuilder;
 import io.rocketbase.mail.line.AbstractImageLine;
 import io.rocketbase.mail.model.HtmlTextEmail;
-import io.rocketbase.mail.styling.Alignment;
+import io.rocketbase.mail.styling.Side;
 import lombok.AccessLevel;
 import lombok.Getter;
 
 @Getter
-public class ImageLine extends AbstractImageLine<ImageLine> implements TemplateLine {
+public class SideImageLine extends AbstractImageLine<SideImageLine> implements TemplateLine {
 
 
     @Getter(AccessLevel.PRIVATE)
     EmailTemplateConfigBuilder builder;
 
-    protected Alignment alignment;
+    protected Side side;
 
-    ImageLine(EmailTemplateConfigBuilder builder, String src) {
+    SideImageLine(EmailTemplateConfigBuilder builder, String src) {
         super(src);
         this.builder = builder;
     }
 
-    public ImageLine alignment(Alignment alignment) {
-        this.alignment = alignment;
+    public SideImageLine side(Side side) {
+        this.side = side;
         return this;
     }
 
-    public ImageLine left() {
-        this.alignment = Alignment.LEFT;
+    public SideImageLine left() {
+        this.side = Side.LEFT;
         return this;
     }
 
-    public ImageLine center() {
-        this.alignment = Alignment.CENTER;
-        return this;
-    }
-
-    public ImageLine right() {
-        this.alignment = Alignment.RIGHT;
+    public SideImageLine right() {
+        this.side = Side.RIGHT;
         return this;
     }
 
     @Override
     public TemplateLineType getType() {
-        return TemplateLineType.IMAGE;
+        return TemplateLineType.SIDE_IMAGE;
     }
 
     @Override
