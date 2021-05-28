@@ -134,6 +134,15 @@ public final class EmailTemplateBuilder {
             return line;
         }
 
+        /**
+         * @param html text version will get extracted out of html
+         */
+        public HtmlLine html(String html) {
+            HtmlLine line = new HtmlLine(this, html);
+            contentLines.add(line);
+            return line;
+        }
+
         public ImageLine image(String src) {
             ImageLine line = new ImageLine(this, src);
             contentLines.add(line);
