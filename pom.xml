@@ -86,13 +86,13 @@ SOFTWARE.
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
-        <pebble.version>3.1.4</pebble.version>
-        <lombok.version>1.18.16</lombok.version>
-        <junit.version>4.12</junit.version>
-        <hamcrest.version>1.3</hamcrest.version>
+        <pebble.version>3.1.5</pebble.version>
+        <lombok.version>1.18.20</lombok.version>
+        <junit.version>5.7.2</junit.version>
+        <hamcrest.version>2.2</hamcrest.version>
         <colors.version>0.5.1</colors.version>
-        <commonmark.version>0.15.2</commonmark.version>
-        <simple-java-mail.version>6.4.3</simple-java-mail.version>
+        <commonmark.version>0.17.0</commonmark.version>
+        <simple-java-mail.version>6.5.4</simple-java-mail.version>
     </properties>
 
     <dependencies>
@@ -109,6 +109,11 @@ SOFTWARE.
             <id>release</id>
             <build>
                 <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <version>3.0.0-M5</version>
+                    </plugin>
                     <plugin>
                         <groupId>org.sonatype.plugins</groupId>
                         <artifactId>nexus-staging-maven-plugin</artifactId>
@@ -136,7 +141,7 @@ SOFTWARE.
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>3.2.0</version>
+                        <version>3.3.0</version>
                         <executions>
                             <execution>
                                 <id>attach-javadocs</id>
@@ -152,7 +157,7 @@ SOFTWARE.
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.6</version>
+                        <version>3.0.1</version>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
