@@ -89,6 +89,51 @@ public class EmailTemplateBuilderTest {
     }
 
     @Test
+    public void sideImage() {
+        // given
+        EmailTemplateBuilder.EmailTemplateConfigBuilder builder = EmailTemplateBuilder.builder();
+        String header = "test";
+        // when
+        HtmlTextEmail htmlTextEmail = builder
+                .header()
+                .logo("https://www.rocketbase.io/img/logo-dark.png").logoHeight(41)
+                .and()
+
+                .sideImage("https://cdn.rocketbase.io/assets/loading/no-image.jpg").width(100).linkUrl("https://www.rocketbase.io")
+                .text("Headline 123").h1().and()
+                .hr().and()
+                .button("Button", "http://localhost").red().right().and()
+                .html("<p>My sample text with a <a href='http://localhost'>link</a>").and()
+                .and()
+
+                .text("Welcome, {{name}}!").h1().center().and()
+                .text("Thanks for trying [Product Name]. We’re thrilled to have you on board. To get the most out of [Product Name], do this primary next step:").and()
+                .button("Do this Next", "http://localhost").blue().and()
+                .text("For reference, here's your login information:").and()
+
+                .sideImage("https://cdn.rocketbase.io/assets/loading/no-image.jpg").width(100).linkUrl("https://www.rocketbase.io")
+                .right()
+                .html("<p>My sample text with a <a href='http://localhost'>link</a>").and()
+                .text("Headline 123").h1().and()
+                .hr().and()
+                .button("Button", "http://localhost").red().center().and()
+                .and()
+
+                .text("Cheers,\n" +
+                        "The [Product Name] Team").and()
+                .copyright("rocketbase").url("https://www.rocketbase.io").suffix(". All rights reserved.").and()
+                .footerText("[Company Name, LLC]\n" +
+                        "1234 Street Rd.\n" +
+                        "Suite 1234").and()
+                .footerImage("https://cdn.rocketbase.io/assets/loading/no-image.jpg").width(100).linkUrl("https://www.rocketbase.io").and()
+                .build();
+        // then
+        assertThat(htmlTextEmail, notNullValue());
+
+        sentEmail("standardTestHtml", htmlTextEmail);
+    }
+
+    @Test
     public void standardTableTestHtml() {
         // given
         EmailTemplateBuilder.EmailTemplateConfigBuilder builder = EmailTemplateBuilder.builder();

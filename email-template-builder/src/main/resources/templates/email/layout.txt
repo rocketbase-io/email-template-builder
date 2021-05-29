@@ -39,6 +39,20 @@
 
 {{line.text }} -> {{line.url | raw}}
 
+{% elseif line.type == 'SIDE_IMAGE' %}
+
+{% for subLine in line.contentLines %}
+{% if subLine.type == 'TEXT' %}
+{{ subLine.text }}{% if subLine.linkUrl is not empty %} -> {{ subLine.linkUrl | raw }}{% endif %}
+
+{% elseif subLine.type == 'HTML' %}
+{{ subLine.text | raw }}
+
+{% elseif subLine.type == 'BUTTON' %}
+{{subLine.text }} -> {{subLine.url | raw}}
+{% endif %}
+{% endfor %}
+
 {% elseif line.type == 'TABLE' %}
 
 TABLE IS NOT YET AVAILABLE ON TXT-EMAIL
