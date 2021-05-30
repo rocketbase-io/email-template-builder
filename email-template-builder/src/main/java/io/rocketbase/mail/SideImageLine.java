@@ -5,6 +5,7 @@ import io.rocketbase.mail.line.AbstractImageLine;
 import io.rocketbase.mail.model.HtmlTextEmail;
 import io.rocketbase.mail.side.*;
 import io.rocketbase.mail.styling.Side;
+import io.rocketbase.mail.styling.VerticalAlignment;
 import lombok.AccessLevel;
 import lombok.Getter;
 
@@ -19,6 +20,8 @@ public class SideImageLine extends AbstractImageLine<SideImageLine> implements T
     EmailTemplateConfigBuilder builder;
 
     protected Side side = Side.LEFT;
+    protected VerticalAlignment imageVerticalAlign = VerticalAlignment.MIDDLE;
+    protected VerticalAlignment contentVerticalAlign = VerticalAlignment.MIDDLE;
 
     protected List<SideContentLine> contentLines = new ArrayList<>();
 
@@ -29,6 +32,16 @@ public class SideImageLine extends AbstractImageLine<SideImageLine> implements T
 
     public SideImageLine side(Side side) {
         this.side = side;
+        return this;
+    }
+
+    public SideImageLine imageVerticalAlign(VerticalAlignment verticalAlignment) {
+        this.imageVerticalAlign = verticalAlignment;
+        return this;
+    }
+
+    public SideImageLine contentVerticalAlign(VerticalAlignment verticalAlignment) {
+        this.contentVerticalAlign = verticalAlignment;
         return this;
     }
 

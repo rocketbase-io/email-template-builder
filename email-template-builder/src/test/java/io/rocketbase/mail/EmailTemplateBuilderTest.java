@@ -5,6 +5,7 @@ import io.rocketbase.mail.model.HtmlTextEmail;
 import io.rocketbase.mail.styling.Alignment;
 import io.rocketbase.mail.styling.ColorStyle;
 import io.rocketbase.mail.styling.ColorStyleSimple;
+import io.rocketbase.mail.styling.VerticalAlignment;
 import io.rocketbase.mail.table.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -100,6 +101,7 @@ public class EmailTemplateBuilderTest {
                 .and()
 
                 .sideImage("https://cdn.rocketbase.io/assets/loading/no-image.jpg").width(100).linkUrl("https://www.rocketbase.io")
+                .imageVerticalAlign(VerticalAlignment.TOP)
                 .text("Headline 123").h1().and()
                 .hr().and()
                 .button("Button", "http://localhost").red().right().and()

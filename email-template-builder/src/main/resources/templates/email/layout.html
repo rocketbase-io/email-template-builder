@@ -394,14 +394,14 @@
         <table class="body-image" align="center" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="margin: {{ line.margin | default('margin: 20px auto') }}; padding: 0;" border="0">
             <tr>
                 {% if line.side == 'LEFT' %}
-                <td align="left" style="color: {{ c.font.table.color | default('#333333') }}; font-family: {{ c.font.family | default("'Nunito Sans', Helvetica, Arial, sans-serif") | raw }}; font-size: {{ c.font.table.size | default('16px') }}; word-break: break-word;">
+                <td align="left" style="color: {{ c.font.table.color | default('#333333') }}; font-family: {{ c.font.family | default("'Nunito Sans', Helvetica, Arial, sans-serif") | raw }}; font-size: {{ c.font.table.size | default('16px') }}; word-break: break-word; vertical-align: {{ line.imageVerticalAlign.value }}">
                     {% if line.linkUrl is not empty %}<a target="_blank" href="{{- line.linkUrl | raw -}}" style="color: {{ c.text.linkColor | default('#3869D4') }};">{% endif %}
                     <img border="0" vspace="0" hspace="0" src="{{- line.src | raw -}}" alt="{{- line.alt | default('') -}}" title="{{- line.title | escape -}}" {% if line.width is not empty %}width="{{- line.width -}}" {% endif %} {% if line.height is not empty %}height="{{- line.height -}}" {% endif %} style="border: none; {{ subline.margin | default('margin: 0 20px 0 0') }};">
                     {% if line.linkUrl is not empty %}</a>{% endif %}
                 </td>
                 {% endif %}
 
-                <td width="100%" style="color: {{ c.font.table.color | default('#333333') }}; font-family: {{ c.font.family | default("'Nunito Sans', Helvetica, Arial, sans-serif") | raw }}; font-size: {{ c.font.table.size | default('16px') }}; word-break: break-word;">>
+                <td width="100%" style="color: {{ c.font.table.color | default('#333333') }}; font-family: {{ c.font.family | default("'Nunito Sans', Helvetica, Arial, sans-serif") | raw }}; font-size: {{ c.font.table.size | default('16px') }}; word-break: break-word; vertical-align: {{ line.contentVerticalAlign.value }}">
 
                     {% for subLine in line.contentLines %}
                     {% if subLine.type == 'HR' %}
@@ -434,7 +434,7 @@
                 </td>
 
                 {% if line.side == 'RIGHT' %}
-                <td align="right" style="color: {{ c.font.table.color | default('#333333') }}; font-family: {{ c.font.family | default("'Nunito Sans', Helvetica, Arial, sans-serif") | raw }}; font-size: {{ c.font.table.size | default('16px') }}; word-break: break-word;">
+                <td align="right" style="color: {{ c.font.table.color | default('#333333') }}; font-family: {{ c.font.family | default("'Nunito Sans', Helvetica, Arial, sans-serif") | raw }}; font-size: {{ c.font.table.size | default('16px') }}; word-break: break-word; vertical-align: {{ line.imageVerticalAlign.value }}">
                     {% if line.linkUrl is not empty %}<a target="_blank" href="{{- line.linkUrl | raw -}}" style="color: {{ c.text.linkColor | default('#3869D4') }};">{% endif %}
                     <img border="0" vspace="0" hspace="0" src="{{- line.src | raw -}}" alt="{{- line.alt | default('') -}}" title="{{- line.title | escape -}}" {% if line.width is not empty %}width="{{- line.width -}}" {% endif %} {% if line.height is not empty %}height="{{- line.height -}}" {% endif %} style="border: none; {{ subline.margin | default('margin: 0 0 0 20px') }};">
                     {% if line.linkUrl is not empty %}</a>{% endif %}
