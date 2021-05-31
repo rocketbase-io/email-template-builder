@@ -136,6 +136,60 @@ public class EmailTemplateBuilderTest {
     }
 
     @Test
+    public void gallery() {
+        // given
+        EmailTemplateBuilder.EmailTemplateConfigBuilder builder = EmailTemplateBuilder.builder();
+        String header = "gallery";
+        // when
+        HtmlTextEmail htmlTextEmail = builder
+                .header()
+                .logo("https://www.rocketbase.io/img/logo-dark.png").logoHeight(41)
+                .and()
+
+
+
+                .text("Welcome, {{name}}!").h1().center().and()
+                .text("Thanks for trying [Product Name]. We’re thrilled to have you on board. To get the most out of [Product Name], do this primary next step:").and()
+
+                .gallery()
+                .newRowAfter(3)
+                .cellPadding(5)
+                .photos(Arrays.asList("https://source.unsplash.com/random/800x600?sig=1", "https://source.unsplash.com/random/800x600?sig=2", "https://source.unsplash.com/random/800x600?sig=3", "https://source.unsplash.com/random/800x600?sig=4", "https://source.unsplash.com/random/800x600?sig=5","https://source.unsplash.com/random/800x600?sig=6","https://source.unsplash.com/random/800x600?sig=7"))
+                .and()
+
+                .button("Do this Next", "http://localhost").blue().and()
+                .text("For reference, here's your login information:").and()
+
+                .gallery()
+                .verticalAlign(VerticalAlignment.TOP)
+                .cellPadding(5)
+                .photo("https://images.unsplash.com/photo-1520116468816-95b69f847357?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTZ8fHN1bW1lcnxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60")
+                .and()
+                .photo("https://images.unsplash.com/photo-1501871732394-eccc65227089?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzV8fHN1bW1lcnxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60")
+                .linkUrl("https://www.rocketbase.io")
+                .title("my little tile - go to rocketbase")
+                .text("Hello from here").h1().and()
+                .text("My longer text with some more chars should also wrapped in a proper way...").and()
+                .and()
+                .photo("https://images.unsplash.com/photo-1501436513145-30f24e19fcc8?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTd8fHN1bW1lcnxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60")
+                .and()
+                .and()
+
+                .text("Cheers,\n" +
+                        "The [Product Name] Team").and()
+                .copyright("rocketbase").url("https://www.rocketbase.io").suffix(". All rights reserved.").and()
+                .footerText("[Company Name, LLC]\n" +
+                        "1234 Street Rd.\n" +
+                        "Suite 1234").and()
+                .footerImage("https://cdn.rocketbase.io/assets/loading/no-image.jpg").width(100).linkUrl("https://www.rocketbase.io").and()
+                .build();
+        // then
+        assertThat(htmlTextEmail, notNullValue());
+
+        sentEmail("gallery", htmlTextEmail);
+    }
+
+    @Test
     public void standardTableTestHtml() {
         // given
         EmailTemplateBuilder.EmailTemplateConfigBuilder builder = EmailTemplateBuilder.builder();

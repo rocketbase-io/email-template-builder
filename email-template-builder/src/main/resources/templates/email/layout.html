@@ -243,6 +243,10 @@
             padding: 0;
         }
 
+        .body-gallery {;
+            padding: 0;
+        }
+
         .body-sub {
             margin-top: 25px;
             padding-top: 25px;
@@ -389,8 +393,6 @@
         </table>
 
     {% elseif line.type == 'SIDE_IMAGE' %}
-    <!----------------------------------------- -->
-
         <table class="body-image" align="center" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="margin: {{ line.margin | default('margin: 20px auto') }}; padding: 0;" border="0">
             <tr>
                 {% if line.side == 'LEFT' %}
@@ -442,7 +444,27 @@
                 {% endif %}
             </tr>
         </table>
-    <!----------------------------------------- -->
+
+    {% elseif line.type == 'GALLERY' %}
+        <table class="body-gallery" width="{% if c.content.full %}100%{% else %}{{- c.content.width | default('570') -}}{% endif %}" align="center" cellpadding="{{- line.cellPadding -}}" cellspacing="{{- line.cellSpacing -}}" role="presentation" style="margin: {{ line.margin | default('margin: 20px auto') }}; padding: 0;" border="0">
+            {% set perRowCount = line.newRowAfter | default(line.photoElements.size) %}
+
+            {% for photo in line.photoElements %}
+            {% if (loop.index % perRowCount) == 0 %}<tr>{% endif %}
+                <td width="100%" align="{{- line.alignment | default('center') -}}"  style="color: {{ c.font.table.color | default('#333333') }}; font-family: {{ c.font.family | default("'Nunito Sans', Helvetica, Arial, sans-serif") | raw }}; font-size: {{ c.font.table.size | default('16px') }}; word-break: break-word; vertical-align: {{ line.contentVerticalAlign.value }};">
+
+                    {% if photo.linkUrl is not empty %}<a target="_blank" href="{{- photo.linkUrl | raw -}}" style="color: {{ c.text.linkColor | default('#3869D4') }};">{% endif %}
+                      <img border="0" vspace="0" hspace="0" src="{{- photo.src | raw -}}" alt="{{- photo.alt | default('') -}}" title="{{- photo.title | escape -}}" {% if not c.content.full %}width="{{- ((c.content.width-(line.cellPadding*(perRowCount+1))-(line.cellSpacing*(perRowCount+1)))/perRowCount) -}}"{% endif %} style="border: none;">
+                    {% if photo.linkUrl is not empty %}</a>{% endif %}
+
+                    {% for text in photo.textLines %}
+                    <p class="f-fallback" style="{% if text.alignment is not empty %}text-align: {{ text.alignment.value }}; {% endif %}{% if text.fontWeight is not empty %}font-weight: {{ text.fontWeight.value }}{% endif %}; {% if text.fontStyle is not empty %}font-style: {{ text.fontStyle.value }}{% endif %}; {% if text.textDecoration is not empty %}text-decoration: {{ text.textDecoration.value }}{% endif %}; color: {{ text.color | default(c.text.color) | default('#51545E') }}; font-size: {{ text.fontSize | default(c.text.size) | default('16px') }}; line-height: {{ c.text.lineHeight | default('1.625') }}; margin: {{ c.text.margin | default('.4em 0 1.1875em') }};">{% if text.linkUrl is not empty %}<a target="_blank" href="{{- text.linkUrl | raw -}}" style="color: {{ text.color | default(c.text.linkColor) | default('#3869D4')  }};">{% endif %}{{ text.text | escape | br | raw }}{% if text.linkUrl is not empty %}</a>{% endif %}</p>
+                    {% endfor %}
+
+                </td>
+            {% if ((loop.index+1) % perRowCount) == 0 or loop.last %}</tr>{% endif %}
+            {% endfor %}
+        </table>
 
     {% elseif line.type == 'TABLE' %}
         <table class="table_wrapper" width="100%" cellpadding="0" cellspacing="0" stlye="{{ line.padding | default('padding: 35px 0;') }}" style="margin: 0;" border="0">

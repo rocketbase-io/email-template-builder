@@ -155,6 +155,12 @@ public final class EmailTemplateBuilder {
             return line;
         }
 
+        public GalleryLine gallery() {
+            GalleryLine line = new GalleryLine(this);
+            contentLines.add(line);
+            return line;
+        }
+
         public ButtonLine button(String text, String url) {
             ButtonLine line = new ButtonLine(this, text, url);
             contentLines.add(line);
