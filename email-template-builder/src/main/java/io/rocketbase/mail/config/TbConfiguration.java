@@ -10,6 +10,7 @@ public class TbConfiguration {
 
     static final TbConfiguration DEFAULT = new TbConfiguration(TbFontConfig.newInstance(),
             TbTextConfig.newInstance(),
+            TbTextConfig.newInstanceSmall(),
             TbButtonConfig.newInstance(),
             TbAttributeConfig.newInstance(),
             TbBoxConfig.newInstance(),
@@ -25,6 +26,7 @@ public class TbConfiguration {
 
     private TbFontConfig font;
     private TbTextConfig text;
+    private TbTextConfig imageText;
     private TbButtonConfig button;
     private TbAttributeConfig attribute;
     private TbBoxConfig box;
@@ -37,6 +39,7 @@ public class TbConfiguration {
     public TbConfiguration(TbConfiguration other) {
         this.font = new TbFontConfig(other.font);
         this.text = new TbTextConfig(other.text);
+        this.imageText = new TbTextConfig(other.imageText);
         this.button = new TbButtonConfig(other.button);
         this.attribute = new TbAttributeConfig(other.attribute);
         this.box = new TbBoxConfig(other.box);

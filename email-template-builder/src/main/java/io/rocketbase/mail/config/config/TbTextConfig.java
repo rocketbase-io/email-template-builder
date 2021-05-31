@@ -11,8 +11,17 @@ public class TbTextConfig extends TbFont {
             "1.625",
             "#3869D4");
 
+    static final TbTextConfig SMALL = new TbTextConfig(new TbFont("16px", "#51545E"),
+            ".4em 0 .4em",
+            "1.325",
+            "#3869D4");
+
     public static final TbTextConfig newInstance() {
         return new TbTextConfig(DEFAULT);
+    }
+
+    public static final TbTextConfig newInstanceSmall() {
+        return new TbTextConfig(SMALL);
     }
 
     private String margin;

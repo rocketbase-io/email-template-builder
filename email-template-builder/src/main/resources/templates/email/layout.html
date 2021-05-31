@@ -243,8 +243,20 @@
             padding: 0;
         }
 
+        .body-side-image {
+            width: 100%;
+            padding: 0;
+        }
+
         .body-gallery {;
             padding: 0;
+        }
+
+        .body-side-image p,
+        .body-gallery p {
+            color: {{ c.imageText.color | default('#51545E') }};
+            margin: {{ c.imageText.margin | default('.4em 0 .4em') }};
+            line-height: {{ c.imageText.lineHeight | default('1.325') }};
         }
 
         .body-sub {
@@ -393,7 +405,7 @@
         </table>
 
     {% elseif line.type == 'SIDE_IMAGE' %}
-        <table class="body-image" align="center" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="margin: {{ line.margin | default('margin: 20px auto') }}; padding: 0;" border="0">
+        <table class="body-side-image" align="center" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="margin: {{ line.margin | default('margin: 20px auto') }}; padding: 0;" border="0">
             <tr>
                 {% if line.side == 'LEFT' %}
                 <td align="left" style="color: {{ c.font.table.color | default('#333333') }}; font-family: {{ c.font.family | default("'Nunito Sans', Helvetica, Arial, sans-serif") | raw }}; font-size: {{ c.font.table.size | default('16px') }}; word-break: break-word; vertical-align: {{ line.imageVerticalAlign.value }}">
@@ -410,10 +422,10 @@
                     <hr {% if subLine.margin is not empty %}style="margin: {{ subLine.margin}}" {% endif %}>
 
                     {% elseif subLine.type == 'TEXT' %}
-                    <p class="f-fallback" style="{% if subLine.alignment is not empty %}text-align: {{ subLine.alignment.value }}; {% endif %}{% if subLine.fontWeight is not empty %}font-weight: {{ subLine.fontWeight.value }}{% endif %}; {% if subLine.fontStyle is not empty %}font-style: {{ subLine.fontStyle.value }}{% endif %}; {% if subLine.textDecoration is not empty %}text-decoration: {{ subLine.textDecoration.value }}{% endif %}; color: {{ subLine.color | default(c.text.color) | default('#51545E') }}; font-size: {{ subLine.fontSize | default(c.text.size) | default('16px') }}; line-height: {{ c.text.lineHeight | default('1.625') }}; margin: {{ c.text.margin | default('.4em 0 1.1875em') }};">{% if subLine.linkUrl is not empty %}<a target="_blank" href="{{- subLine.linkUrl | raw -}}" style="color: {{ subLine.color | default(c.text.linkColor) | default('#3869D4')  }};">{% endif %}{{ subLine.text | escape | br | raw }}{% if subLine.linkUrl is not empty %}</a>{% endif %}</p>
+                    <p class="f-fallback" style="{% if subLine.alignment is not empty %}text-align: {{ subLine.alignment.value }}; {% endif %}{% if subLine.fontWeight is not empty %}font-weight: {{ subLine.fontWeight.value }}{% endif %}; {% if subLine.fontStyle is not empty %}font-style: {{ subLine.fontStyle.value }}{% endif %}; {% if subLine.textDecoration is not empty %}text-decoration: {{ subLine.textDecoration.value }}{% endif %}; color: {{ subLine.color | default(c.imageText.color) | default('#51545E') }}; font-size: {{ subLine.fontSize | default(c.imageText.size) | default('16px') }}; line-height: {{ c.imageText.lineHeight | default('1.325') }}; margin: {{ c.imageText.margin | default('.4em 0 .4em') }};">{% if subLine.linkUrl is not empty %}<a target="_blank" href="{{- subLine.linkUrl | raw -}}" style="color: {{ subLine.color | default(c.imageText.linkColor) | default('#3869D4')  }};">{% endif %}{{ subLine.text | escape | br | raw }}{% if subLine.linkUrl is not empty %}</a>{% endif %}</p>
 
                     {% elseif subLine.type == 'HTML' %}
-                    <p class="f-fallback" style="color: {{ c.text.color | default('#51545E') }}; line-height: {{ c.text.lineHeight | default('1.625') }}; margin: {{ c.text.margin | default('.4em 0 1.1875em') }};">{{ subLine.html | raw }}</p>
+                    <p class="f-fallback" style="color: {{ c.imageText.color | default('#51545E') }}; line-height: {{ c.imageText.lineHeight | default('1.625') }}; margin: {{ c.imageText.margin | default('.4em 0 .4em') }};">{{ subLine.html | raw }}</p>
 
                     {% elseif subLine.type == 'BUTTON' %}
                     <table class="body-action" align="center" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="margin: 30px auto; padding: 0; text-align: center;" border="0">
@@ -458,7 +470,7 @@
                     {% if photo.linkUrl is not empty %}</a>{% endif %}
 
                     {% for text in photo.textLines %}
-                    <p class="f-fallback" style="{% if text.alignment is not empty %}text-align: {{ text.alignment.value }}; {% endif %}{% if text.fontWeight is not empty %}font-weight: {{ text.fontWeight.value }}{% endif %}; {% if text.fontStyle is not empty %}font-style: {{ text.fontStyle.value }}{% endif %}; {% if text.textDecoration is not empty %}text-decoration: {{ text.textDecoration.value }}{% endif %}; color: {{ text.color | default(c.text.color) | default('#51545E') }}; font-size: {{ text.fontSize | default(c.text.size) | default('16px') }}; line-height: {{ c.text.lineHeight | default('1.625') }}; margin: {{ c.text.margin | default('.4em 0 1.1875em') }};">{% if text.linkUrl is not empty %}<a target="_blank" href="{{- text.linkUrl | raw -}}" style="color: {{ text.color | default(c.text.linkColor) | default('#3869D4')  }};">{% endif %}{{ text.text | escape | br | raw }}{% if text.linkUrl is not empty %}</a>{% endif %}</p>
+                    <p class="f-fallback" style="{% if text.alignment is not empty %}text-align: {{ text.alignment.value }}; {% endif %}{% if text.fontWeight is not empty %}font-weight: {{ text.fontWeight.value }}{% endif %}; {% if text.fontStyle is not empty %}font-style: {{ text.fontStyle.value }}{% endif %}; {% if text.textDecoration is not empty %}text-decoration: {{ text.textDecoration.value }}{% endif %}; color: {{ text.color | default(c.text.color) | default('#51545E') }}; font-size: {{ text.fontSize | default(c.imageText.size) | default('16px') }}; line-height: {{ c.imageText.lineHeight | default('1.325') }}; margin: {{ c.imageText.margin | default('.4em 0 .4em') }};">{% if text.linkUrl is not empty %}<a target="_blank" href="{{- text.linkUrl | raw -}}" style="color: {{ text.color | default(c.imageText.linkColor) | default('#3869D4')  }};">{% endif %}{{ text.text | escape | br | raw }}{% if text.linkUrl is not empty %}</a>{% endif %}</p>
                     {% endfor %}
 
                 </td>

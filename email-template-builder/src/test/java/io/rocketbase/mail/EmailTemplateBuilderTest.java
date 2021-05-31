@@ -148,8 +148,8 @@ public class EmailTemplateBuilderTest {
 
 
 
-                .text("Welcome, {{name}}!").h1().center().and()
-                .text("Thanks for trying [Product Name]. We’re thrilled to have you on board. To get the most out of [Product Name], do this primary next step:").and()
+                .text("Impressions from somewhere").h1().center().and()
+                .text("Hi hope you do well. We've prepared some pictures for you:").and()
 
                 .gallery()
                 .newRowAfter(3)
@@ -157,8 +157,8 @@ public class EmailTemplateBuilderTest {
                 .photos(Arrays.asList("https://source.unsplash.com/random/800x600?sig=1", "https://source.unsplash.com/random/800x600?sig=2", "https://source.unsplash.com/random/800x600?sig=3", "https://source.unsplash.com/random/800x600?sig=4", "https://source.unsplash.com/random/800x600?sig=5","https://source.unsplash.com/random/800x600?sig=6","https://source.unsplash.com/random/800x600?sig=7"))
                 .and()
 
-                .button("Do this Next", "http://localhost").blue().and()
-                .text("For reference, here's your login information:").and()
+                .button("Here could be an action", "http://localhost").blue().and()
+                .text("Would be great if you could click :)").and()
 
                 .gallery()
                 .verticalAlign(VerticalAlignment.TOP)
@@ -173,6 +173,18 @@ public class EmailTemplateBuilderTest {
                 .and()
                 .photo("https://images.unsplash.com/photo-1501436513145-30f24e19fcc8?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTd8fHN1bW1lcnxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60")
                 .and()
+                .and()
+
+                .text("Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.").and()
+
+
+
+                .sideImage("https://images.unsplash.com/photo-1622267391720-bf19770a7879?ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyfHx8ZW58MHx8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60").width(200).linkUrl("https://www.rocketbase.io")
+                .imageVerticalAlign(VerticalAlignment.TOP)
+                .text("SideImage").h2().and()
+                .text("some text could be below....").and()
+                .hr().and()
+                .button("action", "http://localhost").red().right().and()
                 .and()
 
                 .text("Cheers,\n" +
