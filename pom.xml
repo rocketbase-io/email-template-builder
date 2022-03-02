@@ -87,12 +87,12 @@ SOFTWARE.
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
         <pebble.version>3.1.5</pebble.version>
-        <lombok.version>1.18.20</lombok.version>
-        <junit.version>5.7.2</junit.version>
+        <lombok.version>1.18.22</lombok.version>
+        <junit.version>5.8.2</junit.version>
         <hamcrest.version>2.2</hamcrest.version>
-        <colors.version>0.5.1</colors.version>
+        <colors.version>0.6.0</colors.version>
         <commonmark.version>0.17.0</commonmark.version>
-        <simple-java-mail.version>6.5.4</simple-java-mail.version>
+        <simple-java-mail.version>7.1.0</simple-java-mail.version>
     </properties>
 
     <dependencies>
@@ -141,7 +141,7 @@ SOFTWARE.
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>3.3.0</version>
+                        <version>3.3.2</version>
                         <executions>
                             <execution>
                                 <id>attach-javadocs</id>
