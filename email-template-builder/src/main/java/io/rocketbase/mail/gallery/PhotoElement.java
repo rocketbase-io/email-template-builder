@@ -18,6 +18,7 @@ public class PhotoElement {
     protected List<PhotoTextElement> textLines = new ArrayList<>();
 
     protected final String src;
+    protected String srcDark;
     protected String alt;
     protected String title;
     protected String linkUrl;
@@ -26,6 +27,11 @@ public class PhotoElement {
         this.src = src;
         this.parent = parent;
         this.configuration = configuration;
+    }
+
+    public PhotoElement srcDark(String srcDark) {
+        this.srcDark = srcDark;
+        return this;
     }
 
     public PhotoElement alt(String alt) {

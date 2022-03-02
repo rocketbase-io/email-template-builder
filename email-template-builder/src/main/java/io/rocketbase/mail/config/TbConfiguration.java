@@ -8,7 +8,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class TbConfiguration {
 
-    static final TbConfiguration DEFAULT = new TbConfiguration(TbFontConfig.newInstance(),
+    static final TbConfiguration DEFAULT = new TbConfiguration(true, TbFontConfig.newInstance(),
             TbTextConfig.newInstance(),
             TbTextConfig.newInstanceSmall(),
             TbButtonConfig.newInstance(),
@@ -24,6 +24,7 @@ public class TbConfiguration {
         return new TbConfiguration(DEFAULT);
     }
 
+    private boolean darkModeEnabled = true;
     private TbFontConfig font;
     private TbTextConfig text;
     private TbTextConfig imageText;

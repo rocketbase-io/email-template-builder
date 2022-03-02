@@ -10,6 +10,7 @@ public class Header {
     String text;
 
     String logo;
+    String logoDark;
     String logoWidth;
     String logoHeight;
 
@@ -27,6 +28,24 @@ public class Header {
      */
     public Header logo(String logo) {
         this.logo = logo;
+        return this;
+    }
+
+    /**
+     * will replace text so that text is only alt for image<br>
+     * dark will be used in darkMode active
+     */
+    public Header logo(String light, String dark) {
+        this.logo = light;
+        this.logoDark = dark;
+        return this;
+    }
+
+    /**
+     * image to use in darkMode active
+     */
+    public Header logoDark(String logoDark) {
+        this.logoDark = logoDark;
         return this;
     }
 

@@ -6,6 +6,7 @@ import lombok.Getter;
 public class TableCellImageSimple implements TableCellImage {
 
     final String src;
+    String srcDark;
     String alt;
     String width;
     String height;
@@ -14,6 +15,11 @@ public class TableCellImageSimple implements TableCellImage {
 
     public TableCellImageSimple(String src) {
         this.src = src;
+    }
+
+    public TableCellImage srcDark(String srcDark) {
+        this.srcDark = srcDark;
+        return this;
     }
 
     public TableCellImage alt(String alt) {

@@ -143,7 +143,7 @@ public class EmailTemplateBuilderTest {
         // when
         HtmlTextEmail htmlTextEmail = builder
                 .header()
-                .logo("https://www.rocketbase.io/img/logo-dark.png").logoHeight(41)
+                .logo("https://www.rocketbase.io/img/logo-dark.png").logoDark("https://www.rocketbase.io/img/logo-light.png").logoHeight(41)
                 .and()
 
 

@@ -6,6 +6,7 @@ import lombok.Getter;
 public class AbstractImageLine<E extends AbstractImageLine> {
 
     protected final String src;
+    protected String srcDark;
     protected String alt;
     protected String width;
     protected String height;
@@ -15,6 +16,14 @@ public class AbstractImageLine<E extends AbstractImageLine> {
 
     public AbstractImageLine(String src) {
         this.src = src;
+    }
+
+    /**
+     * option for different image in darkMode active
+     */
+    public E srcDark(String srcDark) {
+        this.srcDark = srcDark;
+        return (E) this;
     }
 
     public E alt(String alt) {

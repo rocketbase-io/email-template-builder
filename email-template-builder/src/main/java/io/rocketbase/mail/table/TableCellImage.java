@@ -4,6 +4,8 @@ public interface TableCellImage extends TableCell {
 
     String getSrc();
 
+    String getSrcDark();
+
     String getAlt();
 
     String getWidth();

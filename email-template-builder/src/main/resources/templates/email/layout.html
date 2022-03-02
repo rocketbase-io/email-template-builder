@@ -4,8 +4,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="x-apple-disable-message-reformatting">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    {% if c.darkModeEnabled %}
     <meta name="color-scheme" content="light dark">
     <meta name="supported-color-schemes" content="light dark">
+    {% endif %}
     {% if header.text is empty %}<title>{{- header.text -}}</title>{% endif %}
     <style type="text/css" rel="stylesheet" media="all">
         /* Base ------------------------------ */
@@ -277,7 +279,15 @@
             }
         }
 
+        {% if c.darkModeEnabled %}
+        .dark-img { display:none;}
+        .light-img { display:inline-block;  }
+
         @media (prefers-color-scheme: dark) {
+
+            .dark-img { display:inline-block !important; }
+            .light-img { display:none !important; }
+
             body,
             .email-body,
             .email-body_inner,
@@ -303,12 +313,16 @@
             .email-masthead_name {
                 text-shadow: none !important;
             }
+            a {
+                color: {{ c.text.linkColorDark | default('#FFF') }} !important;
+            }
         }
 
         :root {
             color-scheme: light dark;
             supported-color-schemes: light dark;
         }
+        {% endif %}
     </style>
     <!--[if mso]>
     <style type="text/css">
@@ -327,7 +341,10 @@
                 <tr>
                     <td class="email-masthead" style="color: {{ c.font.table.color | default('#333333') }}; font-family: {{ c.font.family | default("'Nunito Sans', Helvetica, Arial, sans-serif") | raw }}; font-size: {{ c.font.table.size | default('16px') }}; padding: {{ c.header.padding | default('25px 0') }}; word-break: break-word;" align="{{ c.header.align | default('center') }}">
                         {% if header.linkUrl is not empty %}<a href="{{- header.linkUrl | raw -}}" class="f-fallback email-masthead_name" style="color: {{ c.header.color | default('#A8AAAF') }}; font-size: {{ c.header.size | default('16px') }}; font-weight: {{ c.header.weight | default('bold') }}; text-decoration: none; text-shadow: {{ c.header.textShadow | default('0 1px 0 white') }};">{% endif %}
-                            {% if header.logo is not empty %}<img src="{{- header.logo | raw -}}" alt="{{- header.text | default('') | escape -}}" {% if header.logoWidth is not empty %}width="{{- header.logoWidth -}}" {% endif %} {% if header.logoHeight is not empty %}height="{{- header.logoHeight -}}" {% endif %} style="border: none;">{% endif %}
+                            {% if header.logo is not empty %}
+                                {% if c.darkModeEnabled and header.logoDark is not empty %}<img src="{{- header.logoDark | raw -}}" class="dark-img" alt="{{- header.text | default('') | escape -}}" {% if header.logoWidth is not empty %}width="{{- header.logoWidth -}}" {% endif %} {% if header.logoHeight is not empty %}height="{{- header.logoHeight -}}" {% endif %} style="border: none; display: none">{% endif %}
+                                <img src="{{- header.logo | raw -}}"{% if c.darkModeEnabled and header.logoDark is not empty %} class="light-img"{% endif %} alt="{{- header.text | default('') | escape -}}" {% if header.logoWidth is not empty %}width="{{- header.logoWidth -}}" {% endif %} {% if header.logoHeight is not empty %}height="{{- header.logoHeight -}}" {% endif %} style="border: none;">
+                            {% endif %}
                             {% if header.logo is empty and header.text is not empty %}{% if header.href is empty %}<span class="email-masthead_name" style="color: {{ c.header.color | default('#A8AAAF') }}; font-size: {{ c.header.size | default('16px') }}; font-weight: {{ c.header.weight | default('bold') }}; text-decoration: none; text-shadow: {{ c.header.textShadow | default('0 1px 0 white') }};">{% endif %}{{- header.text | escape -}}{% if header.href is empty %}</span>{% endif %}{% endif %}
                         {% if header.linkUrl is not empty %}</a>{% endif %}
                     </td>
@@ -382,7 +399,8 @@
             <tr>
                 <td align="{{- line.alignment.value | default('center') -}}" style="color: {{ c.font.table.color | default('#333333') }}; font-family: {{ c.font.family | default("'Nunito Sans', Helvetica, Arial, sans-serif") | raw }}; font-size: {{ c.font.table.size | default('16px') }}; word-break: break-word;">
                     {% if line.linkUrl is not empty %}<a target="_blank" href="{{- line.linkUrl | raw -}}" style="color: {{ c.text.linkColor | default('#3869D4') }};">{% endif %}
-                    <img border="0" vspace="0" hspace="0" src="{{- line.src | raw -}}" alt="{{- line.alt | default('') -}}" title="{{- line.title | escape -}}" {% if line.width is not empty %}width="{{- line.width -}}" {% endif %} {% if line.height is not empty %}height="{{- line.height -}}" {% endif %} style="border: none;">
+                    {% if c.darkModeEnabled and line.srcDark is not empty %}<img  class="dark-img" border="0" vspace="0" hspace="0" src="{{- line.srcDark | raw -}}" alt="{{- line.alt | default('') -}}" title="{{- line.title | escape -}}" {% if line.width is not empty %}width="{{- line.width -}}" {% endif %} {% if line.height is not empty %}height="{{- line.height -}}" {% endif %} style="border: none;">{% endif %}
+                    <img {% if c.darkModeEnabled and line.srcDark is not empty %} class="light-img"{% endif %} border="0" vspace="0" hspace="0" src="{{- line.src | raw -}}" alt="{{- line.alt | default('') -}}" title="{{- line.title | escape -}}" {% if line.width is not empty %}width="{{- line.width -}}" {% endif %} {% if line.height is not empty %}height="{{- line.height -}}" {% endif %} style="border: none;">
                     {% if line.linkUrl is not empty %}</a>{% endif %}
                 </td>
             </tr>
@@ -410,7 +428,8 @@
                 {% if line.side == 'LEFT' %}
                 <td align="left" style="color: {{ c.font.table.color | default('#333333') }}; font-family: {{ c.font.family | default("'Nunito Sans', Helvetica, Arial, sans-serif") | raw }}; font-size: {{ c.font.table.size | default('16px') }}; word-break: break-word; vertical-align: {{ line.imageVerticalAlign.value }}">
                     {% if line.linkUrl is not empty %}<a target="_blank" href="{{- line.linkUrl | raw -}}" style="color: {{ c.text.linkColor | default('#3869D4') }};">{% endif %}
-                    <img border="0" vspace="0" hspace="0" src="{{- line.src | raw -}}" alt="{{- line.alt | default('') -}}" title="{{- line.title | escape -}}" {% if line.width is not empty %}width="{{- line.width -}}" {% endif %} {% if line.height is not empty %}height="{{- line.height -}}" {% endif %} style="border: none; {{ subline.margin | default('margin: 0 20px 0 0') }};">
+                    {% if c.darkModeEnabled and line.srcDark is not empty %}<img  class="dark-img" border="0" vspace="0" hspace="0" src="{{- line.srcDark | raw -}}" alt="{{- line.alt | default('') -}}" title="{{- line.title | escape -}}" {% if line.width is not empty %}width="{{- line.width -}}" {% endif %} {% if line.height is not empty %}height="{{- line.height -}}" {% endif %} style="border: none; {{ subline.margin | default('margin: 0 20px 0 0') }};">{% endif %}
+                    <img {% if c.darkModeEnabled and line.srcDark is not empty %} class="light-img"{% endif %} border="0" vspace="0" hspace="0" src="{{- line.src | raw -}}" alt="{{- line.alt | default('') -}}" title="{{- line.title | escape -}}" {% if line.width is not empty %}width="{{- line.width -}}" {% endif %} {% if line.height is not empty %}height="{{- line.height -}}" {% endif %} style="border: none; {{ subline.margin | default('margin: 0 20px 0 0') }};">
                     {% if line.linkUrl is not empty %}</a>{% endif %}
                 </td>
                 {% endif %}
@@ -450,7 +469,9 @@
                 {% if line.side == 'RIGHT' %}
                 <td align="right" style="color: {{ c.font.table.color | default('#333333') }}; font-family: {{ c.font.family | default("'Nunito Sans', Helvetica, Arial, sans-serif") | raw }}; font-size: {{ c.font.table.size | default('16px') }}; word-break: break-word; vertical-align: {{ line.imageVerticalAlign.value }}">
                     {% if line.linkUrl is not empty %}<a target="_blank" href="{{- line.linkUrl | raw -}}" style="color: {{ c.text.linkColor | default('#3869D4') }};">{% endif %}
-                    <img border="0" vspace="0" hspace="0" src="{{- line.src | raw -}}" alt="{{- line.alt | default('') -}}" title="{{- line.title | escape -}}" {% if line.width is not empty %}width="{{- line.width -}}" {% endif %} {% if line.height is not empty %}height="{{- line.height -}}" {% endif %} style="border: none; {{ subline.margin | default('margin: 0 0 0 20px') }};">
+
+                    {% if c.darkModeEnabled and line.srcDark is not empty %}<img class="dark-img" border="0" vspace="0" hspace="0" src="{{- line.srcDark | raw -}}" alt="{{- line.alt | default('') -}}" title="{{- line.title | escape -}}" {% if line.width is not empty %}width="{{- line.width -}}" {% endif %} {% if line.height is not empty %}height="{{- line.height -}}" {% endif %} style="border: none; {{ subline.margin | default('margin: 0 0 0 20px') }};">{% endif %}
+                    <img {% if c.darkModeEnabled and line.srcDark is not empty %} class="light-img"{% endif %} border="0" vspace="0" hspace="0" src="{{- line.src | raw -}}" alt="{{- line.alt | default('') -}}" title="{{- line.title | escape -}}" {% if line.width is not empty %}width="{{- line.width -}}" {% endif %} {% if line.height is not empty %}height="{{- line.height -}}" {% endif %} style="border: none; {{ subline.margin | default('margin: 0 0 0 20px') }};">
                     {% if line.linkUrl is not empty %}</a>{% endif %}
                 </td>
                 {% endif %}
@@ -466,7 +487,8 @@
                 <td width="100%" align="{{- line.alignment | default('center') -}}"  style="color: {{ c.font.table.color | default('#333333') }}; font-family: {{ c.font.family | default("'Nunito Sans', Helvetica, Arial, sans-serif") | raw }}; font-size: {{ c.font.table.size | default('16px') }}; word-break: break-word; vertical-align: {{ line.contentVerticalAlign.value }};">
 
                     {% if photo.linkUrl is not empty %}<a target="_blank" href="{{- photo.linkUrl | raw -}}" style="color: {{ c.text.linkColor | default('#3869D4') }};">{% endif %}
-                      <img border="0" vspace="0" hspace="0" src="{{- photo.src | raw -}}" alt="{{- photo.alt | default('') -}}" title="{{- photo.title | escape -}}" {% if not c.content.full %}width="{{- ((c.content.width-(line.cellPadding*(perRowCount+1))-(line.cellSpacing*(perRowCount+1)))/perRowCount) -}}"{% endif %} style="border: none;">
+                      {% if c.darkModeEnabled and photo.srcDark is not empty %}<img  class="dark-img"border="0" vspace="0" hspace="0" src="{{- photo.srcDark | raw -}}" alt="{{- photo.alt | default('') -}}" title="{{- photo.title | escape -}}" {% if not c.content.full %}width="{{- ((c.content.width-(line.cellPadding*(perRowCount+1))-(line.cellSpacing*(perRowCount+1)))/perRowCount) -}}"{% endif %} style="border: none;">{% endif %}
+                      <img {% if c.darkModeEnabled and photo.srcDark is not empty %} class="light-img"{% endif %} border="0" vspace="0" hspace="0" src="{{- photo.src | raw -}}" alt="{{- photo.alt | default('') -}}" title="{{- photo.title | escape -}}" {% if not c.content.full %}width="{{- ((c.content.width-(line.cellPadding*(perRowCount+1))-(line.cellSpacing*(perRowCount+1)))/perRowCount) -}}"{% endif %} style="border: none;">
                     {% if photo.linkUrl is not empty %}</a>{% endif %}
 
                     {% for text in photo.textLines %}
@@ -513,7 +535,8 @@
 
                     {% elseif col.type == 'IMAGE' %}
                         {% if col.linkUrl is not empty %}<a target="_blank" href="{{- col.linkUrl | raw -}}" style="color: {{ c.text.linkColor | default('#3869D4') }};">{% endif %}
-                        <img border="0" vspace="0" hspace="0" src="{{- col.src | raw -}}" alt="{{- col.alt | default('') | escape -}}" title="{{- col.title | escape -}}" {% if col.width is not empty %}width="{{- col.width -}}" {% endif %} {% if col.height is not empty %}height="{{- col.height -}}" {% endif %} style="border: none;">
+                        {% if c.darkModeEnabled and col.srcDark is not empty %}<img class="dark-img" border="0" vspace="0" hspace="0" src="{{- col.srcDark | raw -}}" alt="{{- col.alt | default('') | escape -}}" title="{{- col.title | escape -}}" {% if col.width is not empty %}width="{{- col.width -}}" {% endif %} {% if col.height is not empty %}height="{{- col.height -}}" {% endif %} style="border: none;">{% endif %}
+                        <img {% if c.darkModeEnabled and col.srcDark is not empty %} class="light-img"{% endif %} border="0" vspace="0" hspace="0" src="{{- col.src | raw -}}" alt="{{- col.alt | default('') | escape -}}" title="{{- col.title | escape -}}" {% if col.width is not empty %}width="{{- col.width -}}" {% endif %} {% if col.height is not empty %}height="{{- col.height -}}" {% endif %} style="border: none;">
                         {% if col.linkUrl is not empty %}</a>{% endif %}
 
                     {% endif %}
@@ -581,7 +604,8 @@
     {% elseif line.type == 'IMAGE' %}
     <p class="f-fallback sub" style="color: {{ c.footer.color | default('#6B6E76') }}; font-size: {{ c.font.sub.size | default('13px') }}; line-height: {{ c.text.lineHeight | default('1.625') }}; margin: {{ c.text.margin | default('.4em 0 1.1875em') }};">
         {% if line.linkUrl is not empty %}<a target="_blank" href="{{- line.linkUrl | raw -}}" style="color: {{ c.footer.link.color | default('#6B6E76') }}; text-decoration: {{ c.footer.link.textDecoration | default('underline') }};">{% endif %}
-        <img border="0" vspace="0" hspace="0" src="{{- line.src | raw -}}" alt="{{- line.alt | default('') -}}" title="{{- line.title | escape -}}" {% if line.width is not empty %}width="{{- line.width -}}" {% endif %} {% if line.height is not empty %}height="{{- line.height -}}" {% endif %} style="border: none;">
+        {% if c.darkModeEnabled and line.srcDark is not empty %}<img  class="dark-img" border="0" vspace="0" hspace="0" src="{{- line.srcDark | raw -}}" alt="{{- line.alt | default('') -}}" title="{{- line.title | escape -}}" {% if line.width is not empty %}width="{{- line.width -}}" {% endif %} {% if line.height is not empty %}height="{{- line.height -}}" {% endif %} style="border: none;">{% endif %}
+        <img {% if c.darkModeEnabled and line.srcDark is not empty %} class="light-img"{% endif %} border="0" vspace="0" hspace="0" src="{{- line.src | raw -}}" alt="{{- line.alt | default('') -}}" title="{{- line.title | escape -}}" {% if line.width is not empty %}width="{{- line.width -}}" {% endif %} {% if line.height is not empty %}height="{{- line.height -}}" {% endif %} style="border: none;">
         {% if line.linkUrl is not empty %}</a>{% endif %}
     </p>
 
