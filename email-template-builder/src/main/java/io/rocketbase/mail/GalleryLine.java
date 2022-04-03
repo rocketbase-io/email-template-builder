@@ -95,6 +95,28 @@ public class GalleryLine implements TemplateLine {
         return this;
     }
 
+    /**
+     * used only by template to easyily fill empty cells
+     */
+    public List<String> getEmptyCells() {
+        List<String> result = new ArrayList<>();
+        if (photoElements != null && !photoElements.isEmpty() && newRowAfter != null) {
+            int startModulo = (photoElements.size() % (newRowAfter + 1));
+            if (startModulo > 0) {
+                for (int x = startModulo; x < newRowAfter; x++) {
+                    result.add("");
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * used only by template to easyily fill empty cells
+     */
+    public String getColumnWidth() {
+        return newRowAfter == null ? null : (Math.round(10000.0/(newRowAfter.intValue() * 1.0))/100.0+"%");
+    }
 
     @Override
     public TemplateLineType getType() {

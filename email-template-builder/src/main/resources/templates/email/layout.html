@@ -484,7 +484,7 @@
 
             {% for photo in line.photoElements %}
             {% if (loop.index % perRowCount) == 0 %}<tr>{% endif %}
-                <td width="100%" align="{{- line.alignment | default('center') -}}"  style="color: {{ c.font.table.color | default('#333333') }}; font-family: {{ c.font.family | default("'Nunito Sans', Helvetica, Arial, sans-serif") | raw }}; font-size: {{ c.font.table.size | default('16px') }}; word-break: break-word; vertical-align: {{ line.contentVerticalAlign.value }};">
+                <td {% if line.columnWidth is not empty %}width="{{- line.columnWidth -}}"{% endif %}} align="{{- line.alignment | default('center') -}}"  style="color: {{ c.font.table.color | default('#333333') }}; font-family: {{ c.font.family | default("'Nunito Sans', Helvetica, Arial, sans-serif") | raw }}; font-size: {{ c.font.table.size | default('16px') }}; word-break: break-word; vertical-align: {{ line.contentVerticalAlign.value }};">
 
                     {% if photo.linkUrl is not empty %}<a target="_blank" href="{{- photo.linkUrl | raw -}}" style="color: {{ c.text.linkColor | default('#3869D4') }};">{% endif %}
                       {% if c.darkModeEnabled and photo.srcDark is not empty %}<img  class="dark-img"border="0" vspace="0" hspace="0" src="{{- photo.srcDark | raw -}}" alt="{{- photo.alt | default('') -}}" title="{{- photo.title | escape -}}" {% if not c.content.full %}width="{{- ((c.content.width-(line.cellPadding*(perRowCount+1))-(line.cellSpacing*(perRowCount+1)))/perRowCount) -}}"{% endif %} style="border: none;">{% endif %}
@@ -496,7 +496,12 @@
                     {% endfor %}
 
                 </td>
-            {% if ((loop.index+1) % perRowCount) == 0 or loop.last %}</tr>{% endif %}
+            {% if ((loop.index+1) % perRowCount) == 0 %}</tr>{% endif %}
+            {% endfor %}
+
+            {% for c in line.emptyCells %}
+                <td {% if line.columnWidth is not empty %}width="{{- line.columnWidth -}}"{% endif %}}>&nbsp;</td>
+                {% if loop.last %}</tr>{% endif %}
             {% endfor %}
         </table>
 

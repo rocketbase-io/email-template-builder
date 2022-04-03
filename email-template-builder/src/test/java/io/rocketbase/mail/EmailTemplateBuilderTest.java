@@ -157,6 +157,12 @@ public class EmailTemplateBuilderTest {
                 .photos(Arrays.asList("https://source.unsplash.com/random/800x600?sig=1", "https://source.unsplash.com/random/800x600?sig=2", "https://source.unsplash.com/random/800x600?sig=3", "https://source.unsplash.com/random/800x600?sig=4", "https://source.unsplash.com/random/800x600?sig=5","https://source.unsplash.com/random/800x600?sig=6","https://source.unsplash.com/random/800x600?sig=7"))
                 .and()
 
+                .gallery()
+                .newRowAfter(3)
+                .cellPadding(5)
+                .photos(Arrays.asList("https://source.unsplash.com/random/800x600?sig=1"))
+                .and()
+
                 .button("Here could be an action", "http://localhost").blue().and()
                 .text("Would be great if you could click :)").and()
 
