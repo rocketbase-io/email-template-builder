@@ -23,7 +23,7 @@ public class AttributeLine implements TemplateLine {
     }
 
     public AttributeLine map(Map<String, String> map) {
-        map.putAll(map);
+        this.map.putAll(map);
         return this;
     }
 
