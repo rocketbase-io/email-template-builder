@@ -1,0 +1,50 @@
+name: release-to-maven-central
+on:
+  workflow_dispatch:
+    inputs:
+      releaseversion:
+        description: 'Release version'
+        required: true
+        default: '1.0.0'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "Release version ${{ github.event.inputs.releaseversion }}!"
+
+      - uses: actions/checkout@v2
+
+      - name: Set up Maven Central Repository
+        uses: actions/setup-java@v1
+        with:
+          java-version: 8
+          server-id: ossrh
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
+          gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
+          gpg-passphrase: MAVEN_GPG_PASSPHRASE
+
+      - name: Set projects Maven version to GitHub Action GUI set version
+        run: mvn versions:set "-DnewVersion=${{ github.event.inputs.releaseversion }}"
+
+      - name: Publish package
+        run: mvn --batch-mode clean deploy -P release -DskipTests=true
+        env:
+          MAVEN_USERNAME: ${{ secrets.OSS_SONATYPE_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.OSS_SONATYPE_PASSWORD }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.event.inputs.releaseversion }}
+          release_name: ${{ github.event.inputs.releaseversion }}
+          body: |
+            New version ${{ github.event.inputs.releaseversion }} published
+          draft: false
+          prerelease: false
