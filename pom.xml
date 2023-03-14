@@ -86,12 +86,12 @@ SOFTWARE.
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
-        <pebble.version>3.1.5</pebble.version>
-        <lombok.version>1.18.22</lombok.version>
-        <junit.version>5.8.2</junit.version>
+        <pebble.version>3.2.0</pebble.version>
+        <lombok.version>1.18.26</lombok.version>
+        <junit.version>5.9.2</junit.version>
         <hamcrest.version>2.2</hamcrest.version>
         <colors.version>0.6.0</colors.version>
-        <commonmark.version>0.17.0</commonmark.version>
+        <commonmark.version>0.21.0</commonmark.version>
         <simple-java-mail.version>7.1.0</simple-java-mail.version>
     </properties>
 
@@ -110,25 +110,20 @@ SOFTWARE.
             <build>
                 <plugins>
                     <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <version>3.0.0-M5</version>
-                    </plugin>
-                    <plugin>
                         <groupId>org.sonatype.plugins</groupId>
                         <artifactId>nexus-staging-maven-plugin</artifactId>
-                        <version>1.6.8</version>
+                        <version>1.6.13</version>
                         <extensions>true</extensions>
                         <configuration>
                             <serverId>ossrh</serverId>
-                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                            <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
                             <autoReleaseAfterClose>true</autoReleaseAfterClose>
                         </configuration>
                     </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
-                        <version>3.2.0</version>
+                        <version>3.2.1</version>
                         <executions>
                             <execution>
                                 <id>attach-sources</id>
@@ -141,14 +136,14 @@ SOFTWARE.
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>3.3.2</version>
+                        <version>3.4.1</version>
                         <executions>
                             <execution>
                                 <id>attach-javadocs</id>
                                 <goals>
                                     <goal>jar</goal>
                                 </goals>
-                                <configuration>
+                                <configuration> <!-- add this to disable checking -->
                                     <doclint>none</doclint>
                                 </configuration>
                             </execution>
