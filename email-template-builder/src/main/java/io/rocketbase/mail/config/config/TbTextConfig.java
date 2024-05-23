@@ -2,8 +2,10 @@ package io.rocketbase.mail.config.config;
 
 import io.rocketbase.mail.config.base.TbFont;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class TbTextConfig extends TbFont {
 
     static final TbTextConfig DEFAULT = new TbTextConfig(new TbFont("16px", "#51545E"),
@@ -17,20 +19,10 @@ public class TbTextConfig extends TbFont {
             "1.325",
             "#3869D4",
             "#FFFFFF");
-
-    public static final TbTextConfig newInstance() {
-        return new TbTextConfig(DEFAULT);
-    }
-
-    public static final TbTextConfig newInstanceSmall() {
-        return new TbTextConfig(SMALL);
-    }
-
     private String margin;
     private String lineHeight;
     private String linkColor;
     private String linkColorDark;
-
     public TbTextConfig(TbFont font, String margin, String lineHeight, String linkColor, String linkColorDark) {
         super(font);
         this.margin = margin;
@@ -38,12 +30,19 @@ public class TbTextConfig extends TbFont {
         this.linkColor = linkColor;
         this.linkColorDark = linkColorDark;
     }
-
     public TbTextConfig(TbTextConfig other) {
         super(other);
         this.margin = other.margin;
         this.lineHeight = other.lineHeight;
         this.linkColor = other.linkColor;
         this.linkColorDark = other.linkColorDark;
+    }
+
+    public static final TbTextConfig newInstance() {
+        return new TbTextConfig(DEFAULT);
+    }
+
+    public static final TbTextConfig newInstanceSmall() {
+        return new TbTextConfig(SMALL);
     }
 }
