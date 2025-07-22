@@ -11,6 +11,7 @@
     </parent>
 
     <artifactId>email-template-builder</artifactId>
+    <name>Email Template Builder</name>
 
     <dependencies>
         <dependency>

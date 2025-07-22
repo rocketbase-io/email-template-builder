@@ -14,36 +14,36 @@ jobs:
       - run: |
           echo "Release version ${{ github.event.inputs.releaseversion }}!"
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Set up Maven Central Repository
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v4
         with:
           java-version: 17
-          server-id: ossrh
+          distribution: 'temurin'
+          server-id: central
           server-username: MAVEN_USERNAME
           server-password: MAVEN_PASSWORD
-          gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
-          gpg-passphrase: MAVEN_GPG_PASSPHRASE
+
+      - name: Install GPG Secret Key
+        run: |
+          cat <(echo -e "${{ secrets.MAVEN_GPG_PRIVATE_KEY }}") | gpg --batch --import
+          gpg --list-secret-keys --keyid-format LONG
 
       - name: Set projects Maven version to GitHub Action GUI set version
         run: mvn versions:set "-DnewVersion=${{ github.event.inputs.releaseversion }}"
 
       - name: Publish package
-        run: mvn --batch-mode clean deploy -P release -DskipTests=true
+        run: mvn --batch-mode -Prelease -Dgpg.passphrase=${{ secrets.MAVEN_GPG_PASSPHRASE }} -Dgpg.pinentry-mode=loopback clean deploy -DskipTests
         env:
           MAVEN_USERNAME: ${{ secrets.OSS_SONATYPE_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSS_SONATYPE_PASSWORD }}
-          MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
 
       - name: Create GitHub Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: ncipollo/release-action@v1
         with:
-          tag_name: ${{ github.event.inputs.releaseversion }}
-          release_name: ${{ github.event.inputs.releaseversion }}
+          tag: ${{ github.event.inputs.releaseversion }}
+          name: ${{ github.event.inputs.releaseversion }}
           body: |
             New version ${{ github.event.inputs.releaseversion }} published
           draft: false
