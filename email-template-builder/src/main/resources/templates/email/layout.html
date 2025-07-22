@@ -261,6 +261,11 @@
             line-height: {{ c.imageText.lineHeight | default('1.325') }};
         }
 
+        .body-gallery img,
+        .body-side-image img {
+            object-fit: {{ c.sideImageLine.objectFit | default('none') }};
+        }
+
         .body-sub {
             margin-top: 25px;
             padding-top: 25px;
@@ -387,6 +392,9 @@
                             <td class="attributes_item" {% if line.valueWidth is not empty %} width="{{- line.valueWidth -}}" {% endif %} style="color: {{ c.font.table.color | default('#333333') }}; font-family: {{ c.font.family | default("'Nunito Sans', Helvetica, Arial, sans-serif") | raw }}; font-size: {{ c.font.table.size | default('16px') }}; padding: 0; word-break: break-word;" valign="top">
                                 <span class="f-fallback">{{entry.value | escape}}</span>
                             </td>
+
+
+
                         </tr>
                         {% endfor %}
                     </table>
