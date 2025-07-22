@@ -43,7 +43,7 @@ public class AbstractHtmlLine <E extends AbstractHtmlLine> {
             Matcher matcherHref = PATTERN_A_HREF.matcher(href);
             while (matcherHref.find()) {
                 String link = matcherHref.group(1).replaceAll("('|\")", "");
-                result = result.replace(matcherATag.group(), "%s -> %s".formatted(linkText, link));
+                result = result.replace(matcherATag.group(), String.format("%s -> %s", linkText, link));
             }
 
         }

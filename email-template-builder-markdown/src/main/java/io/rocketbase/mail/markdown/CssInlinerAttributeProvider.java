@@ -30,7 +30,8 @@ public class CssInlinerAttributeProvider implements AttributeProviderFactory {
                         "; font-size: " + configuration.getText().getSize() +
                         "; line-height: " + configuration.getText().getLineHeight() +
                         "; color: " + configuration.getText().getColor());
-            } else if (node instanceof Heading heading) {
+            } else if (node instanceof Heading) {
+                Heading heading = (Heading) node;
                 TbFont font = null;
                 switch (heading.getLevel()) {
                     case 1:

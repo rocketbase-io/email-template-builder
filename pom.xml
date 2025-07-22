@@ -72,8 +72,8 @@ SOFTWARE.
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
         <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
         <pebble.version>3.2.4</pebble.version>
         <lombok.version>1.18.36</lombok.version>

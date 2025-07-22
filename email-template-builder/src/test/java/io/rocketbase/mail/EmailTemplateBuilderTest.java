@@ -73,20 +73,14 @@ public class EmailTemplateBuilderTest {
                 .keyValue("Username", "{{username}}")
                 .and()
                 .html("If you have any questions, feel free to <a href=\"mailto:{{support_email}}\">email our customer success team</a>. (We're lightning quick at replying.) We also offer <a href=\"{{live_chat_url}}\">live chat</a> during business hours.",
-                        """
-                        If you have any questions, feel free to email our customer success team
-                        (We're lightning quick at replying.) We also offer live chat during business hours.\
-                        """).and()
-                .text("""
-                        Cheers,
-                        The [Product Name] Team\
-                        """).and()
+                        "If you have any questions, feel free to email our customer success team\n" +
+                        "(We're lightning quick at replying.) We also offer live chat during business hours.").and()
+                .text("Cheers,\n" +
+                        "The [Product Name] Team").and()
                 .copyright("rocketbase").url("https://www.rocketbase.io").suffix(". All rights reserved.").and()
-                .footerText("""
-                        [Company Name, LLC]
-                        1234 Street Rd.
-                        Suite 1234\
-                        """).and()
+                .footerText("[Company Name, LLC]\n" +
+                        "1234 Street Rd.\n" +
+                        "Suite 1234").and()
                 .footerImage("https://cdn.rocketbase.io/assets/loading/no-image.jpg").width(100).linkUrl("https://www.rocketbase.io").and()
                 .build();
         // then
@@ -127,16 +121,12 @@ public class EmailTemplateBuilderTest {
                 .button("Button", "http://localhost").red().center().and()
                 .and()
 
-                .text("""
-                        Cheers,
-                        The [Product Name] Team\
-                        """).and()
+                .text("Cheers,\n" +
+                        "The [Product Name] Team").and()
                 .copyright("rocketbase").url("https://www.rocketbase.io").suffix(". All rights reserved.").and()
-                .footerText("""
-                        [Company Name, LLC]
-                        1234 Street Rd.
-                        Suite 1234\
-                        """).and()
+                .footerText("[Company Name, LLC]\n" +
+                        "1234 Street Rd.\n" +
+                        "Suite 1234").and()
                 .footerImage("https://cdn.rocketbase.io/assets/loading/no-image.jpg").width(100).linkUrl("https://www.rocketbase.io").and()
                 .build();
         // then
@@ -201,16 +191,12 @@ public class EmailTemplateBuilderTest {
                 .button("action", "http://localhost").red().right().and()
                 .and()
 
-                .text("""
-                        Cheers,
-                        The [Product Name] Team\
-                        """).and()
+                .text("Cheers,\n" +
+                        "The [Product Name] Team").and()
                 .copyright("rocketbase").url("https://www.rocketbase.io").suffix(". All rights reserved.").and()
-                .footerText("""
-                        [Company Name, LLC]
-                        1234 Street Rd.
-                        Suite 1234\
-                        """).and()
+                .footerText("[Company Name, LLC]\n" +
+                        "1234 Street Rd.\n" +
+                        "Suite 1234").and()
                 .footerImage("https://cdn.rocketbase.io/assets/loading/no-image.jpg").width(100).linkUrl("https://www.rocketbase.io").and()
                 .build();
         // then
@@ -235,21 +221,17 @@ public class EmailTemplateBuilderTest {
                 .text("Thanks for using [Product Name]. This is an invoice for your recent purchase").and()
                 .tableSimple("#.## '€'")
                 .headerRow("Description", "Amount")
-                .itemRow("""
-                        Special Product
-                        Some extra explanations in separate line\
-                        """, BigDecimal.valueOf(1333, 2))
+                .itemRow("Special Product\n" +
+                        "Some extra explanations in separate line", BigDecimal.valueOf(1333, 2))
                 .itemRow("Short service", BigDecimal.valueOf(103, 1))
                 .footerRow("Total", BigDecimal.valueOf(2363, 2))
                 .and()
                 .button("Download PDF", "http://localhost").gray().right().and()
                 .text("If you have any questions about this receipt, simply reply to this email or reach out to our support team for help.").and()
                 .copyright("rocketbase").url("https://www.rocketbase.io").suffix(". All rights reserved.").and()
-                .footerText("""
-                        [Company Name, LLC]
-                        1234 Street Rd.
-                        Suite 1234\
-                        """).and()
+                .footerText("[Company Name, LLC]\n" +
+                        "1234 Street Rd.\n" +
+                        "Suite 1234").and()
                 .build();
         // then
         assertThat(htmlTextEmail, notNullValue());
@@ -273,18 +255,12 @@ public class EmailTemplateBuilderTest {
                 .text("Thanks for using [Product Name]. This is an invoice for your recent purchase").and()
                 .tableSimpleWithImage("#.## '€'")
                 .headerRow("Preview", "Description", "Amount")
-                .itemRow("https://cdn.shopify.com/s/files/1/0255/1211/6260/products/TCW1142-07052_small.jpg?v=1589200198", """
-                        Damen Harbour Tanktop × 1
-                        QUARTZ PINK / S\
-                        """, BigDecimal.valueOf(4995, 2))
-                .itemRow("https://cdn.shopify.com/s/files/1/0255/1211/6260/products/TCM1886-0718_201_fdf0be52-639f-4ea8-9143-6bd75e0821b1_small.jpg?v=1583509609", """
-                        Herren ten Classic T-Shirt
-                        FOREST GREEN HEATHER / XL\
-                        """, BigDecimal.valueOf(3995, 2))
-                .itemRow("https://cdn.shopify.com/s/files/1/0255/1211/6260/products/TCM1939-0439_1332_da6f3e7c-e18d-4778-be97-c6c0b482b643_small.jpg?v=1583509671", """
-                        Herren Joshua Hanfshorts
-                        DARK OCEAN BLUE / XL\
-                        """, BigDecimal.valueOf(6995, 2))
+                .itemRow("https://cdn.shopify.com/s/files/1/0255/1211/6260/products/TCW1142-07052_small.jpg?v=1589200198", "Damen Harbour Tanktop × 1\n" +
+                        "QUARTZ PINK / S", BigDecimal.valueOf(4995, 2))
+                .itemRow("https://cdn.shopify.com/s/files/1/0255/1211/6260/products/TCM1886-0718_201_fdf0be52-639f-4ea8-9143-6bd75e0821b1_small.jpg?v=1583509609", "Herren ten Classic T-Shirt\n" +
+                        "FOREST GREEN HEATHER / XL", BigDecimal.valueOf(3995, 2))
+                .itemRow("https://cdn.shopify.com/s/files/1/0255/1211/6260/products/TCM1939-0439_1332_da6f3e7c-e18d-4778-be97-c6c0b482b643_small.jpg?v=1583509671", "Herren Joshua Hanfshorts\n" +
+                        "DARK OCEAN BLUE / XL", BigDecimal.valueOf(6995, 2))
                 .footerRow("Sum", BigDecimal.valueOf(15985, 2))
                 .footerRow("Code - PLANT5", BigDecimal.valueOf(-799, 2))
                 .footerRow("Total incl. Tax\n", BigDecimal.valueOf(15186, 2))
@@ -292,11 +268,9 @@ public class EmailTemplateBuilderTest {
                 .button("Download PDF", "http://localhost").gray().right().and()
                 .text("If you have any questions about this receipt, simply reply to this email or reach out to our support team for help.").and()
                 .copyright("rocketbase").url("https://www.rocketbase.io").suffix(". All rights reserved.").and()
-                .footerText("""
-                        [Company Name, LLC]
-                        1234 Street Rd.
-                        Suite 1234\
-                        """).and()
+                .footerText("[Company Name, LLC]\n" +
+                        "1234 Street Rd.\n" +
+                        "Suite 1234").and()
                 .build();
         // then
         assertThat(htmlTextEmail, notNullValue());
@@ -340,11 +314,9 @@ public class EmailTemplateBuilderTest {
                 .button("Download PDF", "http://localhost").gray().right().and()
                 .text("If you have any questions about this receipt, simply reply to this email or reach out to our support team for help.").and()
                 .copyright("rocketbase").url("https://www.rocketbase.io").suffix(". All rights reserved.").and()
-                .footerText("""
-                        [Company Name, LLC]
-                        1234 Street Rd.
-                        Suite 1234\
-                        """);
+                .footerText("[Company Name, LLC]\n" +
+                        "1234 Street Rd.\n" +
+                        "Suite 1234");
 
         HtmlTextEmail htmlTextEmail = builder.build();
         // then
