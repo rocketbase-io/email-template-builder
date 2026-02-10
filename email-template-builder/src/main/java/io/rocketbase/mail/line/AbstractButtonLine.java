@@ -13,8 +13,9 @@ public class AbstractButtonLine<E extends AbstractButtonLine> {
     final String url;
     ColorStyle color = ColorStyleSimple.BASE_STYLE;
     Alignment alignment = Alignment.CENTER;
+    String margin = "30px auto";
 
-    public AbstractButtonLine( String text, String url) {
+    public AbstractButtonLine(String text, String url) {
         this.text = text;
         this.url = url;
     }
@@ -76,6 +77,14 @@ public class AbstractButtonLine<E extends AbstractButtonLine> {
 
     public E right() {
         this.alignment = Alignment.RIGHT;
+        return (E) this;
+    }
+
+    /**
+     * default is "30px auto"
+     */
+    public E margin(String margin) {
+        this.margin = margin;
         return (E) this;
     }
 }

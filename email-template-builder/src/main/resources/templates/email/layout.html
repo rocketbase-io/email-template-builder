@@ -263,7 +263,7 @@
 
         .body-gallery img,
         .body-side-image img {
-            object-fit: {{ c.sideImageLine.objectFit | default('none') }};
+            object-fit: {{ c.sideImageLine.objectFit.value | default('none') }};
         }
 
         .body-sub {
@@ -415,7 +415,7 @@
         </table>
 
     {% elseif line.type == 'BUTTON' %}
-        <table class="body-action" align="center" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="margin: 30px auto; padding: 0; text-align: center;" border="0">
+        <table class="body-action" align="center" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="margin: {{ line.margin | default('30px auto') }}; padding: 0; text-align: center;" border="0">
             <tr>
                 <td align="center" style="color: {{ c.font.table.color | default('#333333') }}; font-family: {{ c.font.family | default("'Nunito Sans', Helvetica, Arial, sans-serif") | raw }}; font-size: {{ c.font.table.size | default('16px') }}; word-break: break-word;">
                     <!-- button -->
@@ -449,19 +449,19 @@
                     <hr {% if subLine.margin is not empty %}style="margin: {{ subLine.margin}}" {% endif %}>
 
                     {% elseif subLine.type == 'TEXT' %}
-                    <p class="f-fallback" style="{% if subLine.alignment is not empty %}text-align: {{ subLine.alignment.value }}; {% endif %}{% if subLine.fontWeight is not empty %}font-weight: {{ subLine.fontWeight.value }}{% endif %}; {% if subLine.fontStyle is not empty %}font-style: {{ subLine.fontStyle.value }}{% endif %}; {% if subLine.textDecoration is not empty %}text-decoration: {{ subLine.textDecoration.value }}{% endif %}; color: {{ subLine.color | default(c.imageText.color) | default('#51545E') }}; font-size: {{ subLine.fontSize | default(c.imageText.size) | default('16px') }}; line-height: {{ c.imageText.lineHeight | default('1.325') }}; margin: {{ c.imageText.margin | default('.4em 0 .4em') }};">{% if subLine.linkUrl is not empty %}<a target="_blank" href="{{- subLine.linkUrl | raw -}}" style="color: {{ subLine.color | default(c.imageText.linkColor) | default('#3869D4')  }};">{% endif %}{{ subLine.text | escape | br | raw }}{% if subLine.linkUrl is not empty %}</a>{% endif %}</p>
+                    <p class="f-fallback" style="{% if subLine.alignment is not empty %}text-align: {{ subLine.alignment.value }}; {% endif %}{% if subLine.fontWeight is not empty %}font-weight: {{ subLine.fontWeight.value }}{% endif %}; {% if subLine.fontStyle is not empty %}font-style: {{ subLine.fontStyle.value }}{% endif %}; {% if subLine.textDecoration is not empty %}text-decoration: {{ subLine.textDecoration.value }}{% endif %}; color: {{ subLine.color | default(c.imageText.color) | default('#51545E') }}; font-size: {{ subLine.fontSize | default(c.imageText.size) | default('16px') }}; line-height: {{ c.imageText.lineHeight | default('1.325') }}; margin: {{ c.imageText.margin | default('.4em 0 .4em') }};">{% if subLine.linkUrl is not empty %}<a target="_blank" href="{{- subLine.linkUrl | raw -}}" style="color: {{ subLine.color | default(c.imageText.linkColor) | default('#3869D4')  }};{% if subLine.fontWeight is not empty %}font-weight: {{ subLine.fontWeight.value }}{% endif %}; {% if subLine.fontStyle is not empty %}font-style: {{ subLine.fontStyle.value }}{% endif %}; {% if subLine.textDecoration is not empty %}text-decoration: {{ subLine.textDecoration.value }}{% endif %}">{% endif %}{{ subLine.text | escape | br | raw }}{% if subLine.linkUrl is not empty %}</a>{% endif %}</p>
 
                     {% elseif subLine.type == 'HTML' %}
                     <p class="f-fallback" style="color: {{ c.imageText.color | default('#51545E') }}; line-height: {{ c.imageText.lineHeight | default('1.625') }}; margin: {{ c.imageText.margin | default('.4em 0 .4em') }};">{{ subLine.html | raw }}</p>
 
                     {% elseif subLine.type == 'BUTTON' %}
-                    <table class="body-action" align="center" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="margin: 30px auto; padding: 0; text-align: center;" border="0">
+                    <table class="body-action" align="center" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="margin: {{ line.margin | default('30px auto') }}; padding: 0; text-align: center;" border="0">
                         <tr>
                             <td align="center" style="color: {{ c.font.table.color | default('#333333') }}; font-family: {{ c.font.family | default("'Nunito Sans', Helvetica, Arial, sans-serif") | raw }}; font-size: {{ c.font.table.size | default('16px') }}; word-break: break-word;">
                             <!-- button -->
                             <table width="100%" border="0" cellspacing="0" cellpadding="0" role="presentation">
                                 <tr>
-                                    <td align="{{- subLine.alignment | default('center') -}}" style="color: {{ c.font.table.color | default('#333333') }}; font-family: {{ c.font.family | default("'Nunito Sans', Helvetica, Arial, sans-serif") | raw }}; font-size: {{ c.font.table.size | default('16px') }}; word-break: break-word;">
+                                    <td align="{{- subLine.alignment.value | default('center') -}}" style="color: {{ c.font.table.color | default('#333333') }}; font-family: {{ c.font.family | default("'Nunito Sans', Helvetica, Arial, sans-serif") | raw }}; font-size: {{ c.font.table.size | default('16px') }}; word-break: break-word;">
                                     <a href="{{- subLine.url | raw -}}" class="f-fallback button" style="-webkit-text-size-adjust: none; background-color: {{ subLine.color.bg | default(c.button.background) }}; border-bottom: {{ c.button.border.bottom }} solid {{ subLine.color.bg | default(c.button.background) }}; border-left: {{ c.button.border.left }} solid {{ subLine.color.bg | default(c.button.background) }}; border-radius: {{ c.button.borderRadius | default('3px') }}; border-right: {{ c.button.border.right }} solid {{ subLine.color.bg | default(c.button.background) }}; border-top: {{ c.button.border.top }} solid {{ subLine.color.bg | default(c.button.background) }}; box-shadow: {{ c.button.boxShadow | default('0 2px 3px rgba(0, 0, 0, 0.16)') }}; box-sizing: border-box; color: {{ subLine.color.text | default(c.button.color) }}; display: inline-block; text-decoration: none;" arget="_blank">{{- subLine.text | escape -}}</a>
                                     </td>
                                 </tr>
@@ -492,7 +492,7 @@
 
             {% for photo in line.photoElements %}
             {% if (loop.index % perRowCount) == 0 %}<tr>{% endif %}
-                <td {% if line.columnWidth is not empty %}width="{{- line.columnWidth -}}"{% endif %}} align="{{- line.alignment | default('center') -}}"  style="color: {{ c.font.table.color | default('#333333') }}; font-family: {{ c.font.family | default("'Nunito Sans', Helvetica, Arial, sans-serif") | raw }}; font-size: {{ c.font.table.size | default('16px') }}; word-break: break-word; vertical-align: {{ line.contentVerticalAlign.value }};">
+                <td {% if line.columnWidth is not empty %}width="{{- line.columnWidth -}}"{% endif %}} align="{{- line.alignment.value | default('center') -}}"  style="color: {{ c.font.table.color | default('#333333') }}; font-family: {{ c.font.family | default("'Nunito Sans', Helvetica, Arial, sans-serif") | raw }}; font-size: {{ c.font.table.size | default('16px') }}; word-break: break-word; vertical-align: {{ line.contentVerticalAlign.value }};">
 
                     {% if photo.linkUrl is not empty %}<a target="_blank" href="{{- photo.linkUrl | raw -}}" style="color: {{ c.text.linkColor | default('#3869D4') }};">{% endif %}
                       {% if c.darkModeEnabled and photo.srcDark is not empty %}<img  class="dark-img"border="0" vspace="0" hspace="0" src="{{- photo.srcDark | raw -}}" alt="{{- photo.alt | default('') -}}" title="{{- photo.title | escape -}}" {% if not c.content.full %}width="{{- ((c.content.width-(line.cellPadding*(perRowCount+1))-(line.cellSpacing*(perRowCount+1)))/perRowCount) -}}"{% endif %} style="border: none;">{% endif %}

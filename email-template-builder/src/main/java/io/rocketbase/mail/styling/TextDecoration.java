@@ -7,7 +7,8 @@ public enum TextDecoration {
     UNDERLINE("underline"),
     OVERLINE("overline"),
     LINE_THROUGH("line-through"),
-    BLINK("blink");
+    BLINK("blink"),
+    NONE("none");
 
     @Getter
     private String value;
