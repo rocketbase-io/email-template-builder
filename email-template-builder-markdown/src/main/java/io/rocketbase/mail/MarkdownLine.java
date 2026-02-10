@@ -14,6 +14,7 @@ import org.commonmark.renderer.html.HtmlRenderer;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
 
 
 public class MarkdownLine implements TemplateLine {
@@ -41,13 +42,26 @@ public class MarkdownLine implements TemplateLine {
     }
 
     public MarkdownLine(EmailTemplateConfigBuilder builder, String markdown) {
+        this(builder, markdown, null);
+    }
+
+    public MarkdownLine(String markdown, Function<HtmlRenderer.Builder, HtmlRenderer.Builder> rendererCustomizer) {
+        this(null, markdown, rendererCustomizer);
+    }
+
+    public MarkdownLine(EmailTemplateConfigBuilder builder, String markdown, Function<HtmlRenderer.Builder, HtmlRenderer.Builder> rendererCustomizer) {
         this.builder = builder;
         this.markdown = markdown;
 
-        HtmlRenderer htmlRenderer = HtmlRenderer.builder()
+        HtmlRenderer.Builder rendererBuilder = HtmlRenderer.builder()
                 .extensions(extensions)
-                .attributeProviderFactory(new CssInlinerAttributeProvider(builder != null ? builder.getConfiguration() : TbConfiguration.newInstance()))
-                .build();
+                .attributeProviderFactory(new CssInlinerAttributeProvider(builder != null ? builder.getConfiguration() : TbConfiguration.newInstance()));
+
+        if (rendererCustomizer != null) {
+            rendererBuilder = rendererCustomizer.apply(rendererBuilder);
+        }
+
+        HtmlRenderer htmlRenderer = rendererBuilder.build();
 
         this.html = htmlRenderer.render(parser.parse(markdown));
     }
