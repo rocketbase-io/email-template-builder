@@ -75,12 +75,12 @@ SOFTWARE.
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
-        <pebble.version>3.2.4</pebble.version>
+        <pebble.version>4.1.1</pebble.version>
         <lombok.version>1.18.36</lombok.version>
         <junit.version>5.12.2</junit.version>
-        <hamcrest.version>2.2</hamcrest.version>
+        <hamcrest.version>3.0</hamcrest.version>
         <colors.version>0.6.0</colors.version>
-        <commonmark.version>0.25.0</commonmark.version>
+        <commonmark.version>0.27.1</commonmark.version>
         <simple-java-mail.version>8.12.6</simple-java-mail.version>
     </properties>
 
@@ -101,7 +101,7 @@ SOFTWARE.
                     <plugin>
                         <groupId>org.sonatype.central</groupId>
                         <artifactId>central-publishing-maven-plugin</artifactId>
-                        <version>0.8.0</version>
+                        <version>0.10.0</version>
                         <extensions>true</extensions>
                         <configuration>
                             <publishingServerId>central</publishingServerId>
@@ -112,7 +112,7 @@ SOFTWARE.
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
-                        <version>3.3.1</version>
+                        <version>3.4.0</version>
                         <executions>
                             <execution>
                                 <id>attach-sources</id>
@@ -125,7 +125,7 @@ SOFTWARE.
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>3.11.2</version>
+                        <version>3.12.0</version>
                         <executions>
                             <execution>
                                 <id>attach-javadocs</id>
