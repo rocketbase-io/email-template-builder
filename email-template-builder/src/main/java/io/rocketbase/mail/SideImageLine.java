@@ -16,14 +16,14 @@ import java.util.List;
 public class SideImageLine extends AbstractImageLine<SideImageLine> implements TemplateLine {
 
 
-    @Getter(AccessLevel.PRIVATE)
-    EmailTemplateConfigBuilder builder;
-
     protected Side side = Side.LEFT;
     protected VerticalAlignment imageVerticalAlign = VerticalAlignment.MIDDLE;
     protected VerticalAlignment contentVerticalAlign = VerticalAlignment.MIDDLE;
-
+    protected Integer marginToContent = 20;
+    protected Integer imageTdWidth;
     protected List<SideContentLine> contentLines = new ArrayList<>();
+    @Getter(AccessLevel.PRIVATE)
+    EmailTemplateConfigBuilder builder;
 
     SideImageLine(EmailTemplateConfigBuilder builder, String src) {
         super(src);
@@ -52,6 +52,22 @@ public class SideImageLine extends AbstractImageLine<SideImageLine> implements T
 
     public SideImageLine right() {
         this.side = Side.RIGHT;
+        return this;
+    }
+
+    /**
+     * default 20
+     */
+    public SideImageLine marginToContent(Integer marginToContent) {
+        this.marginToContent = marginToContent;
+        return this;
+    }
+
+    /**
+     * default undefined
+     */
+    public SideImageLine imageTdWidth(Integer imageTdWidth) {
+        this.imageTdWidth = imageTdWidth;
         return this;
     }
 
@@ -84,6 +100,12 @@ public class SideImageLine extends AbstractImageLine<SideImageLine> implements T
 
     public SideButtonLine button(String text, String url) {
         SideButtonLine line = new SideButtonLine(this, text, url);
+        contentLines.add(line);
+        return line;
+    }
+
+    public SideSpaceLine space() {
+        SideSpaceLine line = new SideSpaceLine(this);
         contentLines.add(line);
         return line;
     }

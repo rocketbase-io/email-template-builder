@@ -33,6 +33,27 @@ public final class EmailTemplateBuilder {
         return new EmailTemplateConfigBuilder();
     }
 
+    @SneakyThrows
+    static HtmlTextEmail build(TbConfiguration configuration, Header header, List<TemplateLine> contentLines, List<TemplateLine> footerLines) throws PebbleException {
+        PebbleTemplate htmlTemplate = ENGINE.getTemplate("templates/email/layout.html");
+        PebbleTemplate textTemplate = ENGINE.getTemplate("templates/email/layout.txt");
+
+
+        Map<String, Object> template = new HashMap<>();
+        template.put("c", configuration);
+        template.put("header", header);
+        template.put("contentLines", contentLines);
+        template.put("footerLines", footerLines);
+
+
+        Writer htmlWriter = new StringWriter();
+        htmlTemplate.evaluate(htmlWriter, template);
+
+        Writer textWrite = new StringWriter();
+        textTemplate.evaluate(textWrite, template);
+
+        return new HtmlTextEmail(htmlWriter.toString(), textWrite.toString());
+    }
 
     public static class PebbleEmailExtension extends AbstractExtension {
         @Override
@@ -57,29 +78,6 @@ public final class EmailTemplateBuilder {
                 return null;
             }
         }
-    }
-
-
-    @SneakyThrows
-    static HtmlTextEmail build(TbConfiguration configuration, Header header, List<TemplateLine> contentLines, List<TemplateLine> footerLines) throws PebbleException {
-        PebbleTemplate htmlTemplate = ENGINE.getTemplate("templates/email/layout.html");
-        PebbleTemplate textTemplate = ENGINE.getTemplate("templates/email/layout.txt");
-
-
-        Map<String, Object> template = new HashMap<>();
-        template.put("c", configuration);
-        template.put("header", header);
-        template.put("contentLines", contentLines);
-        template.put("footerLines", footerLines);
-
-
-        Writer htmlWriter = new StringWriter();
-        htmlTemplate.evaluate(htmlWriter, template);
-
-        Writer textWrite = new StringWriter();
-        textTemplate.evaluate(textWrite, template);
-
-        return new HtmlTextEmail(htmlWriter.toString(), textWrite.toString());
     }
 
     public static class EmailTemplateConfigBuilder {
@@ -118,6 +116,12 @@ public final class EmailTemplateBuilder {
 
         public HrLine hr() {
             HrLine line = new HrLine(this);
+            contentLines.add(line);
+            return line;
+        }
+
+        public SpaceLine space() {
+            SpaceLine line = new SpaceLine(this);
             contentLines.add(line);
             return line;
         }

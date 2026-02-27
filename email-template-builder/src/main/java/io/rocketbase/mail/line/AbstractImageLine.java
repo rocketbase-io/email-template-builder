@@ -13,6 +13,7 @@ public class AbstractImageLine<E extends AbstractImageLine> {
     protected String title;
     protected String linkUrl;
     protected String margin;
+    protected String imageStyle;
 
     public AbstractImageLine(String src) {
         this.src = src;
@@ -78,6 +79,15 @@ public class AbstractImageLine<E extends AbstractImageLine> {
      */
     public E margin(String margin) {
         this.margin = margin;
+        return (E) this;
+    }
+
+    /**
+     * used to inject custom css
+     * default: "border: none;"
+     */
+    public E imageStyle(String imageStyle) {
+        this.imageStyle = imageStyle;
         return (E) this;
     }
 }

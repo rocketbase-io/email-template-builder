@@ -370,6 +370,13 @@
     {% if line.type == 'HR' %}
         <hr {% if line.margin is not empty %}style="margin: {{ line.margin}}" {% endif %}>
 
+
+    {% elseif line.type == 'SPACE' %}
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+            <tr><td height="{{- line.height -}}" style="height:{{- line.height -}}px; min-height:{{- line.height -}}px; max-height:{{- line.height -}}px; line-height:{{- line.height -}}px; font-size:0; mso-line-height-rule:exactly;">&nbsp;</td></tr>
+        </table>
+
+
     {% elseif line.type == 'TEXT' %}
         <p class="f-fallback" style="{% if line.alignment is not empty %}text-align: {{ line.alignment.value }}; {% endif %}{% if line.fontWeight is not empty %}font-weight: {{ line.fontWeight.value }}{% endif %}; {% if line.fontStyle is not empty %}font-style: {{ line.fontStyle.value }}{% endif %}; {% if line.textDecoration is not empty %}text-decoration: {{ line.textDecoration.value }}{% endif %}; color: {{ line.color | default(c.text.color) | default('#51545E') }}; font-size: {{ line.fontSize | default(c.text.size) | default('16px') }}; line-height: {{ c.text.lineHeight | default('1.625') }}; margin: {{ c.text.margin | default('.4em 0 1.1875em') }};">{% if line.linkUrl is not empty %}<a target="_blank" href="{{- line.linkUrl | raw -}}" style="color: {{ line.color | default(c.text.linkColor) | default('#3869D4')  }};">{% endif %}{{ line.text | escape | br | raw }}{% if line.linkUrl is not empty %}</a>{% endif %}</p>
 
@@ -403,12 +410,12 @@
         </table>
 
     {% elseif line.type == 'IMAGE' %}
-        <table class="body-image" align="center" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="margin: {{ line.margin | default('margin: 20px auto') }}; padding: 0;" border="0">
+        <table class="body-image" align="center" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="margin: {{ line.margin | default('20px auto') }}; padding: 0;" border="0">
             <tr>
                 <td align="{{- line.alignment.value | default('center') -}}" style="color: {{ c.font.table.color | default('#333333') }}; font-family: {{ c.font.family | default("'Nunito Sans', Helvetica, Arial, sans-serif") | raw }}; font-size: {{ c.font.table.size | default('16px') }}; word-break: break-word;">
                     {% if line.linkUrl is not empty %}<a target="_blank" href="{{- line.linkUrl | raw -}}" style="color: {{ c.text.linkColor | default('#3869D4') }};">{% endif %}
-                    {% if c.darkModeEnabled and line.srcDark is not empty %}<img  class="dark-img" border="0" vspace="0" hspace="0" src="{{- line.srcDark | raw -}}" alt="{{- line.alt | default('') -}}" title="{{- line.title | escape -}}" {% if line.width is not empty %}width="{{- line.width -}}" {% endif %} {% if line.height is not empty %}height="{{- line.height -}}" {% endif %} style="border: none;">{% endif %}
-                    <img {% if c.darkModeEnabled and line.srcDark is not empty %} class="light-img"{% endif %} border="0" vspace="0" hspace="0" src="{{- line.src | raw -}}" alt="{{- line.alt | default('') -}}" title="{{- line.title | escape -}}" {% if line.width is not empty %}width="{{- line.width -}}" {% endif %} {% if line.height is not empty %}height="{{- line.height -}}" {% endif %} style="border: none;">
+                    {% if c.darkModeEnabled and line.srcDark is not empty %}<img  class="dark-img" border="0" vspace="0" hspace="0" src="{{- line.srcDark | raw -}}" alt="{{- line.alt | default('') -}}" title="{{- line.title | escape -}}" {% if line.width is not empty %}width="{{- line.width -}}" {% endif %} {% if line.height is not empty %}height="{{- line.height -}}" {% endif %} style="{{ line.imageStyle | default('border: none;') }}">{% endif %}
+                    <img {% if c.darkModeEnabled and line.srcDark is not empty %} class="light-img"{% endif %} border="0" vspace="0" hspace="0" src="{{- line.src | raw -}}" alt="{{- line.alt | default('') -}}" title="{{- line.title | escape -}}" {% if line.width is not empty %}width="{{- line.width -}}" {% endif %} {% if line.height is not empty %}height="{{- line.height -}}" {% endif %} style="{{ line.imageStyle | default('border: none;') }}">
                     {% if line.linkUrl is not empty %}</a>{% endif %}
                 </td>
             </tr>
@@ -434,10 +441,10 @@
         <table class="body-side-image" align="center" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="margin: {{ line.margin | default('20px auto') }}; padding: 0;" border="0">
             <tr>
                 {% if line.side == 'LEFT' %}
-                <td align="left" style="color: {{ c.font.table.color | default('#333333') }}; font-family: {{ c.font.family | default("'Nunito Sans', Helvetica, Arial, sans-serif") | raw }}; font-size: {{ c.font.table.size | default('16px') }}; word-break: break-word; vertical-align: {{ line.imageVerticalAlign.value }}">
+                <td align="left" style="color: {{ c.font.table.color | default('#333333') }}; font-family: {{ c.font.family | default("'Nunito Sans', Helvetica, Arial, sans-serif") | raw }}; font-size: {{ c.font.table.size | default('16px') }}; word-break: break-word; vertical-align: {{ line.imageVerticalAlign.value }}; padding-right:{{- line.marginToContent -}}px{% if line.imageTdWidth %}; width: {{- line.imageTdWidth -}}px; min-width: {{- line.imageTdWidth -}}px; max-width: {{- line.imageTdWidth -}}px;" width="{{- line.imageTdWidth -}}"{% else %}"{% endif %}>
                     {% if line.linkUrl is not empty %}<a target="_blank" href="{{- line.linkUrl | raw -}}" style="color: {{ c.text.linkColor | default('#3869D4') }};">{% endif %}
-                    {% if c.darkModeEnabled and line.srcDark is not empty %}<img  class="dark-img" border="0" vspace="0" hspace="0" src="{{- line.srcDark | raw -}}" alt="{{- line.alt | default('') -}}" title="{{- line.title | escape -}}" {% if line.width is not empty %}width="{{- line.width -}}" {% endif %} {% if line.height is not empty %}height="{{- line.height -}}" {% endif %} style="border: none; {{ subline.margin | default('margin: 0 20px 0 0') }};display:block;">{% endif %}
-                    <img {% if c.darkModeEnabled and line.srcDark is not empty %} class="light-img"{% endif %} border="0" vspace="0" hspace="0" src="{{- line.src | raw -}}" alt="{{- line.alt | default('') -}}" title="{{- line.title | escape -}}" {% if line.width is not empty %}width="{{- line.width -}}" {% endif %} {% if line.height is not empty %}height="{{- line.height -}}" {% endif %} style="border: none; {{ subline.margin | default('margin: 0 20px 0 0') }};display:block;">
+                    {% if c.darkModeEnabled and line.srcDark is not empty %}<img  class="dark-img" border="0" vspace="0" hspace="0" src="{{- line.srcDark | raw -}}" alt="{{- line.alt | default('') -}}" title="{{- line.title | escape -}}" {% if line.width is not empty %}width="{{- line.width -}}" {% endif %} {% if line.height is not empty %}height="{{- line.height -}}" {% endif %} style="{{ line.imageStyle | default('border: none; display: block;') }}">{% endif %}
+                    <img {% if c.darkModeEnabled and line.srcDark is not empty %} class="light-img"{% endif %} border="0" vspace="0" hspace="0" src="{{- line.src | raw -}}" alt="{{- line.alt | default('') -}}" title="{{- line.title | escape -}}" {% if line.width is not empty %}width="{{- line.width -}}" {% endif %} {% if line.height is not empty %}height="{{- line.height -}}" {% endif %} style="{{ line.imageStyle | default('border: none; display: block;') }}">
                     {% if line.linkUrl is not empty %}</a>{% endif %}
                 </td>
                 {% endif %}
@@ -453,6 +460,11 @@
 
                     {% elseif subLine.type == 'HTML' %}
                     <p class="f-fallback" style="color: {{ c.imageText.color | default('#51545E') }}; line-height: {{ c.imageText.lineHeight | default('1.625') }}; margin: {{ c.imageText.margin | default('.4em 0 .4em') }};">{{ subLine.html | raw }}</p>
+
+                    {% elseif subLine.type == 'SPACE' %}
+                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                        <tr><td height="{{- subLine.height -}}" style="height:{{- subLine.height -}}px; min-height:{{- subLine.height -}}px; max-height:{{- subLine.height -}}px; line-height:{{- subLine.height -}}px; font-size:0; mso-line-height-rule:exactly;">&nbsp;</td></tr>
+                    </table>
 
                     {% elseif subLine.type == 'BUTTON' %}
                     <table class="body-action" align="center" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="margin: {{ line.margin | default('30px auto') }}; padding: 0; text-align: center;" border="0">
@@ -475,11 +487,11 @@
                 </td>
 
                 {% if line.side == 'RIGHT' %}
-                <td align="right" style="color: {{ c.font.table.color | default('#333333') }}; font-family: {{ c.font.family | default("'Nunito Sans', Helvetica, Arial, sans-serif") | raw }}; font-size: {{ c.font.table.size | default('16px') }}; word-break: break-word; vertical-align: {{ line.imageVerticalAlign.value }}">
+                <td align="right" style="color: {{ c.font.table.color | default('#333333') }}; font-family: {{ c.font.family | default("'Nunito Sans', Helvetica, Arial, sans-serif") | raw }}; font-size: {{ c.font.table.size | default('16px') }}; word-break: break-word; vertical-align: {{ line.imageVerticalAlign.value }}; padding-left:{{- line.marginToContent -}}px{% if line.imageTdWidth %}; width: {{- line.imageTdWidth -}}px; min-width: {{- line.imageTdWidth -}}px; max-width: {{- line.imageTdWidth -}}px;" width="{{- line.imageTdWidth -}}"{% else %}"{% endif %}>
                     {% if line.linkUrl is not empty %}<a target="_blank" href="{{- line.linkUrl | raw -}}" style="color: {{ c.text.linkColor | default('#3869D4') }};">{% endif %}
 
-                    {% if c.darkModeEnabled and line.srcDark is not empty %}<img class="dark-img" border="0" vspace="0" hspace="0" src="{{- line.srcDark | raw -}}" alt="{{- line.alt | default('') -}}" title="{{- line.title | escape -}}" {% if line.width is not empty %}width="{{- line.width -}}" {% endif %} {% if line.height is not empty %}height="{{- line.height -}}" {% endif %} style="border: none; {{ subline.margin | default('margin: 0 0 0 20px') }};display:block;">{% endif %}
-                    <img {% if c.darkModeEnabled and line.srcDark is not empty %} class="light-img"{% endif %} border="0" vspace="0" hspace="0" src="{{- line.src | raw -}}" alt="{{- line.alt | default('') -}}" title="{{- line.title | escape -}}" {% if line.width is not empty %}width="{{- line.width -}}" {% endif %} {% if line.height is not empty %}height="{{- line.height -}}" {% endif %} style="border: none; {{ subline.margin | default('margin: 0 0 0 20px') }};display:block;">
+                    {% if c.darkModeEnabled and line.srcDark is not empty %}<img class="dark-img" border="0" vspace="0" hspace="0" src="{{- line.srcDark | raw -}}" alt="{{- line.alt | default('') -}}" title="{{- line.title | escape -}}" {% if line.width is not empty %}width="{{- line.width -}}" {% endif %} {% if line.height is not empty %}height="{{- line.height -}}" {% endif %} style="{{ line.imageStyle | default('border: none; display: block;') }}">{% endif %}
+                    <img {% if c.darkModeEnabled and line.srcDark is not empty %} class="light-img"{% endif %} border="0" vspace="0" hspace="0" src="{{- line.src | raw -}}" alt="{{- line.alt | default('') -}}" title="{{- line.title | escape -}}" {% if line.width is not empty %}width="{{- line.width -}}" {% endif %} {% if line.height is not empty %}height="{{- line.height -}}" {% endif %} style="{{ line.imageStyle | default('border: none; display: block;') }}">
                     {% if line.linkUrl is not empty %}</a>{% endif %}
                 </td>
                 {% endif %}
@@ -487,7 +499,7 @@
         </table>
 
     {% elseif line.type == 'GALLERY' %}
-        <table class="body-gallery" width="{% if c.content.full %}100%{% else %}{{- c.content.width | default('570') -}}{% endif %}" align="center" cellpadding="{{- line.cellPadding -}}" cellspacing="{{- line.cellSpacing -}}" role="presentation" style="margin: {{ line.margin | default('margin: 20px auto') }}; padding: 0;" border="0">
+        <table class="body-gallery" width="{% if c.content.full %}100%{% else %}{{- c.content.width | default('570') -}}{% endif %}" align="center" cellpadding="{{- line.cellPadding -}}" cellspacing="{{- line.cellSpacing -}}" role="presentation" style="margin: {{ line.margin | default('20px auto') }}; padding: 0;" border="0">
             {% set perRowCount = line.newRowAfter | default(line.photoElements.size) %}
 
             {% for photo in line.photoElements %}

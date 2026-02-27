@@ -13,6 +13,6 @@ public interface SideContentLine {
 
     enum SideContentLineType {
 
-        HR, TEXT, HTML, BUTTON;
+        HR, TEXT, HTML, BUTTON, SPACE;
     }
 }
