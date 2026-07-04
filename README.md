@@ -14,9 +14,24 @@ You can write your email content fluently and the template builder cares for the
 For sending the email I can recommend the spring-boot-starter-mail, simplejavamail or my [postmark-spring](https://github.com/rocketbase-io/postmark-spring)...
 
 ### release notes
-- 1.x bases mailgun templates
-  - extra dependency on jsoup for auto inlining/transpiling to text
-  - doc for old api could be found in wiki
+- 2.7.x frameless + preheader
+  - new **TbConfiguration.newInstanceFrameless()** preset: no box-frame around the content, left aligned - like a personally written email (great for invitations or signature-style emails)
+  - new **content.align** config (center/left) to control the placement of the content-block
+  - new **preheader(...)** builder option: hidden preview-text shown by email-clients in the inbox-list
+  - fixed responsive behaviour: email now correctly collapses to full width below 600px viewport
+  - content.background is not hardcoded to white anymore - custom background-colors work through the whole email
+  - several template fixes: title-tag condition, h3 font-size config, footer-text escaping, removed stray characters
+  - upgraded dependencies (pebble 4.1.2, commonmark 0.29.0, junit 5.14.4, lombok 1.18.46)
+  - note: TbContentConfig all-args constructor got an additional align parameter - use newInstance() + setters instead
+  - removed obsolete gulp-based template folder (template was maintained directly for years)
+
+- 2.6.x outlook improvements
+  - 2.6.1: added space-line + extra style-settings to get outlook specials possible, minor html fixes
+  - 2.6.0: improved link layouting + button margin, allow custom renderer modifications, upgraded dependencies
+
+- 2.5.x jdk-11 baseline
+  - backported to jdk-11
+  - switched release process to new sonatype central publishing
 
 - 2.x bases on new postmark templates
   - pom artifact group changed to **io.rocketbase.mail**
@@ -25,6 +40,10 @@ For sending the email I can recommend the spring-boot-starter-mail, simplejavama
   - separated module in two pices
     - common builder
     - markdown (with markdown support)
+
+- 1.x bases mailgun templates
+  - extra dependency on jsoup for auto inlining/transpiling to text
+  - doc for old api could be found in wiki
 
 ## features
 
