@@ -340,6 +340,7 @@
     <![endif]-->
 </head>
 <body style="background-color: {{ c.body.background | default('#F4F4F7') }}; color: {{ c.text.color | default('#51545E') }}; font-family: {{ c.font.family | default("'Nunito Sans', Helvetica, Arial, sans-serif") | raw }};">
+{% if preheader is not empty %}<span class="preheader" style="display: none !important; visibility: hidden; mso-hide: all; font-size: 1px; line-height: 1px; max-height: 0; max-width: 0; opacity: 0; overflow: hidden;">{{ preheader | escape }}</span>{% endif %}
 <table class="email-wrapper" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="margin: 0; padding: 0;" border="0" bgcolor="{{ c.body.background | default('#F4F4F7') }}">
     <tr>
         <td align="{{ c.content.align | default('center') }}" style="color: {{ c.font.table.color | default('#333333') }}; font-family: {{ c.font.family | default("'Nunito Sans', Helvetica, Arial, sans-serif") | raw }}; font-size: {{ c.font.table.size | default('16px') }}; word-break: break-word;">

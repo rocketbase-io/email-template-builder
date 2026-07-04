@@ -508,4 +508,66 @@ public class EmailTemplateBuilderTest {
                             .alignment(Alignment.RIGHT));
         }
     }
+
+    @Test
+    public void framelessConfig() {
+        // given
+        TbConfiguration configuration = TbConfiguration.newInstanceFrameless();
+        // when
+        HtmlTextEmail htmlTextEmail = EmailTemplateBuilder.builder()
+                .configuration(configuration)
+                .header().text("frameless sample").and()
+                .text("sample-content").and()
+                .copyright("rocketbase").url("https://www.rocketbase.io").and()
+                .build();
+        // then
+        assertThat(htmlTextEmail, notNullValue());
+        String html = htmlTextEmail.getHtml();
+        // body-background same as content -> no visible box-frame
+        assertThat(html, containsString("<body style=\"background-color: #FFFFFF;"));
+        // content-block + header aligned left instead of centered
+        assertThat(html, containsString("<td align=\"left\""));
+        assertThat(html, not(containsString("margin: 0 auto")));
+        // reduced content-padding
+        assertThat(html, containsString("padding: 0 12px"));
+    }
+
+    @Test
+    public void defaultConfigStaysCentered() {
+        // when
+        HtmlTextEmail htmlTextEmail = EmailTemplateBuilder.builder()
+                .text("sample-content").and()
+                .copyright("rocketbase").and()
+                .build();
+        // then
+        String html = htmlTextEmail.getHtml();
+        assertThat(html, containsString("<body style=\"background-color: #F4F4F7;"));
+        assertThat(html, containsString("margin: 0 auto"));
+        assertThat(html, containsString("padding: 35px"));
+    }
+
+    @Test
+    public void preheader() {
+        // when
+        HtmlTextEmail htmlTextEmail = EmailTemplateBuilder.builder()
+                .preheader("hidden preview <text> & more")
+                .text("sample-content").and()
+                .build();
+        // then
+        String html = htmlTextEmail.getHtml();
+        assertThat(html, containsString("<span class=\"preheader\""));
+        assertThat(html, containsString("hidden preview &lt;text&gt; &amp; more"));
+        // not part of the text-version
+        assertThat(htmlTextEmail.getText(), not(containsString("hidden preview")));
+    }
+
+    @Test
+    public void withoutPreheader() {
+        // when
+        HtmlTextEmail htmlTextEmail = EmailTemplateBuilder.builder()
+                .text("sample-content").and()
+                .build();
+        // then
+        assertThat(htmlTextEmail.getHtml(), not(containsString("<span class=\"preheader\"")));
+    }
 }

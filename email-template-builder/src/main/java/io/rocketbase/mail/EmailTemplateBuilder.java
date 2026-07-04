@@ -34,7 +34,7 @@ public final class EmailTemplateBuilder {
     }
 
     @SneakyThrows
-    static HtmlTextEmail build(TbConfiguration configuration, Header header, List<TemplateLine> contentLines, List<TemplateLine> footerLines) throws PebbleException {
+    static HtmlTextEmail build(TbConfiguration configuration, Header header, String preheader, List<TemplateLine> contentLines, List<TemplateLine> footerLines) throws PebbleException {
         PebbleTemplate htmlTemplate = ENGINE.getTemplate("templates/email/layout.html");
         PebbleTemplate textTemplate = ENGINE.getTemplate("templates/email/layout.txt");
 
@@ -42,6 +42,7 @@ public final class EmailTemplateBuilder {
         Map<String, Object> template = new HashMap<>();
         template.put("c", configuration);
         template.put("header", header);
+        template.put("preheader", preheader);
         template.put("contentLines", contentLines);
         template.put("footerLines", footerLines);
 
@@ -85,6 +86,7 @@ public final class EmailTemplateBuilder {
         @Getter
         private TbConfiguration configuration = TbConfiguration.newInstance();
         private Header header;
+        private String preheader;
         private List<TemplateLine> contentLines = new ArrayList<>();
         private List<TemplateLine> footerLines = new ArrayList<>();
 
@@ -112,6 +114,15 @@ public final class EmailTemplateBuilder {
         public Header header() {
             header = new Header(this);
             return header;
+        }
+
+        /**
+         * hidden preview-text shown by most email-clients in the inbox-list next to the subject.<br>
+         * only rendered within the html-version - not visible within the opened email itself
+         */
+        public EmailTemplateConfigBuilder preheader(String preheader) {
+            this.preheader = preheader;
+            return this;
         }
 
         public HrLine hr() {
@@ -231,7 +242,7 @@ public final class EmailTemplateBuilder {
         }
 
         public HtmlTextEmail build() {
-            return EmailTemplateBuilder.build(configuration, header, contentLines, footerLines);
+            return EmailTemplateBuilder.build(configuration, header, preheader, contentLines, footerLines);
         }
 
     }
