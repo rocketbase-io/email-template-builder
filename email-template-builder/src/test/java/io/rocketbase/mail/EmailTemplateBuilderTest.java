@@ -219,7 +219,7 @@ public class EmailTemplateBuilderTest {
                 .header().text(header).and()
                 .text("Hi {{name}},").and()
                 .text("Thanks for using [Product Name]. This is an invoice for your recent purchase").and()
-                .tableSimple("#.## '€'")
+                .tableSimple("#,##0.00 '€'")
                 .headerRow("Description", "Amount")
                 .itemRow("Special Product\n" +
                         "Some extra explanations in separate line", BigDecimal.valueOf(1333, 2))
@@ -253,7 +253,7 @@ public class EmailTemplateBuilderTest {
                 .header().text(header).and()
                 .text("Hi {{name}},").and()
                 .text("Thanks for using [Product Name]. This is an invoice for your recent purchase").and()
-                .tableSimpleWithImage("#.## '€'")
+                .tableSimpleWithImage("#,##0.00 '€'")
                 .headerRow("Preview", "Description", "Amount")
                 .itemRow("https://cdn.shopify.com/s/files/1/0255/1211/6260/products/TCW1142-07052_small.jpg?v=1589200198", "Damen Harbour Tanktop × 1\n" +
                         "QUARTZ PINK / S", BigDecimal.valueOf(4995, 2))
@@ -495,7 +495,7 @@ public class EmailTemplateBuilderTest {
                             .italic()
                             .right(),
                     new ColumnConfig()
-                            .numberFormat("#.## '€'")
+                            .numberFormat("#,##0.00 '€'")
                             .right());
         }
 
@@ -544,6 +544,36 @@ public class EmailTemplateBuilderTest {
         assertThat(html, containsString("<body style=\"background-color: #F4F4F7;"));
         assertThat(html, containsString("margin: 0 auto"));
         assertThat(html, containsString("padding: 35px"));
+    }
+
+    @Test
+    public void tableFooterAppliesNumberFormat() {
+        // when
+        HtmlTextEmail htmlTextEmail = EmailTemplateBuilder.builder()
+                .tableSimpleWithImage("#.## 'EUR'")
+                .headerRow("Preview", "Description", "Amount")
+                .itemRow("https://example.com/img.png", "Product", BigDecimal.valueOf(4995, 2))
+                .footerRow("Total", BigDecimal.valueOf(4995, 2))
+                .and()
+                .build();
+        // then
+        String html = htmlTextEmail.getHtml();
+        // footer amount must be formatted like the item amount (was looked up in the wrong column config before)
+        int formatted = html.split("EUR", -1).length - 1;
+        assertThat(formatted, greaterThanOrEqualTo(2));
+    }
+
+    @Test
+    public void galleryAndSideImageCollapseResponsive() {
+        // when
+        HtmlTextEmail htmlTextEmail = EmailTemplateBuilder.builder()
+                .gallery().photo("https://example.com/photo.jpg").and().and()
+                .build();
+        // then
+        String html = htmlTextEmail.getHtml();
+        // gallery + side-image are part of the small-viewport media query
+        assertThat(html, containsString(".body-gallery,\n            .body-side-image {"));
+        assertThat(html, containsString("max-width: 100% !important;"));
     }
 
     @Test

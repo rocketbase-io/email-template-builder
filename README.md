@@ -15,6 +15,7 @@ You can write your email content fluently and the template builder cares for the
 
 ### release notes
 - 2.7.x frameless + preheader
+  - 2.7.1: dark-mode readability fixes (attribute/table cells stay readable, button text-color not overridden anymore), table footer-rows now apply their number-format, gallery + side-image collapse correctly on small viewports
   - new **TbConfiguration.newInstanceFrameless()** preset: no box-frame around the content, left aligned - like a personally written email (great for invitations or signature-style emails)
   - new **content.align** config (center/left) to control the placement of the content-block
   - new **preheader(...)** builder option: hidden preview-text shown by email-clients in the inbox-list
@@ -141,7 +142,7 @@ HtmlTextEmail htmlTextEmail = builder
         .header().text(header).and()
         .text("Hi {{name}},").and()
         .text("Thanks for using [Product Name]. This is an invoice for your recent purchase").and()
-        .tableSimple("#.## '€'")
+        .tableSimple("#,##0.00 '€'")
         .headerRow("Description", "Amount")
         .itemRow("Special Product\n" +
                 "Some extra explanations in separate line", BigDecimal.valueOf(1333, 2))
@@ -172,7 +173,7 @@ HtmlTextEmail htmlTextEmail = builder
         .header().text(header).and()
         .text("Hi {{name}},").and()
         .text("Thanks for using [Product Name]. This is an invoice for your recent purchase").and()
-        .tableSimpleWithImage("#.## '€'")
+        .tableSimpleWithImage("#,##0.00 '€'")
         .headerRow("Preview", "Description", "Amount")
         .itemRow("https://cdn.shopify.com/s/files/1/0255/1211/6260/products/TCW1142-07052_small.jpg?v=1589200198", "Damen Harbour Tanktop × 1\n" +
                 "QUARTZ PINK / S", BigDecimal.valueOf(4995, 2))

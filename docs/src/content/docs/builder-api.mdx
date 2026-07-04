@@ -168,7 +168,7 @@ Invoice-style tables with header, item and footer rows. Number columns take a
 `DecimalFormat`-pattern:
 
 ```java
-.tableSimple("#.## '€'")
+.tableSimple("#,##0.00 '€'")
     .headerRow("Description", "Amount")
     .itemRow("Special Product\nSome extra explanation", BigDecimal.valueOf(1333, 2))
     .itemRow("Short service", BigDecimal.valueOf(103, 1))

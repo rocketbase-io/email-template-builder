@@ -164,7 +164,7 @@ public class DocsSamplesTest {
     @Test
     public void blockTable() {
         HtmlTextEmail email = EmailTemplateBuilder.builder()
-                .tableSimple("#.## '€'")
+                .tableSimple("#,##0.00 '€'")
                 .headerRow("Description", "Amount")
                 .itemRow("Special Product\nSome extra explanation in a separate line", BigDecimal.valueOf(1333, 2))
                 .itemRow("Short service", BigDecimal.valueOf(103, 1))
@@ -207,7 +207,7 @@ public class DocsSamplesTest {
                 .header().text("Invoice #10456").and()
                 .text("Hi Marie,").and()
                 .text("Thanks for using Product Name. This is an invoice for your recent purchase:").and()
-                .tableSimpleWithImage("#.## '€'")
+                .tableSimpleWithImage("#,##0.00 '€'")
                 .headerRow("Preview", "Description", "Amount")
                 .itemRow("https://picsum.photos/seed/tanktop/160/160", "Harbour Tanktop × 1\nQUARTZ PINK / S", BigDecimal.valueOf(4995, 2))
                 .itemRow("https://picsum.photos/seed/tshirt/160/160", "Classic T-Shirt × 1\nFOREST GREEN / XL", BigDecimal.valueOf(3995, 2))
