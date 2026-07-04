@@ -25,6 +25,22 @@ public class TbConfiguration {
         return new TbConfiguration(DEFAULT);
     }
 
+    /**
+     * variant without the visual box-frame around the content:<br>
+     * body-background is white as the content itself, the content-padding is reduced to a small horizontal spacing
+     * and content plus header are aligned left instead of centered - like a personally written email.<br>
+     * useful for example for invitations or signature-like emails that shouldn't look like a boxed transactional email<br>
+     * every setting can be changed afterwards - for example content.align back to center
+     */
+    public static final TbConfiguration newInstanceFrameless() {
+        TbConfiguration configuration = new TbConfiguration(DEFAULT);
+        configuration.getBody().setBackground(configuration.getContent().getBackground());
+        configuration.getContent().setPadding("0 12px");
+        configuration.getContent().setAlign("left");
+        configuration.getHeader().setAlign("left");
+        return configuration;
+    }
+
     private boolean darkModeEnabled = true;
     private TbFontConfig font;
     private TbTextConfig text;

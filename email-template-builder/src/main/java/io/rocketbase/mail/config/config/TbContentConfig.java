@@ -10,7 +10,8 @@ public class TbContentConfig {
     static final TbContentConfig DEFAULT = new TbContentConfig("#FFFFFF",
             570,
             false,
-            "35px");
+            "35px",
+            "center");
 
     public static final TbContentConfig newInstance() {
         return new TbContentConfig(DEFAULT);
@@ -26,11 +27,16 @@ public class TbContentConfig {
      */
     private boolean full;
     private String padding;
+    /**
+     * horizontal placement of the content-block within the viewport: center (default) or left
+     */
+    private String align;
 
     public TbContentConfig(TbContentConfig other) {
         this.background = other.background;
         this.width = other.width;
         this.full = other.full;
         this.padding = other.padding;
+        this.align = other.align;
     }
 }
