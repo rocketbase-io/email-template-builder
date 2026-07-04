@@ -5,7 +5,7 @@
 ![build](https://github.com/rocketbase-io/email-template-builder/actions/workflows/ci.yml/badge.svg)
 [![Maven Central](https://badgen.net/maven/v/maven-central/io.rocketbase.mail/email-template-builder)](https://mvnrepository.com/artifact/io.rocketbase.mail/email-template-builder)
 
-### 📖 [Documentation](https://rocketbase-io.github.io/email-template-builder/) — guides, examples with screenshots & release notes
+### 📖 [Documentation](https://email-template-builder.rocketbase.io/) — guides, examples with screenshots & release notes
 
 
 Let this service build your html/text emails in a fluent manner. It doesn't try to reinvent the wheel - it simply extends the given [email-template](https://postmarkapp.com/mailmason) of postmark and backed it for java to use it for many purposes.

@@ -5,8 +5,7 @@ import starlightLlmsTxt from 'starlight-llms-txt';
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://rocketbase-io.github.io',
-	base: '/email-template-builder',
+	site: 'https://email-template-builder.rocketbase.io',
 	integrations: [
 		starlight({
 			title: 'email-template-builder',
