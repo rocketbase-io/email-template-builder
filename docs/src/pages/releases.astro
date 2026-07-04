@@ -1,0 +1,78 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+
+// fetched at build time so the page always matches the GitHub releases;
+// the docs deploy-workflow additionally triggers on `release: published`
+const REPO = 'rocketbase-io/email-template-builder';
+
+const headers = {
+	Accept: 'application/vnd.github.html+json',
+	'X-GitHub-Api-Version': '2022-11-28',
+	'User-Agent': 'docs-build',
+};
+if (process.env.GITHUB_TOKEN) {
+	headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
+}
+
+const response = await fetch(`https://api.github.com/repos/${REPO}/releases?per_page=100`, {
+	headers,
+});
+if (!response.ok) {
+	throw new Error(`GitHub releases request failed: ${response.status} ${await response.text()}`);
+}
+const releases = (await response.json()).filter((release) => !release.draft);
+
+const formatDate = (iso) =>
+	new Date(iso).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+
+<StarlightPage
+	frontmatter={{
+		title: 'Releases',
+		description: 'Release history of email-template-builder — mirrored from the GitHub releases.',
+		tableOfContents: false,
+	}}
+>
+	<p>
+		All versions are published to{' '}
+		<a href="https://mvnrepository.com/artifact/io.rocketbase.mail/email-template-builder">
+			Maven Central</a
+		>. This page mirrors the <a href={`https://github.com/${REPO}/releases`}>GitHub releases</a>.
+	</p>
+
+	{
+		releases.map((release) => (
+			<article class="release">
+				<h2 id={release.tag_name}>
+					<a href={release.html_url}>{release.name || release.tag_name}</a>
+					{release.prerelease && <span class="pre">pre-release</span>}
+				</h2>
+				<p class="meta">{formatDate(release.published_at)}</p>
+				{release.body_html && <div class="body" set:html={release.body_html} />}
+			</article>
+		))
+	}
+</StarlightPage>
+
+<style>
+	.release {
+		margin-top: 2.5rem;
+		border-top: 1px solid var(--sl-color-gray-5);
+		padding-top: 1rem;
+	}
+	.release .meta {
+		color: var(--sl-color-gray-3);
+		font-size: var(--sl-text-sm);
+		margin-top: 0.25rem;
+	}
+	.release .pre {
+		display: inline-block;
+		margin-inline-start: 0.5rem;
+		padding: 0.1rem 0.5rem;
+		border-radius: 999px;
+		font-size: var(--sl-text-xs);
+		background: var(--sl-color-orange-low);
+		color: var(--sl-color-orange-high);
+		vertical-align: middle;
+	}
+</style>

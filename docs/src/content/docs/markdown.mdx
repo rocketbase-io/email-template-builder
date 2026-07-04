@@ -1,0 +1,68 @@
+---
+title: Markdown Module
+description: Render markdown content inside your emails with the email-template-builder-markdown extension.
+sidebar:
+  order: 5
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+The separate `email-template-builder-markdown` module transpiles markdown into correctly inlined
+email HTML — handy when your email content comes from user input, a CMS or translation files.
+
+## Installation
+
+<Tabs syncKey="buildtool">
+	<TabItem label="Maven">
+		```xml
+		<dependency>
+			<groupId>io.rocketbase.mail</groupId>
+			<artifactId>email-template-builder-markdown</artifactId>
+			<version>2.7.0</version>
+		</dependency>
+		```
+	</TabItem>
+	<TabItem label="Gradle">
+		```kotlin
+		implementation("io.rocketbase.mail:email-template-builder-markdown:2.7.0")
+		```
+	</TabItem>
+</Tabs>
+
+## Usage
+
+`MarkdownLine` is a regular template line — add it via `addContent(…)`:
+
+```java
+EmailTemplateBuilder.EmailTemplateConfigBuilder builder = EmailTemplateBuilder.builder();
+
+HtmlTextEmail email = builder
+        .header().text("Newsletter").and()
+        .addContent(new MarkdownLine(builder,
+                "# Heading 1\n" +
+                "This is *emphasized* and this is ~~struck through~~.\n\n" +
+                "A regular paragraph with [a link](https://example.com)."))
+        .copyright("rocketbase").url("https://www.rocketbase.io").and()
+        .build();
+```
+
+Passing the `builder` lets the markdown renderer pick up your `TbConfiguration` — headings and
+paragraphs get the same inlined styles as the native `text()` lines.
+
+## Supported syntax
+
+Based on [commonmark-java](https://github.com/commonmark/commonmark-java) with these extensions
+enabled:
+
+- **Strikethrough** — `~~text~~`
+- **Ins/underline** — `++text++`
+- **Image attributes** — `![alt](image.png){width=200 height=100}`
+
+## Customizing the renderer
+
+You can hook into the `HtmlRenderer` setup for additional commonmark configuration:
+
+```java
+new MarkdownLine(builder, markdown,
+        rendererBuilder -> rendererBuilder.softbreak("<br/>"));
+```

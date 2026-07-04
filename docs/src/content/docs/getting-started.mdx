@@ -1,0 +1,126 @@
+---
+title: Getting Started
+description: Install email-template-builder and build your first HTML + text email in a few lines of Java.
+sidebar:
+  order: 1
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+`email-template-builder` lets you compose transactional emails fluently in Java. One `build()` call
+returns both a fully inlined, responsive HTML version and a matching plain-text version.
+
+## Requirements
+
+- Java 11 or newer
+- The only runtime dependency is the [Pebble](https://pebbletemplates.io/) template engine
+
+## Installation
+
+<Tabs syncKey="buildtool">
+	<TabItem label="Maven">
+		```xml
+		<dependency>
+			<groupId>io.rocketbase.mail</groupId>
+			<artifactId>email-template-builder</artifactId>
+			<version>2.7.0</version>
+		</dependency>
+		```
+	</TabItem>
+	<TabItem label="Gradle">
+		```kotlin
+		implementation("io.rocketbase.mail:email-template-builder:2.7.0")
+		```
+	</TabItem>
+</Tabs>
+
+## Your first email
+
+```java
+import io.rocketbase.mail.EmailTemplateBuilder;
+import io.rocketbase.mail.model.HtmlTextEmail;
+
+HtmlTextEmail email = EmailTemplateBuilder.builder()
+        .header().text("Product Name").and()
+        .text("Welcome, Marie!").h1().center().and()
+        .text("Thanks for signing up. Confirm your email address to get started:").and()
+        .button("Confirm email", "https://example.com/confirm").blue().and()
+        .copyright("rocketbase").url("https://www.rocketbase.io").and()
+        .build();
+
+String html = email.getHtml(); // styled, inlined HTML version
+String text = email.getText(); // plain-text version
+```
+
+The plain-text version is derived automatically from the same content:
+
+```
+***************************
+Product Name
+***************************
+
+
+Welcome, Marie!
+
+Thanks for signing up. Confirm your email address to get started:
+
+Confirm email -> https://example.com/confirm
+
+-----------
+
+
+©2026 rocketbase -> https://www.rocketbase.io
+```
+
+## Sending the email
+
+`HtmlTextEmail` is sender-agnostic — pass both versions to whatever mail infrastructure you use.
+
+<Tabs>
+	<TabItem label="Spring Mail">
+		```java
+		MimeMessage message = emailSender.createMimeMessage();
+		MimeMessageHelper helper = new MimeMessageHelper(message,
+				MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
+				StandardCharsets.UTF_8.name());
+		helper.setTo(to);
+		helper.setSubject(subject);
+		helper.setText(email.getText(), email.getHtml());
+		helper.setFrom(from);
+		emailSender.send(message);
+		```
+	</TabItem>
+	<TabItem label="Simple Java Mail">
+		```java
+		Email mail = EmailBuilder.startingBlank()
+				.to(to)
+				.from(from)
+				.withSubject(subject)
+				.withHTMLText(email.getHtml())
+				.withPlainText(email.getText())
+				.buildEmail();
+		mailer.sendMail(mail);
+		```
+	</TabItem>
+</Tabs>
+
+For sending we can recommend [spring-boot-starter-mail](https://docs.spring.io/spring-boot/reference/io/email.html),
+[Simple Java Mail](https://www.simplejavamail.org/) or our own
+[postmark-spring](https://github.com/rocketbase-io/postmark-spring) integration.
+
+## Testing locally
+
+A local SMTP catch-all like [smtp4dev](https://github.com/rnwood/smtp4dev) is handy to preview your
+emails during development:
+
+```bash
+docker run --rm -it -p 5555:80 -p 2525:25 rnwood/smtp4dev
+```
+
+Point your sender at `localhost:2525` and browse the received mails at `http://localhost:5555`.
+
+## Next steps
+
+- Explore all content blocks in the [Builder API](/email-template-builder/builder-api/)
+- Adjust colors, widths and layout via [Configuration](/email-template-builder/configuration/)
+- See complete, rendered [Examples](/email-template-builder/examples/)

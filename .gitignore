@@ -18,3 +18,8 @@ buildNumber.properties
 
 /template/node_modules/
 /email-template-builder/src/test/java/io/rocketbase/mail/EmailTemplateReadmeTest.java
+
+### docs (astro/starlight)
+/docs/node_modules/
+/docs/dist/
+/docs/.astro/

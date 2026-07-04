@@ -1,0 +1,81 @@
+/* rocketbase CI — colors + fonts taken from rcktbs.astro (Velocity theme, brand slate-blue scale) */
+
+@import '@fontsource-variable/manrope';
+@import '@fontsource-variable/outfit';
+@import '@fontsource-variable/jetbrains-mono';
+
+:root {
+	/* no "On this page" sidebar → give the content the extra room */
+	--sl-content-width: 60rem;
+
+	--sl-font: 'Manrope Variable', ui-sans-serif, system-ui, sans-serif;
+	--sl-font-mono: 'JetBrains Mono Variable', ui-monospace, 'SFMono-Regular', monospace;
+
+	/* Dark mode (Starlight default scheme) — brand hue 255 */
+	--sl-color-accent-low: oklch(28.7% 0.05 255);
+	--sl-color-accent: oklch(61.2% 0.096 255);
+	--sl-color-accent-high: oklch(89.2% 0.038 255);
+}
+
+:root[data-theme='light'] {
+	--sl-color-accent-low: oklch(94.5% 0.022 255);
+	--sl-color-accent: oklch(53.8% 0.09 255);
+	--sl-color-accent-high: oklch(36.8% 0.058 255);
+}
+
+/* Display font for headings, like the main rocketbase site */
+.sl-markdown-content h1,
+.sl-markdown-content h2,
+.sl-markdown-content h3,
+.sl-markdown-content h4,
+.hero h1,
+.site-title {
+	font-family: 'Outfit Variable', var(--sl-font);
+	letter-spacing: -0.02em;
+}
+
+/* Landing page: full (uncropped) hero image, card-like framing */
+.hero img {
+	width: 100%;
+	max-width: 26rem;
+	height: auto;
+	border: 1px solid var(--sl-color-gray-5);
+	border-radius: 0.5rem;
+	box-shadow: 0 8px 32px -12px rgb(0 0 0 / 0.25);
+}
+
+/* Landing page: centered badge row under the hero */
+.badges {
+	display: flex;
+	gap: 0.5rem;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 1.5rem;
+}
+.badges img {
+	height: 22px;
+}
+
+/* Landing page: whole feature-card clickable via stretched link */
+.card {
+	position: relative;
+}
+.card .card-link {
+	font-weight: 600;
+	text-decoration: none;
+}
+.card .card-link::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+}
+.card:hover {
+	border-color: var(--sl-color-accent);
+}
+
+/* Email screenshots: card-like framing (badges excluded) */
+.sl-markdown-content img:not(.badges img) {
+	border: 1px solid var(--sl-color-gray-5);
+	border-radius: 0.5rem;
+	box-shadow: 0 4px 24px -8px rgb(0 0 0 / 0.15);
+}
