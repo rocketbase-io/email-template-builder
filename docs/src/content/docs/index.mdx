@@ -1,0 +1,74 @@
+---
+title: email-template-builder
+description: Fluent Java builder for beautiful, responsive HTML + text emails — based on the battle-tested Postmark templates.
+template: splash
+hero:
+  tagline: Write your transactional emails fluently in Java — and get perfectly inlined, responsive HTML plus a matching plain-text version out of a single builder.
+  image:
+    html: '<img src="/email-template-builder/hero-welcome.png" alt="Rendered welcome email built with email-template-builder" width="618" height="853" />'
+  actions:
+    - text: Get started
+      link: /email-template-builder/getting-started/
+      icon: right-arrow
+    - text: View on GitHub
+      link: https://github.com/rocketbase-io/email-template-builder
+      icon: github
+      variant: minimal
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+<div class="badges">
+	<a href="https://mvnrepository.com/artifact/io.rocketbase.mail/email-template-builder">
+		<img
+			src="https://badgen.net/maven/v/maven-central/io.rocketbase.mail/email-template-builder"
+			alt="Maven Central"
+		/>
+	</a>
+	<a href="https://github.com/rocketbase-io/email-template-builder/actions/workflows/ci.yml">
+		<img
+			src="https://github.com/rocketbase-io/email-template-builder/actions/workflows/ci.yml/badge.svg"
+			alt="build status"
+		/>
+	</a>
+</div>
+
+<CardGrid stagger>
+	<Card title="HTML + text in one build" icon="email">
+		One fluent builder produces the styled HTML version and a clean plain-text alternative — no
+		second template to maintain.
+
+		<a class="card-link" href="/email-template-builder/getting-started/">Get started →</a>
+	</Card>
+	<Card title="Rich content blocks" icon="puzzle">
+		Texts, buttons, images, galleries, side-images, key-value attributes, dividers and invoice-style
+		tables — plus an interface for fully custom tables.
+
+		<a class="card-link" href="/email-template-builder/builder-api/">Explore the builder API →</a>
+	</Card>
+	<Card title="Dark mode & responsive" icon="moon">
+		Emails adapt to the client's dark mode — including separate dark logos and images — and collapse
+		to full width on small screens automatically.
+
+		<a class="card-link" href="/email-template-builder/configuration/#dark-mode">See how it works →</a>
+	</Card>
+	<Card title="Battle-tested templates" icon="approve-check">
+		Based on the proven [Postmark](https://postmarkapp.com/transactional-email-templates)
+		transactional templates: correct inlining and solid rendering across email clients — including
+		Outlook specials.
+
+		<a class="card-link" href="/email-template-builder/examples/">Browse the examples →</a>
+	</Card>
+	<Card title="Invoices & custom tables" icon="list-format">
+		Ready-made table presets with images and number formats — or implement your own column layout
+		with the `TableLine` interface.
+
+		<a class="card-link" href="/email-template-builder/custom-table/">Build a custom table →</a>
+	</Card>
+	<Card title="Lightweight" icon="rocket">
+		Only the Pebble template engine as runtime dependency. Java 11+, works with any mail sender
+		(Spring Mail, Simple Java Mail, Postmark, …).
+
+		<a class="card-link" href="/email-template-builder/getting-started/">Install in one line →</a>
+	</Card>
+</CardGrid>
