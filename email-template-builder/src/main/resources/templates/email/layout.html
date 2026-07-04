@@ -317,10 +317,15 @@
             .attributes_content {
                 background-color: {{ c.box.dark.background | default('#222') }} !important;
             }
+            .attributes_item,
+            .table_item,
+            .table_heading {
+                color: {{ c.body.dark.color | default('#FFF') }} !important;
+            }
             .email-masthead_name {
                 text-shadow: none !important;
             }
-            a {
+            a:not(.button) {
                 color: {{ c.text.linkColorDark | default('#FFF') }} !important;
             }
         }
