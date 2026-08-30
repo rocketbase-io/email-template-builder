@@ -14,6 +14,16 @@ You can write your email content fluently and the template builder cares for the
 
 
 ### release notes
+- 2.8.x escaping + gallery fixes
+  - **security**: alt-attributes were rendered unescaped in ten places - an alt containing a quote could break out of the attribute and inject markup into the email. same fix applied to the copyright suffix
+  - fixed galleries producing broken table markup: rows stayed unbalanced at 4, 6 and 7 photos, and an incomplete last row was padded with the wrong number of cells
+  - button alignment emitted the enum name (align="RIGHT") instead of its css value
+  - txt-version: galleries and space-lines were dropped entirely, and tables shipped a literal "TABLE IS NOT YET AVAILABLE ON TXT-EMAIL" to recipients. tables now render their rows, image-cells carry their url instead of a java object identity
+  - fixed **ColorStyleSimple.getAllPresets()** listing BLACK_STYLE twice while BLUE_STYLE was missing
+  - upgraded to colors 1.0.0, which corrects hex parsing: six-digit codes read only the first digit of each pair, so #5f7bb8 resolved to #5577bb. **button colors change accordingly** - custom hex colors now render as specified
+  - build: the annotation-processor path is declared explicitly now. jdk 25 stopped discovering lombok from the classpath alone, which silently skipped all generated code
+  - upgraded commonmark 0.30.0, ci matrix now covers jdk 11, 17, 21 and 25
+
 - 2.7.x frameless + preheader
   - 2.7.1: dark-mode readability fixes (attribute/table cells stay readable, button text-color not overridden anymore), table footer-rows now apply their number-format, gallery + side-image collapse correctly on small viewports
   - new **TbConfiguration.newInstanceFrameless()** preset: no box-frame around the content, left aligned - like a personally written email (great for invitations or signature-style emails)
