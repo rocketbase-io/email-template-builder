@@ -53,10 +53,40 @@
 {% endif %}
 {% endfor %}
 
+{% elseif line.type == 'GALLERY' %}
+
+{% for photo in line.photoElements %}
+{{ photo.alt | default(photo.title) | default('image') }} -> {{ photo.linkUrl | default(photo.src) | raw }}
+
+{% for text in photo.textLines %}
+{{ text.text }}{% if text.linkUrl is not empty %} -> {{ text.linkUrl | raw }}{% endif %}
+
+{% endfor %}
+{% endfor %}
+
+{% elseif line.type == 'SPACE' %}
+
+
 {% elseif line.type == 'TABLE' %}
 
-TABLE IS NOT YET AVAILABLE ON TXT-EMAIL
+{% for row in line.headerRows %}
+{% for col in row %}{% if not loop.first %} | {% endif %}{% if col.type is empty %}{{ col | replace({'
+': ' '}) }}{% elseif col.type == 'LINK' %}{{ col.text }} -> {{ col.linkUrl | raw }}{% elseif col.type == 'IMAGE' %}{{ col.alt | default(col.title) | default('image') }} -> {{ col.linkUrl | default(col.src) | raw }}{% else %}{{ col.text | replace({'
+': ' '}) }}{% endif %}{% endfor %}
 
+{% endfor %}
+{% for row in line.itemRows %}
+{% for col in row %}{% if not loop.first %} | {% endif %}{% if col.type is empty %}{{ col | replace({'
+': ' '}) }}{% elseif col.type == 'LINK' %}{{ col.text }} -> {{ col.linkUrl | raw }}{% elseif col.type == 'IMAGE' %}{{ col.alt | default(col.title) | default('image') }} -> {{ col.linkUrl | default(col.src) | raw }}{% else %}{{ col.text | replace({'
+': ' '}) }}{% endif %}{% endfor %}
+
+{% endfor %}
+{% for row in line.footerRows %}
+{% for col in row %}{% if not loop.first %} | {% endif %}{% if col.type is empty %}{{ col | replace({'
+': ' '}) }}{% elseif col.type == 'LINK' %}{{ col.text }} -> {{ col.linkUrl | raw }}{% elseif col.type == 'IMAGE' %}{{ col.alt | default(col.title) | default('image') }} -> {{ col.linkUrl | default(col.src) | raw }}{% else %}{{ col.text | replace({'
+': ' '}) }}{% endif %}{% endfor %}
+
+{% endfor %}
 {% endif %}
 {% endfor %}
 {% endif %}

@@ -600,4 +600,118 @@ public class EmailTemplateBuilderTest {
         // then
         assertThat(htmlTextEmail.getHtml(), not(containsString("<span class=\"preheader\"")));
     }
+
+    @Test
+    public void altAttributeIsEscaped() {
+        // given
+        String evil = "\" onerror=\"alert(1)";
+        // when
+        HtmlTextEmail htmlTextEmail = EmailTemplateBuilder.builder()
+                .header().text("header").and()
+                .image("https://example.com/img.png").alt(evil).and()
+                .build();
+        // then
+        String html = htmlTextEmail.getHtml();
+        assertThat(html, not(containsString("onerror=\"")));
+        assertThat(html, containsString("&quot; onerror=&quot;alert(1)"));
+    }
+
+    @Test
+    public void copyrightSuffixIsEscaped() {
+        // when
+        HtmlTextEmail htmlTextEmail = EmailTemplateBuilder.builder()
+                .header().text("header").and()
+                .text("content").and()
+                .copyright("rocketbase").suffix(" <b>All rights reserved</b>").and()
+                .build();
+        // then
+        String html = htmlTextEmail.getHtml();
+        assertThat(html, not(containsString("<b>All rights reserved</b>")));
+        assertThat(html, containsString("&lt;b&gt;All rights reserved&lt;/b&gt;"));
+    }
+
+    @Test
+    public void buttonAlignmentUsesLowercaseCssValue() {
+        // when
+        HtmlTextEmail htmlTextEmail = EmailTemplateBuilder.builder()
+                .header().text("header").and()
+                .button("Go", "https://example.com").right().and()
+                .build();
+        // then
+        String html = htmlTextEmail.getHtml();
+        assertThat(html, containsString("align=\"right\""));
+        assertThat(html, not(containsString("align=\"RIGHT\"")));
+        assertThat(html, not(containsString("align=\"CENTER\"")));
+    }
+
+    @Test
+    public void galleryRowsStayBalanced() {
+        int perRow = 3;
+        for (int photoCount = 1; photoCount <= 7; photoCount++) {
+            // given
+            EmailTemplateBuilder.EmailTemplateConfigBuilder builder = EmailTemplateBuilder.builder()
+                    .header().text("header").and();
+            GalleryLine gallery = builder.gallery().newRowAfter(perRow);
+            for (int i = 1; i <= photoCount; i++) {
+                gallery.photo("https://example.com/" + i + ".png").alt("photo " + i).and();
+            }
+            // when
+            String html = gallery.and().build().getHtml();
+            // then
+            assertThat("open/close tr mismatch for " + photoCount + " photos",
+                    countOccurrences(html, "<tr"), equalTo(countOccurrences(html, "</tr>")));
+        }
+    }
+
+    @Test
+    public void galleryFillsUpIncompleteRow() {
+        // given - 4 photos with 3 per row leaves a row of one that needs two filler cells
+        EmailTemplateBuilder.EmailTemplateConfigBuilder builder = EmailTemplateBuilder.builder()
+                .header().text("header").and();
+        GalleryLine gallery = builder.gallery().newRowAfter(3);
+        for (int i = 1; i <= 4; i++) {
+            gallery.photo("https://example.com/" + i + ".png").alt("photo " + i).and();
+        }
+        // then
+        assertThat(gallery.getEmptyCells(), hasSize(2));
+        // and a full set of rows needs none
+        GalleryLine full = EmailTemplateBuilder.builder().header().text("header").and().gallery().newRowAfter(3);
+        for (int i = 1; i <= 6; i++) {
+            full.photo("https://example.com/" + i + ".png").and();
+        }
+        assertThat(full.getEmptyCells(), hasSize(0));
+    }
+
+    @Test
+    public void tableRendersAsPlainText() {
+        // when
+        HtmlTextEmail htmlTextEmail = EmailTemplateBuilder.builder()
+                .header().text("Invoice").and()
+                .tableSimpleWithImage("#.## 'EUR'")
+                .headerRow("Preview", "Description", "Amount")
+                .itemRow("https://example.com/img.png", "Tanktop \u00d7 1\nQUARTZ PINK / S", BigDecimal.valueOf(4995, 2))
+                .footerRow("Total", BigDecimal.valueOf(4995, 2))
+                .and()
+                .build();
+        // then
+        String text = htmlTextEmail.getText();
+        assertThat(text, not(containsString("TABLE IS NOT YET AVAILABLE")));
+        assertThat(text, containsString("Preview | Description | Amount"));
+        // image cells carry their url, never a java object identity
+        assertThat(text, not(containsString("TableCellImageSimple@")));
+        assertThat(text, containsString("https://example.com/img.png"));
+        // an embedded newline must not break the row apart
+        assertThat(text, containsString("Tanktop \u00d7 1 QUARTZ PINK / S"));
+        assertThat(text, containsString("Total"));
+    }
+
+    private int countOccurrences(String haystack, String needle) {
+        int count = 0;
+        int idx = haystack.indexOf(needle);
+        while (idx != -1) {
+            count++;
+            idx = haystack.indexOf(needle, idx + needle.length());
+        }
+        return count;
+    }
 }

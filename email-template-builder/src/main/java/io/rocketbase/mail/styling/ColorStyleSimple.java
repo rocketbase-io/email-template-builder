@@ -50,6 +50,6 @@ public class ColorStyleSimple implements ColorStyle {
     }
 
     public static Collection<ColorStyle> getAllPresets( ) {
-        return Arrays.asList(BASE_STYLE, WARNING_STYLE, BLACK_STYLE, GREEN_STYLE, RED_STYLE, YELLOW_STYLE, BLACK_STYLE, GRAY_STYLE);
+        return Arrays.asList(BASE_STYLE, WARNING_STYLE, BLACK_STYLE, GREEN_STYLE, RED_STYLE, YELLOW_STYLE, BLUE_STYLE, GRAY_STYLE);
     }
 }

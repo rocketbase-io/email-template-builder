@@ -101,7 +101,7 @@ public class GalleryLine implements TemplateLine {
     public List<String> getEmptyCells() {
         List<String> result = new ArrayList<>();
         if (photoElements != null && !photoElements.isEmpty() && newRowAfter != null) {
-            int startModulo = (photoElements.size() % (newRowAfter + 1));
+            int startModulo = (photoElements.size() % newRowAfter);
             if (startModulo > 0) {
                 for (int x = startModulo; x < newRowAfter; x++) {
                     result.add("");
